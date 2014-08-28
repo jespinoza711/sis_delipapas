@@ -10,8 +10,12 @@ class producto extends CI_Controller {
         $this->load->model(array());
         $this->load->library('session');
     }
-
-    public function index() {
+    
+    public function producto() {
+        
+    }
+    
+    public function inventario() {
         
     }
 

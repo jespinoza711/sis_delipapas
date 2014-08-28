@@ -11,7 +11,7 @@ class empleado extends CI_Controller {
         $this->load->library('session');
     }
 
-    public function index() {
+    public function empleado() {
         
     }
 

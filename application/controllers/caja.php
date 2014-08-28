@@ -10,8 +10,12 @@ class caja extends CI_Controller {
         $this->load->model(array());
         $this->load->library('session');
     }
-
-    public function index() {
+    
+    public function venta() {
+        
+    }
+    
+    public function compra() {
         
     }
 
@@ -28,6 +32,10 @@ class caja extends CI_Controller {
     }
 
     public function registrar_venta() {
+        
+    }
+    
+    public function caja_chica() {
         
     }
 

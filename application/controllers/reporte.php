@@ -11,7 +11,7 @@ class reporte extends CI_Controller {
         $this->load->library('session');
     }
 
-    public function index() {
+    public function reporte() {
         
     }
 

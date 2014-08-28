@@ -11,10 +11,6 @@ class registro extends CI_Controller {
         $this->load->library('session');
     }
 
-    public function index() {
-        
-    }
-
     public function registro_diario() {
         
     }

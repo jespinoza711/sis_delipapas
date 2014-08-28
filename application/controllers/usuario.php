@@ -10,10 +10,18 @@ class usuario extends CI_Controller {
         $this->load->model(array());
         $this->load->library('session');
     }
-
-    public function index() {
+    
+    public function usuario() {
         
     }
+    
+    public function login() {        
+        $this->load->view('login/login_view');        
+    }
+    
+    public function close() {        
+              
+    }    
 
     public function logged() {
         return $this->session->userdata('logged');
