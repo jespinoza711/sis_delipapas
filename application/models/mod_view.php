@@ -12,7 +12,7 @@ class mod_view extends CI_Model {
     // $view -> VISTA O TABLA ('')
     // $from -> ESPECIFICA LA FILA DE INICIO DE LA CONSULTA (PARA IGNORAR COLOCAR FALSE)
     // $limit -> ESPECIFICA CUANTAS FILAS DE LA CONSULTA VA A DEVOLVER DESDE EL $from (PARA IGNORAR COLOCAR FALSE)
-    // $where -> CONDICIONES PARA LA CONSULTA (ARRAY)
+    // $where -> CONDICIONES PARA LA CONSULTA (ARRAY)(PARA IGNORAR COLOCAR FALSE)
 
     // DEVUELVE UN CONSULTA NATIVA
     public function view($view, $from = 0, $limit = false, $where = false) {
