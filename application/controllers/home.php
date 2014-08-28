@@ -7,11 +7,11 @@ class home extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model(array());
+        $this->load->model(array('mod_view'));
         $this->load->library('session');
     }
 
-    public function home() {
+    public function index() {
 //        if (!$this->logged()) {
 //            header('location: ' . base_url('login'));
 //        } else {

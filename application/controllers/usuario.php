@@ -7,21 +7,25 @@ class usuario extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model(array());
+        $this->load->model(array('mod_view'));
         $this->load->library('session');
     }
-    
+
+    public function index() {
+        
+    }
+
     public function usuario() {
         
     }
-    
-    public function login() {        
-        $this->load->view('login/login_view');        
+
+    public function login() {
+        $this->load->view('login/login_view');
     }
-    
-    public function close() {        
-              
-    }    
+
+    public function close() {
+        
+    }
 
     public function logged() {
         return $this->session->userdata('logged');

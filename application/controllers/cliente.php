@@ -7,11 +7,11 @@ class cliente extends CI_Controller {
 
     public function __construct() {
         parent::__construct();
-        $this->load->model(array());
+        $this->load->model(array('mod_view'));
         $this->load->library('session');
     }
 
-    public function cliente() {
+    public function index() {
         
     }
 
