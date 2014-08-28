@@ -3,7 +3,9 @@
 if (!defined('BASEPATH'))
     exit('No direct script access allowed');
 
-$config['base_url'] = '';
+//$config['base_url'] = 'http://localhost/sis_delipapas/';
+$config['base_url'] = 'http://localhost/sis_delipapas/';
+
 $config['index_page'] = 'login';
 $config['uri_protocol'] = 'AUTO';
 $config['url_suffix'] = '';
