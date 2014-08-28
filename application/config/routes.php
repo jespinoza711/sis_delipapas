@@ -16,5 +16,5 @@ $route['producto'] = "producto/producto";
 $route['ajustes'] = "ajustes/ajustes";
 $route['reporte'] = "reporte/reporte";
 
-$route['default_controller'] = "home";
+$route['default_controller'] = "home/home";
 $route['404_override'] = '';
