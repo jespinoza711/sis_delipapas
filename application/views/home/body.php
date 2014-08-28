@@ -2,7 +2,8 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>AdminLTE | Inicio</title>
+        <title>DeliPapas | Inicio</title>
+        <link rel="shortcut icon" href="<?= base_url('resources/images/ico/ico.ico') ?>">
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
         <link href="<?= base_url() ?>resources/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
         <link href="<?= base_url() ?>resources/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
@@ -31,7 +32,7 @@
                         <!-- Messages: style can be found in dropdown.less-->
                         <!-- User Account: style can be found in dropdown.less -->
                         <li class="user user-menu">
-                            <a href="<?= base_url() ?>login">
+                            <a href="<?= base_url('login') ?>">
                                 <span>Iniciar sesión</span>
                             </a>
                         </li>
@@ -46,7 +47,7 @@
                 <section class="sidebar">
                     <ul class="sidebar-menu">
                         <li class="active">
-                            <a href="<?= base_url() ?>">
+                            <a href="<?= base_url('home') ?>">
                                 <i class="fa fa-home"></i> <span>Inicio</span>
                             </a>
                         </li>
@@ -76,6 +77,7 @@
             </aside><!-- /.right-side -->
         </div><!-- ./wrapper -->
 
+        <script src="<?= base_url() ?>resources/js/config/config.js"></script>
         <script src="<?= base_url() ?>resources/js/jquery-2.1.1.min.js"></script>
         <script src="<?= base_url() ?>resources/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="<?= base_url() ?>resources/js/AdminLTE/app.js" type="text/javascript"></script>

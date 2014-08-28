@@ -10,11 +10,21 @@ class usuario extends CI_Controller {
         $this->load->model(array());
         $this->load->library('session');
     }
-    
-    public function login() {
-        
-        $this->load->view('usuario/login');
+
+    public function index() {
         
     }
-    
+
+    public function logged() {
+        return $this->session->userdata('logged');
+    }
+
+    public function admin() {
+        if ($this->session->userdata('codi_rol') == '1') {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
