@@ -9,7 +9,6 @@
         <link href="<?= base_url() ?>resources/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <link href="<?= base_url() ?>resources/css/ionicons.min.css" rel="stylesheet" type="text/css" />
         <link href="<?= base_url() ?>resources/css/AdminLTE.css" rel="stylesheet" type="text/css" />
-
     </head>
     <body class="skin-blue">
         <!-- header logo: style can be found in header.less -->
@@ -98,8 +97,14 @@
 
         <script src="<?= base_url() ?>resources/js/config/config.js"></script>
         <script src="<?= base_url() ?>resources/js/jquery-2.1.1.min.js"></script>
+        <script src="<?= base_url() ?>resources/js/jquery-number.min.js"></script>
+        <script src="<?= base_url() ?>resources/js/plugins/input-mask/jquery.inputmask.js"></script>
+        <script src="<?= base_url() ?>resources/js/plugins/input-mask/jquery.inputmask.extensions.js"></script>
+        <script src="<?= base_url() ?>resources/js/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
         <script src="<?= base_url() ?>resources/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="<?= base_url() ?>resources/js/AdminLTE/app.js" type="text/javascript"></script>
+
+        <script src="<?= base_url() ?>resources/js/config/empleado.js" type="text/javascript"></script>
 
     </body>
 </html>
