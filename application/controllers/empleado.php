@@ -10,7 +10,7 @@ class empleado extends CI_Controller {
         $this->load->model(array('mod_view', 'mod_empleado'));
         $this->load->library('session');
     }
-
+    // Prueba
     public function index() {
         if (!$this->logged()) {
             header('location: ' . base_url('login'));
