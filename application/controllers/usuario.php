@@ -12,7 +12,7 @@ class usuario extends CI_Controller {
     }
 
     public function index() {
-        
+        // Prueba de subida
     }
 
     public function usuario() {
