@@ -1153,7 +1153,7 @@ body > .header .logo .icon {
   border-color: #f39c12 !important;
   box-shadow: none;
 }
-.form-group.has-error label {
+.form-group.has-error label, .form-group.has-error p {
   color: #f56954;
 }
 .form-group.has-error .form-control {

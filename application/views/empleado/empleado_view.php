@@ -117,12 +117,12 @@
                 </div>
                 <div class="form-group">
                     <label>Teléfono: *</label>
-                    <div id="tipo_telf" class="btn-group" data-toggle="buttons-radio">
-                        <button type="button" class="1 btn btn-primary">Left</button>
-                        <button type="button" class="2 btn btn-primary">Middle</button>
-                        <button type="button" class="3 btn btn-primary">Right</button>
+                    <div id="tipo_telf" class="btn-group" style="margin-left: 10px; margin-bottom: 4px;">
+                        <button id="linea" type="button" class="btn btn-sm btn-default active"  data-toggle="tooltip" data-placement="top" title="Formato de teléfono (99) 999-9999" <?= $disabled ?>>Línea</button>
+                        <button id="movil" type="button" class="btn btn-sm btn-default" data-toggle="tooltip" data-placement="top" title="Formato de teléfono (99) 999-999-999" <?= $disabled ?>>Móvil</button>
                     </div>
                     <?= form_input($telefono) ?>
+                    <p id="error_telf1" style="font-style: italic; display: none;">Debe completar el campo de teléfono</p>
                 </div>
                 <div class="form-group">
                     <label>Dirección: *</label>
@@ -149,13 +149,17 @@
                         <?= form_radio($divorciado) ?> Divorciado
                     </label>
                 </div>
+                 <div class="form-group">
+                     <label>Tipo de empleado: * <button type="button" class="btn btn-sm btn-primary" style="padding: 0px 10px; margin-left: 4px;"  data-toggle="tooltip" data-placement="top" title="Añadir tipo de empleado"><i class="fa fa-plus"></i></button></label>
+                    <?= form_dropdown('tipo_emp', $tipo, array(), 'id="tipo_emp" class="form-control" '.$disabled) ?>
+                </div>
+                 <div class="form-group">
+                     <label>Planilla: * <button type="button" class="btn btn-sm btn-primary" style="padding: 0px 10px; margin-left: 4px;"  data-toggle="tooltip" data-placement="top" title="Añadir planilla"><i class="fa fa-plus"></i></button></label>
+                    <?= form_dropdown('plan_emp', $planilla, array(), 'id="plan_emp" class="form-control" '.$disabled) ?>
+                </div>
                 <div class="form-group input-group" style="width: 160px;">
                     <span class="input-group-addon">A.F.P. *</span>
-                    <input type="text" name="afp" id="afp_emp" value="0" maxlength="5" class="form-control" style="text-align: right;" required="true" <?php
-                    if (isset($afp_dis) && $afp_dis == 'true') {
-                        echo 'disabled';
-                    }
-                    ?>>
+                    <input type="text" name="afp" id="afp_emp" value="0" maxlength="5" class="form-control" style="text-align: right;" required="true" <?= $disabled ?>>
                     <span class="input-group-addon">%</span>
                 </div>
                 <p class="text-muted" style="font-style: italic;">(*) Los campos con asterisco son obligatorios.</p>

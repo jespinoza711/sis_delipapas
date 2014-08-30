@@ -10,6 +10,7 @@ class empleado extends CI_Controller {
         $this->load->model(array('mod_view', 'mod_empleado'));
         $this->load->library('session');
     }
+
     // Prueba
     public function index() {
         if (!$this->logged()) {
@@ -29,6 +30,7 @@ class empleado extends CI_Controller {
             $empleado["soltero"] = array('id' => 'soltero_emp', 'name' => 'civil', "value" => "S", 'required' => "true");
             $empleado["casado"] = array('id' => 'casado_emp', 'name' => 'civil', "value" => "C", 'required' => "true");
             $empleado["divorciado"] = array('id' => 'divorciado_emp', 'name' => 'civil', "value" => "D", 'required' => "tr1ue");
+            $empleado["disabled"] = "";
             $empleado["registrar"] = array('id' => 'registrar_emp', 'name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Registrar");
 //            $empleado["editar"] = array('name' => 'editar', 'class' => "btn btn-primary", 'value' => "Editar");
 
@@ -65,18 +67,32 @@ class empleado extends CI_Controller {
             } else if ($this->input->post('desactivar')) {
                 // DESACTIVAR
             }
-            $empleado['empleados'] = $this->mod_view->view('empleado');
             $planilla = $this->mod_view->view('planilla');
             $tipo_empleado = $this->mod_view->view('tipo_empleado');
+            $empleado['empleados'] = $this->mod_view->view('empleado');
+            $empleado['tipo'] = array();
+            $empleado['planilla'] = array();
+
 
             $error_pla = false;
             $error_tip = false;
             if (count($planilla) <= 0) {
                 $error_pla = true;
+            } else {
+                foreach ($planilla as $row) {
+                    $phpdate = strtotime($row->fech_pla);
+                    $date = date('d/m/Y', $phpdate);
+                    $plan[$row->codi_pla] = $date . ' - S/. ' . $row->suel_pla;
+                }
+                $empleado['planilla'] = $plan;
             }
             if (count($tipo_empleado) <= 0) {
                 $error_tip = true;
-                ;
+            } else {
+                foreach ($tipo_empleado as $row) {
+                    $tipo[$row->codi_tem] = $row->nomb_tem;
+                }
+                $empleado['tipo'] = $tipo;
             }
             if ($error_tip || $error_pla) {
                 $empleado["nombre"]['disabled'] = 'true';
@@ -89,7 +105,7 @@ class empleado extends CI_Controller {
                 $empleado["soltero"]['disabled'] = 'true';
                 $empleado["casado"]['disabled'] = 'true';
                 $empleado["divorciado"]['disabled'] = 'true';
-                $empleado["afp_dis"] = 'true';
+                $empleado["disabled"] = 'disabled';
                 $empleado["registrar"]['disabled'] = 'true';
             }
             if ($error_pla && !$error_tip) {
