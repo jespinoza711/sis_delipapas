@@ -5,10 +5,10 @@
         <title>DeliPapas | Inicio</title>
         <link rel="shortcut icon" href="<?= base_url('resources/images/ico/ico.ico') ?>">
         <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
-        <link href="<?= base_url() ?>resources/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="<?= base_url() ?>resources/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <link href="<?= base_url() ?>resources/css/ionicons.min.css" rel="stylesheet" type="text/css" />
-        <link href="<?= base_url() ?>resources/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url('resources/css/bootstrap.min.css') ?>" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url('resources/css/font-awesome.min.css') ?>" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url('resources/css/ionicons.min.css') ?>" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url('resources/css/AdminLTE.css') ?>" rel="stylesheet" type="text/css" />
 
     </head>
     <body class="skin-blue">
@@ -21,12 +21,12 @@
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
                 <!-- Sidebar toggle button-->
-                <!--                <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
-                                    <span class="sr-only">Toggle navigation</span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                    <span class="icon-bar"></span>
-                                </a>-->
+                <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </a>
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
                         <!-- Messages: style can be found in dropdown.less-->
@@ -51,11 +51,10 @@
         </header>
 
         <div class="wrapper row-offcanvas row-offcanvas-left">
-
-            <aside class="left-side sidebar-offcanvas">                
-
+            <aside class="left-side sidebar-offcanvas">
                 <section class="sidebar">
                     <ul class="sidebar-menu">
+                        
                         <?php
                         if ($this->session->userdata('estado_sesion') && $this->session->userdata('estado_sesion') == "A") {
                             echo show_menu($this->session->userdata('codi_rol'));
@@ -63,37 +62,28 @@
                             echo show_menu();
                         }
                         ?>
+                        
                     </ul>
                 </section>
-
             </aside>
 
-
-            <aside class="right-side">                
-
+            <aside class="right-side">
                 <section class="content-header">
-                    <h1>
-                        Página en blanco
-                        <small>Panel de control</small>
-                    </h1>
+                    <h1> Página en blanco <small> Panel de control </small> </h1>
                     <ol class="breadcrumb">
-                        <li><a href="<?= base_url() ?>"><i class="fa fa-home"></i> Inicio</a></li>
+                        <li><a href="<?= base_url('home') ?>"><i class="fa fa-home"></i> Inicio </a></li>
                         <li class="active">Página en blanco</li>
                     </ol>
-                </section>
-
-
-                <section class="content">
-                    <?= $container ?>
-                </section> 
+                </section>                
+                <section class="content"> <?= $container ?> </section> 
             </aside>
         </div>
 
-        <script src="<?= base_url() ?>resources/js/config/config.js"></script>
-        <script src="<?= base_url() ?>resources/js/jquery-2.1.1.min.js"></script>
-        <script src="<?= base_url() ?>resources/js/bootstrap.min.js" type="text/javascript"></script>
-        <script src="<?= base_url() ?>resources/js/AdminLTE/app.js" type="text/javascript"></script>
-        <script src="<?= base_url() ?>resources/js/usuario.js"></script>
+        <script src="<?= base_url('resources/js/config/config.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/jquery-2.1.1.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/bootstrap.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/AdminLTE/app.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/usuario.js') ?>" type="text/javascript"></script>
 
     </body>
 </html>

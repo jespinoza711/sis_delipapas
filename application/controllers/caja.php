@@ -10,13 +10,16 @@ class caja extends CI_Controller {
         $this->load->model(array('mod_view'));
         $this->load->library('session');
     }
-    
+
     public function venta() {
         
     }
-    
+
     public function compra() {
-        
+        $compra['compra'] = $this->mod_view->view('compra', false, false, false);
+        $compra['producto'] = $this->mod_view->view('vproducto', false, false, false);
+        $data['container'] = $this->load->view('caja/compra_view', $compra, true);
+        $this->load->view('home/body', $data);
     }
 
     public function abrir_caja() {
@@ -34,7 +37,7 @@ class caja extends CI_Controller {
     public function registrar_venta() {
         
     }
-    
+
     public function caja_chica() {
         
     }
