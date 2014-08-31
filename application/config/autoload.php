@@ -4,7 +4,7 @@ $autoload['packages'] = array();
 
 $autoload['libraries'] = array('form_validation', 'session');
 
-$autoload['helper'] = array('url','form');
+$autoload['helper'] = array('url','form','menu_helper');
 
 $autoload['config'] = array();
 

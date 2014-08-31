@@ -9,6 +9,7 @@
         <link href="<?= base_url() ?>resources/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
         <link href="<?= base_url() ?>resources/css/ionicons.min.css" rel="stylesheet" type="text/css" />
         <link href="<?= base_url() ?>resources/css/AdminLTE.css" rel="stylesheet" type="text/css" />
+
     </head>
     <body class="skin-blue">
         <!-- header logo: style can be found in header.less -->
@@ -20,20 +21,21 @@
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">
                 <!-- Sidebar toggle button-->
-                <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
+                <!--                <a href="#" class="navbar-btn sidebar-toggle" data-toggle="offcanvas" role="button">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </a>-->
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
                         <!-- Messages: style can be found in dropdown.less-->
                         <!-- User Account: style can be found in dropdown.less -->
+
                         <li class="user user-menu"><a href="<?= base_url('cajachica') ?>"><span>CAJA CHICA</span></a></li>
                         <li class="user user-menu"><a href="<?= base_url('registrodiario') ?>"><span>REGISTRO DIARIO</span></a></li>
 
-                        <?php if ($this->session->userdata('logged') == null) { ?>
+                        <?php if ($this->session->userdata('logged') == true) { ?>
 
                             <li class="user user-menu"><a href="<?= base_url('close') ?>"><span>Cerrar sesión</span></a></li>
 
@@ -47,36 +49,28 @@
                 </div>
             </nav>
         </header>
+
         <div class="wrapper row-offcanvas row-offcanvas-left">
-            <!-- Left side column. contains the logo and sidebar -->
+
             <aside class="left-side sidebar-offcanvas">                
-                <!-- sidebar: style can be found in sidebar.less -->
+
                 <section class="sidebar">
                     <ul class="sidebar-menu">
-                        <li class="active"><a href="<?= base_url('home') ?>"><i class="fa fa-home"></i> <span>Inicio</span></a></li>
-                        <li class="active"><a href="<?= base_url('venta') ?>"><i class="fa fa-home"></i> <span>Ventas</span></a></li>
-                        <li class="active"><a href="<?= base_url('compra') ?>"><i class="fa fa-home"></i> <span>Compras</span></a></li>
-                        <li class="active"><a href="<?= base_url('inventario') ?>"><i class="fa fa-home"></i> <span>Inventario</span></a></li>
-                        <li class="active"><a href="#"><i class="fa fa-home"></i> <span>Registros</span></a></li>
-
-                        <ul class="sidebar-menu">
-                            <li class="active"><a href="<?= base_url('usuario') ?>"><i class="fa fa-home"></i> <span>Usuario</span></a></li>
-                            <li class="active"><a href="<?= base_url('empleado') ?>"><i class="fa fa-home"></i> <span>Empleado</span></a></li>
-                            <li class="active"><a href="<?= base_url('proveedor') ?>"><i class="fa fa-home"></i> <span>Proveedor</span></a></li>
-                            <li class="active"><a href="<?= base_url('cliente') ?>"><i class="fa fa-home"></i> <span>Cliente</span></a></li>
-                            <li class="active"><a href="<?= base_url('producto') ?>"><i class="fa fa-home"></i> <span>Producto</span></a></li>
-                        </ul>
-
-                        <li class="active"><a href="<?= base_url('reporte') ?>"><i class="fa fa-home"></i> <span>Reportes</span></a></li>
-                        <li class="active"><a href="<?= base_url('ajustes') ?>"><i class="fa fa-home"></i> <span>Ajustes</span></a></li>
+                        <?php
+                        if ($this->session->userdata('estado_sesion') && $this->session->userdata('estado_sesion') == "A") {
+                            echo show_menu($this->session->userdata('codi_rol'));
+                        } else {
+                            echo show_menu();
+                        }
+                        ?>
                     </ul>
                 </section>
-                <!-- /.sidebar -->
+
             </aside>
 
-            <!-- Right side column. Contains the navbar and content of the page -->
+
             <aside class="right-side">                
-                <!-- Content Header (Page header) -->
+
                 <section class="content-header">
                     <h1>
                         Página en blanco
@@ -88,23 +82,18 @@
                     </ol>
                 </section>
 
-                <!-- Main content -->
+
                 <section class="content">
                     <?= $container ?>
-                </section><!-- /.content -->
-            </aside><!-- /.right-side -->
-        </div><!-- ./wrapper -->
+                </section> 
+            </aside>
+        </div>
 
         <script src="<?= base_url() ?>resources/js/config/config.js"></script>
         <script src="<?= base_url() ?>resources/js/jquery-2.1.1.min.js"></script>
-        <script src="<?= base_url() ?>resources/js/jquery-number.min.js"></script>
-        <script src="<?= base_url() ?>resources/js/plugins/input-mask/jquery.inputmask.js"></script>
-        <script src="<?= base_url() ?>resources/js/plugins/input-mask/jquery.inputmask.extensions.js"></script>
-        <script src="<?= base_url() ?>resources/js/plugins/input-mask/jquery.inputmask.date.extensions.js"></script>
         <script src="<?= base_url() ?>resources/js/bootstrap.min.js" type="text/javascript"></script>
         <script src="<?= base_url() ?>resources/js/AdminLTE/app.js" type="text/javascript"></script>
-
-        <script src="<?= base_url() ?>resources/js/config/empleado.js" type="text/javascript"></script>
+        <script src="<?= base_url() ?>resources/js/usuario.js"></script>
 
     </body>
 </html>

@@ -12,11 +12,11 @@ class home extends CI_Controller {
     }
 
     public function index() {
-//        if (!$this->logged()) {
-//            header('location: ' . base_url('login'));
-//        } else {
+        if (!$this->logged()) {
+            header('location: ' . base_url('login'));
+        } else {
             $data['container'] = $this->load->view('home/home_view', null, true);
-//        }
+        }
         $this->load->view('home/body', $data);
     }
 
