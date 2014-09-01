@@ -1,5 +1,128 @@
 $(document).ready(function() {
 
+    $(".editar_emp").click(function() {
+
+        var tr = $(this).parent().parent();
+
+        var codigo = tr.find("td").eq(0).html();
+
+        $('#empleados-reg tr').each(function() {
+            var codigo_reg = $(this).find('td').eq(0).html();
+            if (codigo == codigo_reg) {
+                $("#codigo_emp_e").val(codigo);
+                $("#nomb_emp_e").val($(this).find('td').eq(1).html());
+                $("#apel_emp_e").val($(this).find('td').eq(2).html());
+                $("#dni_emp_e").val($(this).find('td').eq(4).html());
+                var telefono = $(this).find('td').eq(5).html();
+                if (telefono.length == 13) {
+                    $('#movil_e').removeClass('active');
+                    $('#linea_e').addClass('active');
+                    $("#telefono_emp_e").val(telefono);
+                    $('#telefono_emp_e').inputmask("mask", {"mask": "(99) 999-9999"});
+                } else if (telefono.length == 16) {
+                    $('#linea_e').removeClass('active');
+                    $('#movil_e').addClass('active');
+                    $("#telefono_emp_e").val(telefono);
+                    $('#telefono_emp_e').inputmask("mask", {"mask": "(99) 999-999-999"});
+                }
+                $("#direccion_emp_e").val($(this).find('td').eq(3).html());
+                
+                var sexo = $(this).find('td').eq(6).html();
+                var civil = $(this).find('td').eq(8).html();
+                
+                if (sexo == 'M'){
+                    $('#masculino_e').prop('disabled',true);
+                } else if (sexo == 'F'){
+                    
+                }
+                if (civil == 'S'){
+                    $("#soltero_emp_e").prop("checked", true);
+                } else if (civil == 'C'){
+                    $("#casado_emp_e").prop("checked", true);
+                } else if (civil == 'D'){
+                    $("#divorciado_emp_e").prop("checked", true);
+                }
+                
+//                $("#codi_rol_e option:contains('" + tr.find("td").eq(2).html() + "')").prop("selected", true);
+
+                $("#ModalEditarEmpleado").modal("show");
+                return false;
+            }
+        });
+    });
+
+    $('#form_pla').submit(function() {
+        var sueldo = $('#suel_pla').val() + '.00';
+        var sw = false;
+        $('#pla-reg tr').each(function() {
+            var pla = $(this).find("td").eq(2).html();
+            if (pla == sueldo) {
+                $('#error_pla1').css('display', 'inherit');
+                $('#error_pla1').parent().addClass('has-error');
+                $('#registrar_pla').prop('disabled', true);
+                sw = true;
+            }
+        });
+        if (sw) {
+            return false;
+        }
+    });
+
+    $('#suel_pla').keydown(function() {
+        $('#error_pla1').css('display', 'none');
+        $(this).parent().parent().removeClass('has-error');
+        $('#registrar_pla').prop('disabled', false);
+        $(this).css('cursor', 'auto');
+    });
+
+    $('#suel_pla').number(true, 0);
+    $('#suel_pla').keyup(function() {
+        var suel = $(this).val();
+        if (suel > 99999999) {
+            $(this).val("99999999");
+        }
+    });
+
+    $('#btnTipoEmp').click(function() {
+        $('#ModalNuevoEmpleado').modal('hide');
+        $('#ModalAddTipEmp').modal('show');
+    });
+    $('#btnCancelarTEmp').click(function() {
+        $('#ModalAddTipEmp').modal('hide');
+        $('#ModalNuevoEmpleado').modal('show');
+    });
+    $('#btnPlaEmp').click(function() {
+        $('#ModalNuevoEmpleado').modal('hide');
+        $('#ModalAddPla').modal('show');
+    });
+    $('#btnCancelarPla').click(function() {
+        $('#ModalAddPla').modal('hide');
+        $('#ModalNuevoEmpleado').modal('show');
+    });
+
+    $('#form_tem').submit(function() {
+        var nombre = $('#nomb_temp').val();
+        var sw = false;
+        $('#tipo_emp-reg tr').each(function() {
+            var tem = $(this).find("td").eq(1).html();
+            if (tem.toUpperCase() == nombre.toUpperCase()) {
+                $('#error_tem1').css('display', 'inherit');
+                $('#error_tem1').parent().addClass('has-error');
+                $('#registrar_temp').prop('disabled', true);
+                sw = true;
+            }
+        });
+        if (sw) {
+            return false;
+        }
+    });
+
+    $('#nomb_temp').keyup(function() {
+        $('#error_tem1').css('display', 'none');
+        $(this).parent().removeClass('has-error');
+        $('#registrar_temp').prop('disabled', false);
+    });
+
     function es_numerico(val) {
         var nro = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
         for (i = 0; i < 10; i++) {
@@ -64,21 +187,91 @@ $(document).ready(function() {
             return true;
         }
     }
+    function verificar_format_telefono_e() {
+        var telf = $('#telefono_emp_e').val();
+        var sw = false;
+        if ($('#linea_e').hasClass("active")) {
+            if (!es_numerico(telf.charAt(1)))
+                sw = true;
+            if (!es_numerico(telf.charAt(2)))
+                sw = true;
+            if (!es_numerico(telf.charAt(5)))
+                sw = true;
+            if (!es_numerico(telf.charAt(6)))
+                sw = true;
+            if (!es_numerico(telf.charAt(7)))
+                sw = true;
+            if (!es_numerico(telf.charAt(9)))
+                sw = true;
+            if (!es_numerico(telf.charAt(10)))
+                sw = true;
+            if (!es_numerico(telf.charAt(11)))
+                sw = true;
+            if (!es_numerico(telf.charAt(12)))
+                sw = true;
+        } else if ($('#movil_e').hasClass("active")) {
+            if (!es_numerico(telf.charAt(1)))
+                sw = true;
+            if (!es_numerico(telf.charAt(2)))
+                sw = true;
+            if (!es_numerico(telf.charAt(5)))
+                sw = true;
+            if (!es_numerico(telf.charAt(6)))
+                sw = true;
+            if (!es_numerico(telf.charAt(7)))
+                sw = true;
+            if (!es_numerico(telf.charAt(9)))
+                sw = true;
+            if (!es_numerico(telf.charAt(10)))
+                sw = true;
+            if (!es_numerico(telf.charAt(11)))
+                sw = true;
+            if (!es_numerico(telf.charAt(13)))
+                sw = true;
+            if (!es_numerico(telf.charAt(14)))
+                sw = true;
+            if (!es_numerico(telf.charAt(15)))
+                sw = true;
+        }
+        if (sw) {
+            return false;
+            $('#telefono_emp_e').focus();
+        } else {
+            return true;
+        }
+    }
 
     $('#telefono_emp').keyup(function() {
         if (verificar_format_telefono()) {
-            $('#error_telf1').css('display','none');
+            $('#error_telf1').css('display', 'none');
             $('#telefono_emp').parent().removeClass('has-error');
             $('#telefono_emp').parent().addClass('has-success');
         } else {
             $('#telefono_emp').parent().removeClass('has-success');
         }
     });
+    
+    $('#telefono_emp_e').keyup(function() {
+        if (verificar_format_telefono_e()) {
+            $('#error_telf1_e').css('display', 'none');
+            $('#telefono_emp_e').parent().removeClass('has-error');
+            $('#telefono_emp_e').parent().addClass('has-success');
+        } else {
+            $('#telefono_emp_e').parent().removeClass('has-success');
+        }
+    });
 
     $('#form_emp').submit(function() {
         if (!verificar_format_telefono()) {
-            $('#error_telf1').css('display','inherit');
+            $('#error_telf1').css('display', 'inherit');
             $('#telefono_emp').parent().addClass('has-error');
+            return false;
+        }
+    });
+    $('#form_emp_edit').submit(function() {
+        if (!verificar_format_telefono_e()) {
+            $('#error_telf1_e').css('display', 'inherit');
+            $('#telefono_emp_e').parent().addClass('has-error');
             return false;
         }
     });
@@ -91,11 +284,11 @@ $(document).ready(function() {
         $('#telefono_emp').inputmask("mask", {"mask": "(99) 999-9999"});
 
         if (verificar_format_telefono()) {
-            $('#error_telf1').css('display','none');
+            $('#error_telf1').css('display', 'none');
             $('#telefono_emp').parent().removeClass('has-error');
             $('#telefono_emp').parent().addClass('has-success');
         } else {
-            $('#error_telf1').css('display','none');
+            $('#error_telf1').css('display', 'none');
             $('#telefono_emp').parent().removeClass('has-success');
         }
     });
@@ -106,11 +299,39 @@ $(document).ready(function() {
 
         if (verificar_format_telefono()) {
             $('#telefono_emp').parent().removeClass('has-error');
-            $('#error_telf1').css('display','none');
+            $('#error_telf1').css('display', 'none');
             $('#telefono_emp').parent().addClass('has-success');
         } else {
-            $('#error_telf1').css('display','none');
+            $('#error_telf1').css('display', 'none');
             $('#telefono_emp').parent().removeClass('has-success');
+        }
+    });
+    $('#linea_e').click(function() {
+        $('#movil_e').removeClass('active');
+        $('#linea_e').addClass('active');
+        $('#telefono_emp_e').inputmask("mask", {"mask": "(99) 999-9999"});
+
+        if (verificar_format_telefono_e()) {
+            $('#error_telf1_e').css('display', 'none');
+            $('#telefono_emp_e').parent().removeClass('has-error');
+            $('#telefono_emp_e').parent().addClass('has-success');
+        } else {
+            $('#error_telf1-e').css('display', 'none');
+            $('#telefono_emp_e').parent().removeClass('has-success');
+        }
+    });
+    $('#movil_e').click(function() {
+        $('#linea_e').removeClass('active');
+        $('#movil_e').addClass('active');
+        $('#telefono_emp_e').inputmask("mask", {"mask": "(99) 999-999-999"});
+
+        if (verificar_format_telefono_e()) {
+            $('#telefono_emp_e').parent().removeClass('has-error');
+            $('#error_telf1_e').css('display', 'none');
+            $('#telefono_emp_e').parent().addClass('has-success');
+        } else {
+            $('#error_telf1_e').css('display', 'none');
+            $('#telefono_emp_e').parent().removeClass('has-success');
         }
     });
 
