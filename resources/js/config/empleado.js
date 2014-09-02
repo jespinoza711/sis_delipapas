@@ -26,24 +26,79 @@ $(document).ready(function() {
                     $('#telefono_emp_e').inputmask("mask", {"mask": "(99) 999-999-999"});
                 }
                 $("#direccion_emp_e").val($(this).find('td').eq(3).html());
-                
+
                 var sexo = $(this).find('td').eq(6).html();
                 var civil = $(this).find('td').eq(8).html();
-                
-                if (sexo == 'M'){
-                    $('#masculino_e').prop('disabled',true);
-                } else if (sexo == 'F'){
-                    
+
+                if (sexo == 'M') {
+                    $(document).find('#femenino_emp_e').removeAttr('checked');
+                    $(document).find('#femenino_emp_e').parent().attr('aria-checked', 'false');
+                    $(document).find('#femenino_emp_e').parent().removeClass('checked');
+                    $(document).find('#masculino_emp_e').attr('checked', 'true');
+                    $(document).find('#masculino_emp_e').parent().attr('aria-checked', 'true');
+                    $(document).find('#masculino_emp_e').parent().addClass('checked');
+                } else if (sexo == 'F') {
+                    $(document).find('#masculino_emp_e').removeAttr('checked');
+                    $(document).find('#masculino_emp_e').parent().attr('aria-checked', 'false');
+                    $(document).find('#masculino_emp_e').parent().removeClass('checked');
+                    $(document).find('#femenino_emp_e').attr('checked', 'true');
+                    $(document).find('#femenino_emp_e').parent().attr('aria-checked', 'true');
+                    $(document).find('#femenino_emp_e').parent().addClass('checked');
                 }
-                if (civil == 'S'){
-                    $("#soltero_emp_e").prop("checked", true);
-                } else if (civil == 'C'){
-                    $("#casado_emp_e").prop("checked", true);
-                } else if (civil == 'D'){
-                    $("#divorciado_emp_e").prop("checked", true);
+                if (civil == 'S') {
+                    $(document).find('#casado_emp_e').removeAttr('checked');
+                    $(document).find('#casado_emp_e').parent().attr('aria-checked', 'false');
+                    $(document).find('#casado_emp_e').parent().removeClass('checked');
+                    $(document).find('#divorciado_emp_e').removeAttr('checked');
+                    $(document).find('#divorciado_emp_e').parent().attr('aria-checked', 'false');
+                    $(document).find('#divorciado_emp_e').parent().removeClass('checked');
+                    $(document).find('#soltero_emp_e').attr('checked', 'true');
+                    $(document).find('#soltero_emp_e').parent().attr('aria-checked', 'true');
+                    $(document).find('#soltero_emp_e').parent().addClass('checked');
+                } else if (civil == 'C') {
+                    $(document).find('#soltero_emp_e').removeAttr('checked');
+                    $(document).find('#soltero_emp_e').parent().attr('aria-checked', 'false');
+                    $(document).find('#soltero_emp_e').parent().removeClass('checked');
+                    $(document).find('#divorciado_emp_e').removeAttr('checked');
+                    $(document).find('#divorciado_emp_e').parent().attr('aria-checked', 'false');
+                    $(document).find('#divorciado_emp_e').parent().removeClass('checked');
+                    $(document).find('#casado_emp_e').attr('checked', 'true');
+                    $(document).find('#casado_emp_e').parent().attr('aria-checked', 'true');
+                    $(document).find('#casado_emp_e').parent().addClass('checked');
+                } else if (civil == 'D') {
+                    $(document).find('#casado_emp_e').removeAttr('checked');
+                    $(document).find('#casado_emp_e').parent().attr('aria-checked', 'false');
+                    $(document).find('#casado_emp_e').parent().removeClass('checked');
+                    $(document).find('#soltero_emp_e').removeAttr('checked');
+                    $(document).find('#soltero_emp_e').parent().attr('aria-checked', 'false');
+                    $(document).find('#soltero_emp_e').parent().removeClass('checked');
+                    $(document).find('#divorciado_emp_e').attr('checked', 'true');
+                    $(document).find('#divorciado_emp_e').parent().attr('aria-checked', 'true');
+                    $(document).find('#divorciado_emp_e').parent().addClass('checked');
                 }
-                
-//                $("#codi_rol_e option:contains('" + tr.find("td").eq(2).html() + "')").prop("selected", true);
+
+                var codi_tem = $(this).find('td').eq(11).html();
+                $("#tipo_emp_e option[value='" + codi_tem + "']").prop("selected", true);
+                var codi_pla = $(this).find('td').eq(10).html();
+                $("#plan_emp_e option[value='" + codi_pla + "']").prop("selected", true);
+                $("#afp_emp_e").val($(this).find('td').eq(7).html());
+
+                // REGISTRO ACTUAL
+                $("#nomb_emp_h").val($(this).find('td').eq(1).html());
+                $("#apel_emp_h").val($(this).find('td').eq(2).html());
+                $("#dni_emp_h").val($(this).find('td').eq(4).html());
+                $("#telefono_emp_h").val($(this).find('td').eq(5).html());
+                $("#direccion_emp_h").val($(this).find('td').eq(3).html());
+                $("#sexo_emp_h").val($(this).find('td').eq(6).html());
+                $("#civil_emp_h").val($(this).find('td').eq(8).html());
+                $("#afp_emp_h").val($(this).find('td').eq(7).html());
+                $("#tem_emp_h").val($(this).find('td').eq(10).html());
+                $("#pla_emp_h").val($(this).find('td').eq(11).html());
+
+                $('#dni_emp_e').parent().removeClass('has-error');
+                $('#dni_emp_e').parent().removeClass('has-success');
+                $('#dni_emp_e').parent().find('label').html('D.N.I.: * <span class="text-muted" style="font-style: italic;">(Debe contener 8 dígitos)</span>');
+                $('#editar_emp').prop('disabled', false);
 
                 $("#ModalEditarEmpleado").modal("show");
                 return false;
@@ -87,12 +142,20 @@ $(document).ready(function() {
         $('#ModalNuevoEmpleado').modal('hide');
         $('#ModalAddTipEmp').modal('show');
     });
+    $('#btnTipoEmp_e').click(function() {
+        $('#ModalEditarEmpleado').modal('hide');
+        $('#ModalAddTipEmp').modal('show');
+    });
     $('#btnCancelarTEmp').click(function() {
         $('#ModalAddTipEmp').modal('hide');
         $('#ModalNuevoEmpleado').modal('show');
     });
     $('#btnPlaEmp').click(function() {
         $('#ModalNuevoEmpleado').modal('hide');
+        $('#ModalAddPla').modal('show');
+    });
+    $('#btnPlaEmp_e').click(function() {
+        $('#ModalEditarEmpleado').modal('hide');
         $('#ModalAddPla').modal('show');
     });
     $('#btnCancelarPla').click(function() {
@@ -250,7 +313,7 @@ $(document).ready(function() {
             $('#telefono_emp').parent().removeClass('has-success');
         }
     });
-    
+
     $('#telefono_emp_e').keyup(function() {
         if (verificar_format_telefono_e()) {
             $('#error_telf1_e').css('display', 'none');
@@ -336,8 +399,16 @@ $(document).ready(function() {
     });
 
     $('#dni_emp').number(true, 0, ',', '');
+    $('#dni_emp_e').number(true, 0, ',', '');
     $('#afp_emp').number(true, 1);
     $('#afp_emp').keyup(function() {
+        var afp = $(this).val();
+        if (afp > 100) {
+            $(this).val("100");
+        }
+    });
+    $('#afp_emp_e').number(true, 1);
+    $('#afp_emp_e').keyup(function() {
         var afp = $(this).val();
         if (afp > 100) {
             $(this).val("100");
@@ -366,6 +437,32 @@ $(document).ready(function() {
             if ($('#dni_emp').val().length == 8) {
                 $('#dni_emp').parent().addClass('has-success');
                 $('#dni_emp').parent().find('label').html('<i class="fa fa-check"></i> D.N.I.: * ¡Correcto!');
+            }
+        }
+    });
+    $('#dni_emp_e').keyup(function() {
+        var dni = $(this).val();
+        var dni_h = $('#dni_emp_h').val();
+        var sw = true;
+        $('#empleados-reg tr').each(function() {
+            var dni_reg = $(this).find('td').eq(4).html();
+            if (dni == dni_reg && dni != dni_h) {
+                $('#dni_emp_e').parent().addClass('has-error');
+                $('#dni_emp_e').parent().find('label').html('<i class="fa fa-times-circle-o"></i> D.N.I.: * Ya se encuentra asociado con otro empleado');
+                $('#editar_emp').prop('disabled', true);
+                sw = false;
+                return false;
+            }
+        });
+        if (sw) {
+            $('#dni_emp_e').parent().removeClass('has-error');
+            $('#dni_emp_e').parent().removeClass('has-success');
+            $('#dni_emp_e').parent().find('label').html('D.N.I.: * <span class="text-muted" style="font-style: italic;">(Debe contener 8 dígitos)</span>');
+            $('#editar_emp').prop('disabled', false);
+
+            if ($('#dni_emp_e').val().length == 8) {
+                $('#dni_emp_e').parent().addClass('has-success');
+                $('#dni_emp_e').parent().find('label').html('<i class="fa fa-check"></i> D.N.I.: * ¡Correcto!');
             }
         }
     });

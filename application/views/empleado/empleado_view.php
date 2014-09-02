@@ -272,6 +272,17 @@
                     <?= form_submit($editar) ?>
                 </div>
             </div>
+            <!--REGISTRO ACTUAL-->
+            <input type="hidden" id="nomb_emp_h" name="nombre_h">
+            <input type="hidden" id="apel_emp_h" name="apellido_h">
+            <input type="hidden" id="dni_emp_h" name="dni_h">
+            <input type="hidden" id="telefono_emp_h" name="telefono_h">
+            <input type="hidden" id="direccion_emp_h" name="direccion_h">
+            <input type="hidden" id="sexo_emp_h" name="sexo_h">
+            <input type="hidden" id="civil_emp_h" name="civil_h">
+            <input type="hidden" id="afp_emp_h" name="afp_h">
+            <input type="hidden" id="tem_emp_h" name="tem_h">
+            <input type="hidden" id="pla_emp_h" name="pla_h">
             <?= form_close() ?>
         </div>
     </div>
