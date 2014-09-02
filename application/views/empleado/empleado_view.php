@@ -19,31 +19,38 @@
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevoEmpleado"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Nuevo</button>
                     <br><br>
                     <div class="table-responsive">
-                        <table id="table-usuario" class="table table-bordered">
+                        <table id="table_empleado" class="table table-bordered">
                             <thead>
                                 <tr>
+                                    <th></th>
                                     <th style="text-align: center;">Codigo</th>
                                     <th style="text-align: center;">Nombres</th>
-                                    <th style="text-align: center;">Dirección</th>
+                                    <th style="text-align: center;">Tipo de empleado</th>
+                                    <th style="text-align: center;">Salario</th>
                                     <th style="text-align: center;">Teléfono</th>
-                                    <th style="text-align: center;">Estado</th>
                                     <th style="text-align: center;">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php foreach ($empleados as $row) { ?>
                                     <tr style="background-color: none;">
-                                        <td style="text-align: center;"><?= $row->codi_emp ?></td>
-                                        <td><?= $row->nomb_emp . ' ' . $row->apel_emp ?></td>
-                                        <td style="text-align: center;"><?= $row->dire_emp ?></td>
-                                        <td style="text-align: center;"><?= $row->telf_emp ?></td>
-                                        <td style="text-align: center;"><?php
-                                            if ($row->esta_emp == "A") {
-                                                echo "Habilitado";
-                                            } else if ($row->esta_emp == "D") {
-                                                echo "Deshabilitado";
-                                            }
-                                            ?></td>
+                                        <td class="extra" style="text-align: center;">
+                                            <button type="button" class="tooltip-emp btn btn-primary btn-circle" data-toggle="tooltip" data-placement="top" title="Ver màs info">
+                                                <i class="fa fa-list"></i>
+                                            </button>
+                                        </td>
+                                        <td class="td" style="vertical-align: middle;"><?= $row->codi_emp ?></td>
+                                        <td style="vertical-align: middle;"><?= $row->nomb_emp . ' ' . $row->apel_emp ?></td>
+                                        <td class="td" style="vertical-align: middle;"><?= $row->nomb_tem ?></td>
+                                        <td class="td" style="vertical-align: middle;">S/. <?= $row->suel_pla ?></td>
+                                        <td class="td" style="vertical-align: middle;"><?= $row->telf_emp ?></td>
+<!--                                        <td style="text-align: center;"><?php
+//                                            if ($row->esta_emp == "A") {
+//                                                echo "Habilitado";
+//                                            } else if ($row->esta_emp == "D") {
+//                                                echo "Deshabilitado";
+//                                            }
+                                            ?></td>-->
                                         <td style="vertical-align: middle; text-align: center;">
                                             <button type="button" class="tooltip-emp btn btn-success btn-circle editar_emp" data-toggle="tooltip" data-placement="top" title="Editar">
                                                 <i class="fa fa-edit"></i>

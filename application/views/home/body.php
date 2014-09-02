@@ -8,6 +8,7 @@
         <link href="<?= base_url('resources/css/bootstrap.min.css') ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('resources/css/font-awesome.min.css') ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('resources/css/ionicons.min.css') ?>" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url('resources/css/dataTables.bootstrap.css') ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('resources/css/AdminLTE.css') ?>" rel="stylesheet" type="text/css" />
 
     </head>
@@ -81,6 +82,8 @@
 
         <script src="<?= base_url('resources/js/config/config.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/jquery-2.1.1.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/jquery.dataTables.js') ?>"></script>
+        <script src="<?= base_url('resources/js/dataTables.bootstrap.js') ?>"></script>
         <script src="<?= base_url() ?>resources/js/jquery-number.min.js"></script>
         <script src="<?= base_url() ?>resources/js/plugins/input-mask/jquery.inputmask.js"></script>
         <script src="<?= base_url() ?>resources/js/plugins/input-mask/jquery.inputmask.extensions.js"></script>

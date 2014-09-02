@@ -160,7 +160,7 @@ class empleado extends CI_Controller {
                 }
                 $planilla = $this->mod_view->view('planilla');
                 $tipo_empleado = $this->mod_view->view('tipo_empleado');
-                $empleado['empleados'] = $this->mod_view->view('empleado');
+                $empleado['empleados'] = $this->mod_empleado->get_vempleado();
                 $empleado['tipo'] = array();
                 $empleado['planilla'] = array();
                 $tipo = array();
@@ -220,7 +220,7 @@ class empleado extends CI_Controller {
             }
         }
     }
-
+    
     public function logged() {
         return $this->session->userdata('logged');
     }

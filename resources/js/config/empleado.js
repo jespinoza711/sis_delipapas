@@ -1,5 +1,135 @@
 $(document).ready(function() {
 
+    function format_empleado(codigo) {
+        var direccion = "";
+        var dni = "";
+        var sexo = "";
+        var civil = "";
+        var afp = "";
+        var estado = "";
+        $('#empleados-reg tr').each(function() {
+            var codigo_reg = $(this).find("td").eq(0).html();
+            if (codigo == codigo_reg) {
+                direccion = $(this).find("td").eq(3).html();
+                dni = $(this).find("td").eq(4).html();
+                var sexo_a = $(this).find("td").eq(6).html();
+                if (sexo_a == "M") {
+                    sexo = "Masculino";
+                } else if (sexo_a == "F") {
+                    sexo = "Femenino";
+                }
+                var civil_a = $(this).find("td").eq(8).html();
+                if (civil_a == "S") {
+                    civil = "Soltero";
+                } else if (civil_a == "C") {
+                    civil = "Casado";
+                } else if (civil_a == "D") {
+                    civil = "Divorciado";
+                }
+                afp = $(this).find("td").eq(7).html() + '%';
+                var esta_a = $(this).find("td").eq(9).html();
+                if (esta_a == "A") {
+                    estado = "Habilitado";
+                } else if (esta_a == "D") {
+                    estado = "Deshabilitado";
+                }
+            }
+        });
+        return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">' +
+                '<tr>' +
+                '<td><strong>D.N.I.:</strong></td>' +
+                '<td>' + dni + '</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td><strong>Dirección:</strong></td>' +
+                '<td>' + direccion + '</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td><strong>Sexo:</strong></td>' +
+                '<td>'+sexo+'</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td><strong>Estado Civil:</strong></td>' +
+                '<td>'+civil+'</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td><strong>AFP:</strong></td>' +
+                '<td>'+afp+'</td>' +
+                '</tr>' +
+                '<tr>' +
+                '<td><strong>Estado:</strong></td>' +
+                '<td>'+estado+'</td>' +
+                '</tr>' +
+                '</table>';
+    }
+
+
+
+    var table_empleado = $('#table_empleado').DataTable({
+        "columnDefs": [
+            {"visible": false, "targets": 3}
+        ],
+        "order": [[3, 'asc']],
+        "displayLength": 25,
+        "drawCallback": function(settings) {
+            var api = this.api();
+            var rows = api.rows({page: 'current'}).nodes();
+            var last = null;
+
+            api.column(3, {page: 'current'}).data().each(function(group, i) {
+                if (last !== group) {
+                    $(rows).eq(i).before(
+                            '<tr class="group"><td colspan="6">' + group + '</td></tr>'
+                            );
+
+                    last = group;
+                }
+            });
+        }
+    });
+
+    $('#table_empleado tbody').on('click', 'tr.group', function() {
+        var currentOrder = table_empleado.order()[0];
+        if (currentOrder[0] === 2 && currentOrder[1] === 'asc') {
+            table_empleado.order([2, 'desc']).draw();
+        }
+        else {
+            table_empleado.order([2, 'asc']).draw();
+        }
+    });
+
+    $('#table_empleado tbody').on('click', 'tr', function() {
+        if ($(this).hasClass('selected')) {
+            $(this).removeClass('selected');
+        }
+        else {
+            table_empleado.$('tr.selected').removeClass('selected');
+            $(this).addClass('selected');
+        }
+    });
+
+    $('#table_empleado tbody').on('click', 'td.extra', function() {
+        var tr = $(this).closest('tr');
+        var row = table_empleado.row(tr);
+
+        if (row.child.isShown()) {
+            $(this).find('button').removeClass('btn-warning');
+            $(this).find('button').addClass('btn-primary');
+            $(this).find('i').removeClass('fa-minus');
+            $(this).find('i').addClass('fa-list');
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            $(this).find('button').removeClass('btn-primary');
+            $(this).find('button').addClass('btn-warning');
+            $(this).find('i').removeClass('fa-list');
+            $(this).find('i').addClass('fa-minus');
+            row.child(format_empleado($(this).parent().find("td").eq(1).html())).show();
+            tr.addClass('shown');
+        }
+    });
+
     $(".editar_emp").click(function() {
 
         var tr = $(this).parent().parent();
