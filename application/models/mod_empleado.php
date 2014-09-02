@@ -10,5 +10,19 @@ class mod_empleado extends CI_Model {
     function insert($data) {
         $this->db->insert('empleado', $data);
     }
-    
+    function insert_tipo($data) {
+        $this->db->insert('tipo_empleado', $data);
+    }
+    function insert_pla($data) {
+        $this->db->insert('planilla', $data);
+    }
+    function update($id, $data) {
+        $this->db->where('codi_emp', $id);
+        $this->db->update('empleado', $data);
+    }
+    function planilla_año($año) {
+        $this->db->where('YEAR(fech_pla)', $año);
+        $query = $this->db->get('planilla');
+        return $query->result();
+    }
 }
