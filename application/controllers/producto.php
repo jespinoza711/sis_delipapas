@@ -23,7 +23,8 @@ class producto extends CI_Controller {
 
     public function inventario() {
         $data['page'] = 'Inventario';
-        $data['container'] = $this->load->view('producto/inventario_view', null, true);
+        $d['producto'] = $this->mod_view->view('vproducto', false, false, false);
+        $data['container'] = $this->load->view('producto/inventario_view', $d, true);
         $this->load->view('home/body', $data);
     }
 
