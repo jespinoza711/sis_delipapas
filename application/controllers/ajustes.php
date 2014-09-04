@@ -12,7 +12,9 @@ class ajustes extends CI_Controller {
     }
 
     public function index() {
-        
+        $data['page'] = 'Panel de configuraci&oacute;n';
+        $data['container'] = $this->load->view('caja/cajachica_view', null, true);
+        $this->load->view('home/body', $data);
     }
 
     public function registrar_concepto() {

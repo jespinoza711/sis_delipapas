@@ -12,10 +12,13 @@ class caja extends CI_Controller {
     }
 
     public function venta() {
-        
+        $data['page'] = 'Ventas';
+        $data['container'] = $this->load->view('caja/venta_view', null, true);
+        $this->load->view('home/body', $data);
     }
 
     public function compra() {
+        $data['page'] = 'Compras';
         $compra['compra'] = $this->mod_view->view('compra', false, false, false);
         $compra['producto'] = $this->mod_view->view('vproducto', false, false, false);
         $data['container'] = $this->load->view('caja/compra_view', $compra, true);
@@ -39,7 +42,9 @@ class caja extends CI_Controller {
     }
 
     public function caja_chica() {
-        
+        $data['page'] = 'Caja chica';
+        $data['container'] = $this->load->view('caja/cajachica_view', null, true);
+        $this->load->view('home/body', $data);
     }
 
     public function abrir_caja_chica() {

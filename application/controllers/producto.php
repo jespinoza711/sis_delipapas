@@ -10,17 +10,21 @@ class producto extends CI_Controller {
         $this->load->model(array('mod_view'));
         $this->load->library('session');
     }
-    
+
     public function index() {
-        
+        $data['page'] = 'Productos';
+        $data['container'] = $this->load->view('producto/producto_view', null, true);
+        $this->load->view('home/body', $data);
     }
-    
+
     public function producto() {
         
     }
-    
+
     public function inventario() {
-        
+        $data['page'] = 'Inventario';
+        $data['container'] = $this->load->view('producto/inventario_view', null, true);
+        $this->load->view('home/body', $data);
     }
 
     public function logged() {

@@ -12,7 +12,9 @@ class cliente extends CI_Controller {
     }
 
     public function index() {
-        
+        $data['page'] = 'Clientes';
+        $data['container'] = $this->load->view('cliente/cliente_view', null, true);
+        $this->load->view('home/body', $data);
     }
 
     public function logged() {

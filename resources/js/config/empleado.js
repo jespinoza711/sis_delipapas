@@ -134,7 +134,7 @@ $(document).ready(function() {
 
         var tr = $(this).parent().parent();
 
-        var codigo = tr.find("td").eq(0).html();
+        var codigo = tr.find("td").eq(1).html();
 
         $('#empleados-reg tr').each(function() {
             var codigo_reg = $(this).find('td').eq(0).html();

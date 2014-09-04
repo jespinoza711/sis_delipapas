@@ -210,6 +210,8 @@ class empleado extends CI_Controller {
                     $this->session->set_userdata('mensaje_nemp', 'Para registrar empleado debe registrar por lo menos un tipo de empleado y una planilla');
                     $this->session->set_userdata('ripo_mensaje_nemp', 'danger');
                 }
+
+                $data['page'] = 'Empleados';
                 $data['container'] = $this->load->view('empleado/empleado_view', $empleado, true);
                 $this->load->view('home/body', $data);
             } else {
@@ -220,7 +222,7 @@ class empleado extends CI_Controller {
             }
         }
     }
-    
+
     public function logged() {
         return $this->session->userdata('logged');
     }

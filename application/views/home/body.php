@@ -70,10 +70,10 @@
 
             <aside class="right-side">
                 <section class="content-header">
-                    <h1> Página en blanco <small> Panel de control </small> </h1>
+                    <h1> <?= $page ?> <small></small> </h1>
                     <ol class="breadcrumb">
                         <li><a href="<?= base_url('home') ?>"><i class="fa fa-home"></i> Inicio </a></li>
-                        <li class="active">Página en blanco</li>
+                        <li class="active"> <?= $page ?> </li>
                     </ol>
                 </section>                
                 <section class="content"> <?= $container ?> </section> 

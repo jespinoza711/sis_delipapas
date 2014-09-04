@@ -12,7 +12,9 @@ class registro extends CI_Controller {
     }
 
     public function registro_diario() {
-        
+        $data['page'] = 'Control di&aacute;rio de personal';
+        $data['container'] = $this->load->view('empleado/controldiario_view', null, true);
+        $this->load->view('home/body', $data);
     }
 
     public function logged() {

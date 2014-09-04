@@ -12,7 +12,9 @@ class reporte extends CI_Controller {
     }
 
     public function index() {
-        
+        $data['page'] = 'Reportes';
+        $data['container'] = $this->load->view('reporte/reporte_view', null, true);
+        $this->load->view('home/body', $data);
     }
 
     public function logged() {

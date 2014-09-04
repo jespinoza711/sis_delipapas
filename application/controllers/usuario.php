@@ -77,16 +77,12 @@ class usuario extends CI_Controller {
                     $this->mod_usuario->update_usu($codi_usu, array("esta_usu" => "D"));
                     $this->session->set_userdata('mensaje_usu', 'El usuario ' . $logi_usu . ' ha sido deshabilitado existosamente');
                 }
+                $data['page'] = 'Usuarios';
                 $usuario['usuarios'] = $this->mod_usuario->get_tbl_usuario();
                 $data['container'] = $this->load->view('usuario/usuario_view', $usuario, true);
-//                $data['clinica'] = $this->mod_clinica->get_clinica();
                 $this->load->view('home/body', $data);
             }
         }
-    }
-
-    public function usuario() {
-        
     }
 
     public function login() {
@@ -99,11 +95,9 @@ class usuario extends CI_Controller {
             if ($this->form_validation->run() == FALSE) {
                 $login["form"] = array('role' => 'form');
                 $login["usuario"] = array('id' => 'usuario_log', 'name' => 'usuario', 'class' => "form-control", 'placeholder' => "Usuario", 'required' => 'true');
-                $login["contraseÃ±a"] = array('id' => 'clave_log', 'name' => 'clave', 'class' => "form-control", 'placeholder' => "ContraseÃ±a", 'required' => 'true');
-                $login["inicio_sesion"] = array('name' => 'inicio_sesion', 'class' => "btn btn-lg btn-success btn-block", 'value' => "Inicio de sesiÃ³n");
+                $login["password"] = array('id' => 'clave_log', 'name' => 'clave', 'class' => "form-control", 'placeholder' => "ContraseÃ±a", 'required' => 'true');
+                $login["inicio_sesion"] = array('name' => 'inicio_sesion', 'class' => "btn btn-lg btn-success btn-block", 'value' => "Ingresar");
                 $this->load->view('login/login_view', $login);
-//                $data['clinica'] = $this->mod_clinica->get_clinica();
-//                $this->load->view('home/body', $data);
             } else {
                 $usuario = $this->input->post('usuario');
                 $clave = md5($this->input->post('clave'));
@@ -128,7 +122,7 @@ class usuario extends CI_Controller {
                     $this->session->set_userdata($sesion_activa);
                     header('Location: ' . base_url() . 'home');
                 } else {
-                    $this->session->set_userdata('error_login_1', 'El usuario y/o contraseÃ±a son incorrectas');
+                    $this->session->set_userdata('error_login_1', 'El usuario y/o clave son incorrectas');
                     header('Location: ' . base_url('login'));
                 }
             }

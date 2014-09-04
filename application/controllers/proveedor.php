@@ -12,7 +12,9 @@ class proveedor extends CI_Controller {
     }
 
     public function index() {
-        
+        $data['page'] = 'Proveedores';
+        $data['container'] = $this->load->view('proveedor/proveedor_view', null, true);
+        $this->load->view('home/body', $data);
     }
 
     public function logged() {
