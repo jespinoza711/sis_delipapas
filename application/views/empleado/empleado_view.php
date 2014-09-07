@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" id="cpo_empleado">
     <div class="col-lg-12 col-xs-12">
         <div class="col-md-11" style="margin-left: 4%;">
             <div id="panel-cie" class="panel panel-primary">
@@ -31,51 +31,6 @@
                                     <th style="text-align: center;">Acciones</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <?php foreach ($empleados as $row) { ?>
-                                    <tr style="background-color: none;">
-                                        <td class="extra" style="text-align: center;">
-                                            <button type="button" class="tooltip-emp btn btn-primary btn-circle" data-toggle="tooltip" data-placement="top" title="Ver màs info">
-                                                <i class="fa fa-list"></i>
-                                            </button>
-                                        </td>
-                                        <td class="td" style="vertical-align: middle;"><?= $row->codi_emp ?></td>
-                                        <td style="vertical-align: middle;"><?= $row->nomb_emp . ' ' . $row->apel_emp ?></td>
-                                        <td class="td" style="vertical-align: middle;"><?= $row->nomb_tem ?></td>
-                                        <td class="td" style="vertical-align: middle;">S/. <?= $row->suel_pla ?></td>
-                                        <td class="td" style="vertical-align: middle;"><?= $row->telf_emp ?></td>
-<!--                                        <td style="text-align: center;"><?php
-//                                            if ($row->esta_emp == "A") {
-//                                                echo "Habilitado";
-//                                            } else if ($row->esta_emp == "D") {
-//                                                echo "Deshabilitado";
-//                                            }
-                                            ?></td>-->
-                                        <td style="vertical-align: middle; text-align: center;">
-                                            <button type="button" class="tooltip-emp btn btn-success btn-circle editar_emp" data-toggle="tooltip" data-placement="top" title="Editar">
-                                                <i class="fa fa-edit"></i>
-                                            </button>
-                                            <?php if ($row->esta_emp == "D") { ?>
-                                                <span>
-                                                    <?= form_open(base_url() . 'empleado', $form_a) ?>
-                                                    <input type="hidden" name="codigo" value="<?= $row->codi_emp ?>">
-                                                    <input type="hidden" name="empleado" value="<?= $row->nomb_emp . ' ' . $row->apel_emp ?>">
-                                                    <input name="activar" type="submit" class="tooltip-emp btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar">
-                                                    <?= form_close() ?>
-                                                </span>
-                                            <?php } else if ($row->esta_emp == "A") { ?>
-                                                <span>
-                                                    <?= form_open(base_url() . 'empleado', $form_a) ?>
-                                                    <input type="hidden" name="codigo" value="<?= $row->codi_emp ?>">
-                                                    <input type="hidden" name="empleado" value="<?= $row->nomb_emp . ' ' . $row->apel_emp ?>">
-                                                    <input name="desactivar" type="submit" class="tooltip-emp btn btn-danger btn-circle fa" value="&#xf05e;" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
-                                                    <?= form_close() ?>
-                                                </span>
-                                            <?php } ?>
-                                        </td>
-                                    </tr>
-                                <?php } ?>
-                            </tbody>
                         </table>
                     </div>
                 </div>
@@ -121,6 +76,7 @@
                 <div class="form-group">
                     <label>D.N.I.: * <span class="text-muted" style="font-style: italic;">(Debe contener 8 dígitos)</span></label>
                     <?= form_input($dni) ?>
+                    <p id="error_dni1" style="font-style: italic; display: none;">Debe completar el campo de D.N.I.</p>
                 </div>
                 <div class="form-group">
                     <label>Teléfono: *</label>
@@ -223,6 +179,7 @@
                 <div class="form-group">
                     <label>D.N.I.: * <span class="text-muted" style="font-style: italic;">(Debe contener 8 dígitos)</span></label>
                     <?= form_input($dni_e) ?>
+                    <p id="error_dni1_e" style="font-style: italic; display: none;">Debe completar el campo de D.N.I.</p>
                 </div>
                 <div class="form-group">
                     <label>Teléfono: *</label>
@@ -351,7 +308,7 @@
                     <label>Sueldo: *</label>
                     <div class="input-group" style="width: 175px;">
                         <span class="input-group-addon">S/. </span>
-                        <input type="text" id="suel_pla" name="sueldo" maxlength="10" value="0" class="form-control" required="true" autocomplete="off" style="text-align: right;">
+                        <input type="text" id="suel_pla" name="sueldo" maxlength="10" value="" class="form-control" required="true" autocomplete="off" style="text-align: right;">
                         <span class="input-group-addon">.00</span>
                     </div>
                     <p id="error_pla1" style="font-style: italic; display: none;">Ya existe este sueldo en el año actual, intente con otro sueldo</p>
@@ -371,41 +328,3 @@
         </div>
     </div>
 </div>
-
-<table id="empleados-reg" style="display: none;">
-    <?php foreach ($empleados as $row) { ?>
-        <tr>
-            <td><?= $row->codi_emp ?></td>
-            <td><?= $row->nomb_emp ?></td>
-            <td><?= $row->apel_emp ?></td>
-            <td><?= $row->dire_emp ?></td>
-            <td><?= $row->dni_emp ?></td>
-            <td><?= $row->telf_emp ?></td>
-            <td><?= $row->sexo_emp ?></td>
-            <td><?= $row->afp_emp ?></td>
-            <td><?= $row->civi_emp ?></td>
-            <td><?= $row->esta_emp ?></td>
-            <td><?= $row->codi_pla ?></td>
-            <td><?= $row->codi_tem ?></td>
-        </tr>
-    <?php } ?>
-</table>
-<table id="tipo_emp-reg" style="display: none;">
-    <?php foreach ($tipo_empleado as $row) { ?>
-        <tr>
-            <td><?= $row->codi_tem ?></td>
-            <td><?= $row->nomb_tem ?></td>
-            <td><?= $row->esta_tem ?></td>
-        </tr>
-    <?php } ?>
-</table>
-<table id="pla-reg" style="display: none;">
-    <?php foreach ($planillas as $row) { ?>
-        <tr>
-            <td><?= $row->codi_pla ?></td>
-            <td><?= $row->fech_pla ?></td>
-            <td><?= $row->suel_pla ?></td>
-            <td><?= $row->obsv_pla ?></td>
-        </tr>
-    <?php } ?>
-</table>

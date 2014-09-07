@@ -3554,9 +3554,9 @@ fieldset[disabled] .btn-vk.active {
 }
 
 .selected {
-    color: #31708f;
-    background-color: #d9edf7;
-    border-color: #bce8f1;
+    color: #8a6d3b;
+    background-color: #fcf8e3;
+    border-color: #faebcc;
 }
 
 .td {
@@ -3566,4 +3566,16 @@ fieldset[disabled] .btn-vk.active {
 tr.group,
 tr.group:hover {
     background-color: #eee !important;
+}
+
+#table_empleado tbody tr[role='row'] td:nth-child(3){
+    vertical-align: middle;
+}
+#table_empleado tbody tr[role='row'] td:nth-child(1),
+#table_empleado tbody tr[role='row'] td:nth-child(2),
+#table_empleado tbody tr[role='row'] td:nth-child(4),
+#table_empleado tbody tr[role='row'] td:nth-child(5),
+#table_empleado tbody tr[role='row'] td:nth-child(6){
+    text-align: center;
+    vertical-align: middle;
 }
