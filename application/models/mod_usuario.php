@@ -31,48 +31,17 @@ class mod_usuario extends CI_Model {
     }
 
     public function register($data) {
-        $query = $this->db->where('user_coder', $data['user_coder']);
-        $query = $this->db->where('esta_coder', 'A');
-        $query = $this->db->get('tb_coder');
+        $query = $this->db->where('nomb_usu', $data->nomb_usu);
+        $query = $this->db->get('usuario');
         $user = $query->row();
 
         if (count($user) > 0) {
             return false;
         } else {
-            $query = $this->db->where('email_coder', $data['email_coder']);
-            $query = $this->db->where('esta_coder', 'A');
-            $query = $this->db->get('tb_coder');
-            $email = $query->row();
-
-            if (count($email) > 0) {
-                return false;
-            } else {
-                $data['sexo_coder'] = '';
-                $data['mov_coder'] = '';
-                $data['id_dist'] = '1';
-                $data['id_univ'] = '1';
-                $data['id_tico'] = '1';
-                $data['id_nivel'] = '1';
-                $data['id_team'] = '1';
-                $data['fast_tra'] = '0';
-                $data['fast_con'] = '0';
-                $data['sub_tra'] = '0';
-                $data['sub_con'] = '0';
-                $data['cont_coder'] = '0';
-                $data['dare_win'] = '0';
-                $data['dare_los'] = '0';
-                $data['hack_win'] = '0';
-                $data['hack_los'] = '0';
-                $data['puntos_prev'] = '0';
-                $data['puntos_coder'] = '0';
-                $data['acti_coder'] = 'S';
-                $data['ses_coder'] = 'O';
-                $data['esta_coder'] = 'A';
-                $this->db->set('date_reg', 'sysdate()', false);
-                $this->db->set('last_visit', 'sysdate()', false);
-                $this->db->insert('tb_coder', $data);
-                return $this->db->insert_id();
-            }
+            $data->acce_sus = '1111111111';
+            $this->db->set('reg_usu', 'sysdate()', false);
+            $this->db->set('ses_usu', 'sysdate()', false);
+            return $this->db->insert('usuario', $data);
         }
     }
 

@@ -59,7 +59,6 @@
                                             <span>
                                                 <?= form_open(base_url('usuario'), $form_a) ?>
                                                 <input type="hidden" name="codigo" value="<?= $row->codi_usu ?>">
-                                                <input type="hidden" name="usuario" value="<?= $row->logi_usu ?>">
                                                 <input name="activar" type="submit" class="tooltip-usu btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar">
                                                 <?= form_close() ?>
                                             </span>
@@ -69,7 +68,6 @@
                                             <span>
                                                 <?= form_open(base_url('usuario'), $form_a) ?>
                                                 <input type="hidden" name="codigo" value="<?= $row->codi_usu ?>">
-                                                <input type="hidden" name="usuario" value="<?= $row->nomb_usu ?>">
                                                 <input name="desactivar" type="submit" class="tooltip-usu btn btn-danger btn-circle fa" value="&#xf05e;" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
                                                 <?= form_close() ?>
                                             </span>

@@ -1,18 +1,20 @@
 AQUÍ SE PUBLICARÁ LAS CREACIONES DE VISTAS Y/O PROCEDIMIENTOS DE LA BASE DE DATOS
 
-create view vusuario
-as
-select u.codi_usu,u.nomb_usu,pass_usu,r.nomb_rol,u.esta_usu,u.codi_rol
+create view v_usuario as
+select u.codi_usu,
+u.codi_rol,
+u.reg_usu,
+r.nomb_rol,
+u.nomb_usu,
+u.pass_usu,
+u.acce_usu,
+u.ses_usu,
+u.esta_usu
 from usuario u, rol r
-where u.codi_rol = r.codi_rol and esta_usu = 'A';
+where u.codi_rol = r.codi_rol 
+order by u.codi_usu asc;
 
-create view vusuario_rol
-as
-select u.codi_usu, u.nomb_usu , u.pass_usu, u.esta_usu, u.codi_rol,r.nomb_rol
-from usuario u, rol r
-where u.codi_rol = r.codi_rol and u.esta_usu = 'A';
-
-CREATE VIEW vproducto AS
+CREATE VIEW v_producto AS
 SELECT `p`.`codi_prod`,
 `p`.`codi_tpro`,
 `tp`.`nomb_tipo`,

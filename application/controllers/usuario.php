@@ -27,25 +27,20 @@ class usuario extends CI_Controller {
             $usuario["con_pass_e"] = array('id' => 'con_pass_usu_e', 'name' => 'con_pass', 'class' => "form-control", 'placeholder' => "Vuelva a ingresar contraseña", "maxlength" => "16", 'autocomplete' => 'off');
             $usuario["registrar"] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Registrar");
             $usuario["editar"] = array('name' => 'editar', 'class' => "btn btn-primary", 'value' => "Editar");
+            $usuario["roles"] = $this->mod_view->view('rol', false, false, false);
 
-            $rol = $this->mod_usuario->get_rol();
-            foreach ($rol as $row) {
-                $roles[$row->codi_rol] = $row->nomb_rol;
-            }
-            $usuario["roles"] = $roles;
-            if ($this->input->post('registrar')) {
-                $logi_usu = $this->input->post('login');
-                $pass_usu = md5($this->input->post('pass'));
-                $codi_rol = $this->input->post('rol');
-
+            if ($this->input->post('registrar')) {                
                 $data = array(
-                    'nomb_usu' => $logi_usu,
-                    'pass_usu' => $pass_usu,
-                    'codi_rol' => $codi_rol,
+                    'nomb_usu' => $this->input->post('login'),
+                    'pass_usu' => md5($this->input->post('pass')),
+                    'codi_rol' => $this->input->post('rol'),
                     'esta_usu' => 'A'
                 );
-                $this->mod_usuario->insert_usu($data);
-                $this->session->set_userdata('mensaje_usu', 'El usuario ' . $logi_usu . ' ha sido registrado existosamente');
+                if ($this->mod_usuario->register($data)) {
+                    $this->session->set_userdata('alert', 'El usuario ' . $data->nomb_usu . ' ha sido registrado existosamente');
+                } else {
+                    $this->session->set_userdata('alert', 'Se ha detenido el proceso, verif&iacute;ca que los datos no existan actualmente');
+                }
             } else if ($this->input->post('editar')) {
                 $codi_usu = $this->input->post('codigo');
                 $logi_usu = $this->input->post('login');
@@ -95,6 +90,7 @@ class usuario extends CI_Controller {
                 $login["inicio_sesion"] = array('name' => 'inicio_sesion', 'class' => "btn btn-lg btn-success btn-block", 'value' => "Ingresar");
                 $this->load->view('login/login_view', $login);
             } else {
+                
                 $data['user'] = $this->input->post('usuario');
                 $data['pass'] = md5($this->input->post('clave'));
 
