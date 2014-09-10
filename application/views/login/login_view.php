@@ -17,14 +17,14 @@
                 <div class="body bg-gray">
                     <fieldset>
                         
-                        <?php if ($this->session->userdata('alert') != ''){ ?>
+                        <?php if ($this->session->userdata('error') != ''){ ?>
                 
                             <div class="alert alert-danger">
                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                                <?= $this->session->userdata('alert') ?>
+                                <?= $this->session->userdata('error') ?>
                             </div>
 
-                        <?php $this->session->set_userdata('alert', ''); } ?>
+                        <?php $this->session->set_userdata('error', ''); } ?>
                         
                         <div class="form-group"><?= form_input($usuario) ?></div>
                         <div class="form-group"><?= form_password($password) ?></div>

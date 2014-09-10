@@ -13,18 +13,25 @@
     <div class="col-md-8 col-md-offset-2">
         <div id="panel-cie" class="panel panel-info">
             <div class="panel-heading">
-                <h3 class="panel-title">Usuario</h3>
+                <h3 class="panel-title">Lista de usuarios</h3>
             </div>
             <div class="panel-body">
                 
-                <?php if ($this->session->userdata('alert') != ''){ ?>
+                <?php if ($this->session->userdata('info') != ''){ ?>
                 
                     <div class="alert alert-success alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                        <?= $this->session->userdata('alert') ?>
+                        <?= $this->session->userdata('info') ?>
                     </div>
                 
-                <?php $this->session->set_userdata('alert', ''); } ?>
+                <?php $this->session->set_userdata('info', ''); } if ($this->session->userdata('error') != ''){ ?>
+                
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                        <?= $this->session->userdata('error') ?>
+                    </div>
+                
+                <?php $this->session->set_userdata('error', ''); } ?>
                 
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalNuevoUsuario">Nuevo usuario</button>
                 <br><br>
@@ -57,8 +64,9 @@
                                         
                                         <?php if ($row->esta_usu == 'D') { ?>
                                             <span>
-                                                <?= form_open(base_url('usuario'), $form_a) ?>
-                                                <input type="hidden" name="codigo" value="<?= $row->codi_usu ?>">
+                                                <?= form_open(base_url('usuario'), $form_status) ?>
+                                                <input type="hidden" name="codi_usu" value="<?= $row->codi_usu ?>">
+                                                <input type="hidden" name="nomb_usu" value="<?= $row->nomb_usu ?>">
                                                 <input name="activar" type="submit" class="tooltip-usu btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar">
                                                 <?= form_close() ?>
                                             </span>
@@ -66,8 +74,9 @@
                                         <?php } else { ?>
                                         
                                             <span>
-                                                <?= form_open(base_url('usuario'), $form_a) ?>
-                                                <input type="hidden" name="codigo" value="<?= $row->codi_usu ?>">
+                                                <?= form_open(base_url('usuario'), $form_status) ?>
+                                                <input type="hidden" name="codi_usu" value="<?= $row->codi_usu ?>">
+                                                <input type="hidden" name="nomb_usu" value="<?= $row->nomb_usu ?>">
                                                 <input name="desactivar" type="submit" class="tooltip-usu btn btn-danger btn-circle fa" value="&#xf05e;" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
                                                 <?= form_close() ?>
                                             </span>
@@ -91,7 +100,7 @@
     <div class="modal-dialog" style="width: 30%;">
         <div class="modal-content" style="border-color: #428bca; border-style: inset;">
             
-            <?= form_open(base_url('usuario'), $form) ?>
+            <?= form_open(base_url('usuario'), $form_usu) ?>
             
             <div class="modal-header" style="
                  padding: 10px 15px;
@@ -106,23 +115,13 @@
             </div>
             <div class="modal-body">
 
-                <div class="form-group">
-                    <label>Usuario: *</label>
-                    <?= form_input($login) ?>
-                </div>
-                <div class="form-group">
-                    <label>Contraseña: *</label>
-                    <?= form_password($pass) ?>
-                </div>
-                <div class="form-group">
-                    <label>Confirmar contraseña: *</label>
-                    <?= form_password($con_pass) ?>
-                </div>
+                <div class="form-group"><label>Usuario: *</label><?= form_input($nomb_usu) ?></div>
+                <div class="form-group"><label>Contrase&ntilde;a: *</label><?= form_password($pass_usu) ?></div>
+                <div class="form-group"><label>Confirmar contraseña: *</label><?= form_password($pass_usu_con) ?></div>
                 <div class="form-group">
                     <label>Rol: *</label>
-                    <?= form_dropdown('rol', $roles, array(), 'id="codi_rol" class="form-control"') ?>
+                    <select id="codi_rol" class="form-control" name="codi_rol"><?php foreach ($rol as $r) { ?> <option value="<?= $r->codi_rol ?>"><?= $r->nomb_rol ?></option> <?php } ?></select>
                 </div>
-
             </div>
             <div class="modal-footer">
                 <div style="float: right;">
@@ -130,7 +129,9 @@
                     <?= form_submit($registrar) ?>
                 </div>
             </div>
+            
             <?= form_close() ?>
+            
         </div>
     </div>
 </div>
@@ -138,7 +139,9 @@
 <div class="modal fade" id="ModalEditarUsuario" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog" style="width: 30%;">
         <div class="modal-content" style="border-color: #428bca; border-style: inset;">
-            <?= form_open(base_url() . 'usuario', $form_editar) ?>
+            
+            <?= form_open(base_url('usuario'), $form_usu_edit) ?>
+            
             <div class="modal-header" style="
                  padding: 10px 15px;
                  border-bottom: 1px solid transparent;
@@ -152,25 +155,13 @@
             </div>
             <div class="modal-body">
 
-                <div class="form-group">
-                    <label>Código: *</label>
-                    <?= form_input($codigo_e) ?>
-                </div>
-                <div class="form-group">
-                    <label>Usuario: *</label>
-                    <?= form_input($login_e) ?>
-                </div>
-                <div class="form-group">
-                    <label>Contraseña:</label>
-                    <?= form_password($pass_e) ?>
-                </div>
-                <div class="form-group">
-                    <label>Confirmar contraseña:</label>
-                    <?= form_password($con_pass_e) ?>
-                </div>
+                <div class="form-group"><label>Código: *</label><?= form_input($codi_usu_e) ?></div>
+                <div class="form-group"><label>Usuario: *</label><?= form_input($nomb_usu_e) ?></div>
+                <div class="form-group"><label>Contraseña:</label><?= form_password($pass_usu_e) ?></div>
+                <div class="form-group"><label>Confirmar contraseña:</label><?= form_password($pass_usu_con_e) ?></div>
                 <div class="form-group">
                     <label>Rol: *</label>
-                    <?= form_dropdown('rol_e', $roles, array(), 'id="codi_rol_e" class="form-control"') ?>
+                    <select id="codi_rol" class="form-control" name="codi_rol_e"><?php foreach ($rol as $r) { ?> <option value="<?= $r->codi_rol ?>"><?= $r->nomb_rol ?></option> <?php } ?></select>
                 </div>
             </div>
             <div class="modal-footer">
@@ -179,7 +170,9 @@
                     <?= form_submit($editar) ?>
                 </div>
             </div>
+            
             <?= form_close() ?>
+            
         </div>
     </div>
 </div>
@@ -189,7 +182,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
-                <h4 class="modal-title" id="myModalLabel" style="text-align: center;">Â¿Estás seguro de que desea deshabilitar?</h4>
+                <h4 class="modal-title" id="myModalLabel" style="text-align: center;">¿Est&aacute;s seguro de que desea deshabilitar a este usuario?</h4>
             </div>
             <div class="modal-footer" style="margin: 0px; border: 0px; padding: 0px;">
                 <div style="text-align: center">
@@ -202,16 +195,22 @@
     </div>
 </div>
 
-<ul id="usuarios-rep" style="display: none;">    
-    <?php foreach ($usuarios as $row) { ?>
-        <li><?= $row->nomb_usu ?></li>
-    <?php } ?>
+<!--<ul id="usuarios-rep" style="display: none;">
+    
+    <?php foreach ($usuarios as $row) { ?><li><?= $row->nomb_usu ?></li><?php } ?>
+    
 </ul>
 <table id="usuarios-det" style="display: none;">
+    
     <?php foreach ($usuarios as $row) { ?>
-        <tr><td><?= $row->codi_usu ?></td>
+    
+        <tr>
+            <td><?= $row->codi_usu ?></td>
             <td><?= $row->logi_usu ?></td>
             <td><?= $row->nomb_rol ?></td>
-            <td><?= $row->esta_usu ?></td></tr>
+            <td><?= $row->esta_usu ?></td>
+        </tr>
+        
     <?php } ?>
-</table>
+        
+</table>-->

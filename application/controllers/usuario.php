@@ -15,59 +15,58 @@ class usuario extends CI_Controller {
         if (!$this->mod_config->AVP(2)) {
             header('location: ' . base_url('login'));
         } else {
-            $usuario["form"] = array('role' => 'form', "id" => "form_usu");
-            $usuario["form_editar"] = array('role' => 'form', "id" => "form_usu_edit");
-            $usuario["form_a"] = array('role' => 'form', "style" => "display: inline-block;");
-            $usuario["login"] = array('id' => 'logi_usu', 'name' => 'login', 'class' => "form-control", 'placeholder' => "Nombre de usuario", "maxlength" => "16", 'required' => 'true', 'autocomplete' => 'off');
-            $usuario["pass"] = array('id' => 'pass_usu', 'name' => 'pass', 'class' => "form-control", 'placeholder' => "Contraseña", "maxlength" => "16", 'required' => 'true', 'autocomplete' => 'off');
-            $usuario["con_pass"] = array('id' => 'con_pass_usu', 'name' => 'con_pass', 'class' => "form-control", 'placeholder' => "Vuelva a ingresar contraseña", "maxlength" => "16", 'required' => 'true', 'autocomplete' => 'off');
-            $usuario["codigo_e"] = array('id' => 'codi_usu_e', 'name' => 'codigo', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
-            $usuario["login_e"] = array('id' => 'logi_usu_e', 'name' => 'login', 'class' => "form-control", 'placeholder' => "Nombre de usuario", "maxlength" => "16", 'required' => 'true', 'autocomplete' => 'off');
-            $usuario["pass_e"] = array('id' => 'pass_usu_e', 'name' => 'pass', 'class' => "form-control", 'placeholder' => "Contraseña", "maxlength" => "16", 'autocomplete' => 'off');
-            $usuario["con_pass_e"] = array('id' => 'con_pass_usu_e', 'name' => 'con_pass', 'class' => "form-control", 'placeholder' => "Vuelva a ingresar contraseña", "maxlength" => "16", 'autocomplete' => 'off');
+            $usuario["form_usu"] = array('role' => 'form', "id" => "form_usu");
+            $usuario["form_usu_edit"] = array('role' => 'form', "id" => "form_usu_edit");
+            $usuario["form_status"] = array('role' => 'form', "style" => "display: inline-block;");
+            $usuario["nomb_usu"] = array('id' => 'nomb_usu', 'name' => 'nomb_usu', 'class' => "form-control", 'placeholder' => "Nombre de usuario", "maxlength" => "16", 'required' => 'true', 'autocomplete' => 'off');
+            $usuario["pass_usu"] = array('id' => 'pass_usu', 'name' => 'pass_usu', 'class' => "form-control", 'placeholder' => "Contraseña", "maxlength" => "16", 'required' => 'true', 'autocomplete' => 'off');
+            $usuario["pass_usu_con"] = array('id' => 'pass_usu_con', 'name' => 'pass_usu_con', 'class' => "form-control", 'placeholder' => "Vuelva a ingresar contraseña", "maxlength" => "16", 'required' => 'true', 'autocomplete' => 'off');
+            $usuario["codi_usu_e"] = array('id' => 'codi_usu_e', 'name' => 'codi_usu_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
+            $usuario["nomb_usu_e"] = array('id' => 'nomb_usu_e', 'name' => 'nomb_usu_e', 'class' => "form-control", 'placeholder' => "Nombre de usuario", "maxlength" => "16", 'required' => 'true', 'autocomplete' => 'off');
+            $usuario["pass_usu_e"] = array('id' => 'pass_usu_e', 'name' => 'pass_usu_e', 'class' => "form-control", 'placeholder' => "Contraseña", "maxlength" => "16", 'autocomplete' => 'off');
+            $usuario["pass_usu_con_e"] = array('id' => 'pass_usu_con_e', 'name' => 'pass_usu_con_e', 'class' => "form-control", 'placeholder' => "Vuelva a ingresar contraseña", "maxlength" => "16", 'autocomplete' => 'off');
             $usuario["registrar"] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Registrar");
             $usuario["editar"] = array('name' => 'editar', 'class' => "btn btn-primary", 'value' => "Editar");
-            $usuario["roles"] = $this->mod_view->view('rol', false, false, false);
+            $usuario["rol"] = $this->mod_view->view('rol', false, false, false);
 
-            if ($this->input->post('registrar')) {                
-                $data = array(
-                    'nomb_usu' => $this->input->post('login'),
-                    'pass_usu' => md5($this->input->post('pass')),
-                    'codi_rol' => $this->input->post('rol'),
-                    'esta_usu' => 'A'
-                );
+            if ($this->input->post('registrar')) {
+                $data['nomb_usu'] = $this->input->post('nomb_usu');
+                $data['pass_usu'] = md5($this->input->post('pass_usu'));
+                $data['codi_rol'] = $this->input->post('codi_rol');
+                $data['esta_usu'] = 'A';
                 if ($this->mod_usuario->register($data)) {
-                    $this->session->set_userdata('alert', 'El usuario ' . $data->nomb_usu . ' ha sido registrado existosamente');
+                    $this->session->set_userdata('info', 'El usuario ' . $data['nomb_usu'] . ' ha sido registrado existosamente.');
                 } else {
-                    $this->session->set_userdata('alert', 'Se ha detenido el proceso, verif&iacute;ca que los datos no existan actualmente');
+                    $this->session->set_userdata('error', 'Se ha detenido el proceso, verif&iacute;ca que los datos no existan actualmente.');
                 }
             } else if ($this->input->post('editar')) {
-                $codi_usu = $this->input->post('codigo');
-                $logi_usu = $this->input->post('login');
-                $pass_usu = md5($this->input->post('pass'));
-                $codi_rol = $this->input->post('rol_e');
-
-                $data = array(
-                    'nomb_usu' => $logi_usu,
-                    'codi_rol' => $codi_rol
-                );
-
-                if ($pass_usu != "") {
-                    $data['pass_usu'] = $pass_usu;
+                $codi_usu = $this->input->post('codi_usu_e');
+                $data['nomb_usu'] = $this->input->post('nomb_usu_e');
+                $data['codi_rol'] = $this->input->post('codi_rol_e');
+                if ($this->input->post('pass_usu_e') != "") {
+                    $data['pass_usu'] = md5($this->input->post('pass_usu_e'));
                 }
-
-                $this->mod_usuario->update_usu($codi_usu, $data);
-                $this->session->set_userdata('mensaje_usu', 'El usuario ' . $logi_usu . ' ha sido actualizado existosamente');
+                if ($this->mod_usuario->update($codi_usu, $data)) {
+                    $this->session->set_userdata('info', 'El usuario ' . $data['nomb_usu'] . ' ha sido actualizado existosamente.');
+                } else {
+                    $this->session->set_userdata('error', 'Los datos no han podido ser actualizados, intente nuevamente.');
+                }
             } else if ($this->input->post('activar')) {
-                $codi_usu = $this->input->post('codigo');
-                $logi_usu = $this->input->post('usuario');
-                $this->mod_usuario->update_usu($codi_usu, array("esta_usu" => "A"));
-                $this->session->set_userdata('mensaje_usu', 'El usuario ' . $logi_usu . ' ha sido habilitado existosamente');
+                $codi_usu = $this->input->post('codi_usu');
+                $nomb_usu = $this->input->post('nomb_usu');
+                if ($this->mod_usuario->update($codi_usu, array('esta_usu' => 'A'))) {
+                    $this->session->set_userdata('info', 'El usuario ' . $nomb_usu . ' ha sido habilitado existosamente.');
+                } else {
+                    $this->session->set_userdata('error', 'No se ha podido realizar la operaci&oacute;n requerida.');
+                }
             } else if ($this->input->post('desactivar')) {
-                $codi_usu = $this->input->post('codigo');
-                $logi_usu = $this->input->post('usuario');
-                $this->mod_usuario->update_usu($codi_usu, array("esta_usu" => "D"));
-                $this->session->set_userdata('mensaje_usu', 'El usuario ' . $logi_usu . ' ha sido deshabilitado existosamente');
+                $codi_usu = $this->input->post('codi_usu');
+                $nomb_usu = $this->input->post('nomb_usu');
+                if ($this->mod_usuario->update($codi_usu, array('esta_usu' => 'D'))) {
+                    $this->session->set_userdata('info', 'El usuario ' . $nomb_usu . ' ha sido deshabilitado existosamente.');
+                } else {
+                    $this->session->set_userdata('error', 'No se ha podido realizar la operaci&oacute;n requerida.');
+                }
             }
             $data['page'] = 'Usuarios';
             $usuario['usuarios'] = $this->mod_view->view('v_usuario', false, false, false);
@@ -86,18 +85,16 @@ class usuario extends CI_Controller {
             if ($this->form_validation->run() == FALSE) {
                 $login["form"] = array('role' => 'form');
                 $login["usuario"] = array('id' => 'usuario_log', 'name' => 'usuario', 'class' => "form-control", 'placeholder' => "Usuario", 'required' => 'true');
-                $login["password"] = array('id' => 'clave_log', 'name' => 'clave', 'class' => "form-control", 'placeholder' => "ContraseÃ±a", 'required' => 'true');
+                $login["password"] = array('id' => 'clave_log', 'name' => 'clave', 'class' => "form-control", 'placeholder' => "Clave", 'required' => 'true');
                 $login["inicio_sesion"] = array('name' => 'inicio_sesion', 'class' => "btn btn-lg btn-success btn-block", 'value' => "Ingresar");
                 $this->load->view('login/login_view', $login);
             } else {
-                
                 $data['user'] = $this->input->post('usuario');
                 $data['pass'] = md5($this->input->post('clave'));
-
                 if ($this->mod_usuario->session($data)) {
                     header('Location: ' . base_url('home'));
                 } else {
-                    $this->session->set_userdata('alert', 'El usuario y/o clave son incorrectas');
+                    $this->session->set_userdata('error', 'El usuario y/o clave son incorrectas o no estan resgistrados.');
                     header('Location: ' . base_url('login'));
                 }
             }

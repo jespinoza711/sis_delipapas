@@ -31,42 +31,23 @@ class mod_usuario extends CI_Model {
     }
 
     public function register($data) {
-        $query = $this->db->where('nomb_usu', $data->nomb_usu);
+        $query = $this->db->where('nomb_usu', $data['nomb_usu']);
         $query = $this->db->get('usuario');
         $user = $query->row();
 
         if (count($user) > 0) {
             return false;
         } else {
-            $data->acce_sus = '1111111111';
+            $data['acce_usu'] = '1111111111';
             $this->db->set('reg_usu', 'sysdate()', false);
             $this->db->set('ses_usu', 'sysdate()', false);
             return $this->db->insert('usuario', $data);
         }
     }
 
-    function get_usuario() {
-        $consulta = $this->db->get("vusuario");
-        return $consulta->result();
-    }
-
-    function get_rol() {
-        $consulta = $this->db->get("rol");
-        return $consulta->result();
-    }
-
-    function get_tbl_usuario() {
-        $consulta = $this->db->get("vusuario");
-        return $consulta->result();
-    }
-
-    function insert_usu($data) {
-        $this->db->insert('usuario', $data);
-    }
-
-    function update_usu($id, $data) {
+    function update($id, $data) {
         $this->db->where('codi_usu', $id);
-        $this->db->update('usuario', $data);
+        return $this->db->update('usuario', $data);
     }
 
 }
