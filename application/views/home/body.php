@@ -42,7 +42,7 @@
 
                         <?php } else { ?>
 
-                            <li class="user user-menu"><a href="<?= base_url('close') ?>"><span>Iniciar sesión</span></a></li>
+                            <li class="user user-menu"><a href="<?= base_url('login') ?>"><span>Iniciar sesión</span></a></li>
 
                         <?php } ?>
 
@@ -57,8 +57,8 @@
                     <ul class="sidebar-menu">
 
                         <?php
-                        if ($this->session->userdata('estado_sesion') && $this->session->userdata('estado_sesion') == "A") {
-                            echo show_menu($this->session->userdata('codi_rol'));
+                        if ($this->session->userdata('logged') == true) {
+                            echo show_menu($this->session->userdata('user_rol'));
                         } else {
                             echo show_menu();
                         }

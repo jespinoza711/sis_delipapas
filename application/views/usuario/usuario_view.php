@@ -2,8 +2,7 @@
     <div class="row">
         <div class="col-lg-12">
             <ol class="breadcrumb" style="margin-top: 2%;">
-                <li><a href="<?= base_url() ?>">Inicio</a>
-                </li>
+                <li><a href="<?= base_url('home') ?>">Inicio</a></li>
                 <li class="active">Usuario</li>
             </ol>
         </div>
@@ -17,70 +16,73 @@
                 <h3 class="panel-title">Usuario</h3>
             </div>
             <div class="panel-body">
-                <?php if ($this->session->userdata('mensaje_usu') && $this->session->userdata('mensaje_usu') != "") { ?>
+                
+                <?php if ($this->session->userdata('alert') != ''){ ?>
+                
                     <div class="alert alert-success alert-dismissable">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                        <?= $this->session->userdata('mensaje_usu') ?>
+                        <?= $this->session->userdata('alert') ?>
                     </div>
-                    <?php
-                    $this->session->unset_userdata('mensaje_usu');
-                }
-                ?>
+                
+                <?php $this->session->set_userdata('alert', ''); } ?>
+                
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ModalNuevoUsuario">Nuevo usuario</button>
                 <br><br>
                 <div class="table-responsive">
                     <table id="table-usuario" class="table table-bordered">
                         <thead>
                             <tr>
-                                <th style="text-align: center;">Codigo</th>
+                                <th style="text-align: center;">C&oacute;digo</th>
                                 <th style="text-align: center;">Usuario</th>
-                                <!--<th style="text-align: center;">ContraseÃ±a</th>-->
                                 <th style="text-align: center;">Rol</th>
+                                <th style="text-align: center;">&Uacute;lt. Sesi&oacute;n</th>
                                 <th style="text-align: center;">Estado</th>
                                 <th style="text-align: center;">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
+                            
                             <?php foreach ($usuarios as $row) { ?>
+                            
                                 <tr style="background-color: none;">
                                     <td style="text-align: center;"><?= $row->codi_usu ?></td>
                                     <td style="text-align: center;"><?= $row->nomb_usu ?></td>
-                                    <!--<td style="text-align: center;"><button type="button" class="tooltip-usu btn btn-default watch-key" data-toggle="tooltip" data-placement="top" title="Ver contraseÃ±a"><i class="fa fa-eye"></i></button><span class="pass_key" style="display: none;"><?= $row->pass_usu ?></span></td>-->
                                     <td style="text-align: center;"><?= $row->nomb_rol ?></td>
-                                    <td style="text-align: center;"><?php
-                                        if ($row->esta_usu == "A") {
-                                            echo "Habilitado";
-                                        } else if ($row->esta_usu == "D") {
-                                            echo "Deshabilitado";
-                                        }
-                                        ?></td>
+                                    <td style="text-align: center;"><?= $row->ses_usu ?></td>
+                                    <td style="text-align: center;"><?= $row->esta_usu == 'A' ? 'Activo' : 'Inactivo' ?></td>
                                     <td style="vertical-align: middle; text-align: center;">
                                         <button type="button" class="tooltip-usu btn btn-success btn-circle editar_usu" data-toggle="tooltip" data-placement="top" title="Editar" >
                                             <i class="fa fa-edit"></i>
                                         </button>
-                                        <?php if ($row->esta_usu == "D") { ?>
+                                        
+                                        <?php if ($row->esta_usu == 'D') { ?>
                                             <span>
-                                                <?= form_open(base_url() . 'usuario', $form_a) ?>
+                                                <?= form_open(base_url('usuario'), $form_a) ?>
                                                 <input type="hidden" name="codigo" value="<?= $row->codi_usu ?>">
                                                 <input type="hidden" name="usuario" value="<?= $row->logi_usu ?>">
                                                 <input name="activar" type="submit" class="tooltip-usu btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar">
                                                 <?= form_close() ?>
                                             </span>
-                                        <?php } else if ($row->esta_usu == "A") { ?>
+                                        
+                                        <?php } else { ?>
+                                        
                                             <span>
-                                                <?= form_open(base_url() . 'usuario', $form_a) ?>
+                                                <?= form_open(base_url('usuario'), $form_a) ?>
                                                 <input type="hidden" name="codigo" value="<?= $row->codi_usu ?>">
                                                 <input type="hidden" name="usuario" value="<?= $row->nomb_usu ?>">
                                                 <input name="desactivar" type="submit" class="tooltip-usu btn btn-danger btn-circle fa" value="&#xf05e;" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
                                                 <?= form_close() ?>
                                             </span>
+                                        
                                         <?php } ?>
+                                        
                                     </td>
                                 </tr>
+                                
                             <?php } ?>
+                                
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>
@@ -90,7 +92,9 @@
 <div class="modal fade" id="ModalNuevoUsuario" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
     <div class="modal-dialog" style="width: 30%;">
         <div class="modal-content" style="border-color: #428bca; border-style: inset;">
-            <?= form_open(base_url() . 'usuario', $form) ?>
+            
+            <?= form_open(base_url('usuario'), $form) ?>
+            
             <div class="modal-header" style="
                  padding: 10px 15px;
                  border-bottom: 1px solid transparent;

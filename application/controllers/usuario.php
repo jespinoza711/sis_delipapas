@@ -95,30 +95,13 @@ class usuario extends CI_Controller {
                 $login["inicio_sesion"] = array('name' => 'inicio_sesion', 'class' => "btn btn-lg btn-success btn-block", 'value' => "Ingresar");
                 $this->load->view('login/login_view', $login);
             } else {
-                $usuario = $this->input->post('usuario');
-                $clave = md5($this->input->post('clave'));
-                $usuarios = $this->mod_usuario->get_usuario();
+                $data['user'] = $this->input->post('usuario');
+                $data['pass'] = md5($this->input->post('clave'));
 
-                $acceso = false;
-                foreach ($usuarios as $row) {
-                    if ($row->nomb_usu == $usuario && $row->pass_usu == $clave && $row->esta_usu == 'A') {
-                        $acceso = true;
-                        $rol = $row->codi_rol;
-                        break;
-                    }
-                }
-
-                if ($acceso) {
-                    $sesion_activa = array(
-                        'estado_sesion' => 'A',
-                        'logi_usu' => $usuario,
-                        'codi_rol' => $rol,
-                        'logged' => true
-                    );
-                    $this->session->set_userdata($sesion_activa);
-                    header('Location: ' . base_url() . 'home');
+                if ($this->mod_usuario->session($data)) {
+                    header('Location: ' . base_url('home'));
                 } else {
-                    $this->session->set_userdata('error_login_1', 'El usuario y/o clave son incorrectas');
+                    $this->session->set_userdata('alert', 'El usuario y/o clave son incorrectas');
                     header('Location: ' . base_url('login'));
                 }
             }
