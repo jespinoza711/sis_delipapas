@@ -7,8 +7,15 @@ class mod_config extends CI_Model {
         $this->load->database();
         $this->load->library('session');
     }
+    
+    /* MODULO DE CONFIGURACION DE USU DE LA APLICACION
+     * 
+     * Para especificar que la aplicación sera de uso libre cambiar a TRUE el estado del parametro free_version,
+     * en caso contratio cambiar a FALSE e indicar un periodo de uso en los parametros licence_run (inicio) y licence_expire (final).
+     * Se puede configurar la zona para la verificación de fechas si es necesario.
+     */
 
-    private $free_version = true;
+    private $free_version = true; 
     private $timezone = 'America/Lima';
     private $licence_run = '2014-09-00 00:00:00';
     private $licence_expire = '2014-09-09 00:00:00';

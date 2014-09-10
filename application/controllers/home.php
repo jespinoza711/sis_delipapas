@@ -21,6 +21,4 @@ class home extends CI_Controller {
         }
     }
 
-
-
 }
