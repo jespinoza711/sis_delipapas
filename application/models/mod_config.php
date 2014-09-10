@@ -26,7 +26,7 @@ class mod_config extends CI_Model {
                 $avp = $this->session->userdata('logged') ? true : false;
             }
             if ($scope == 2) {
-                $avp = $this->session->userdata('codi_rol') == 1 ? true : false;
+                $avp = $this->session->userdata('user_rol') == 1 ? true : false;
             }
             return $avp;
         }

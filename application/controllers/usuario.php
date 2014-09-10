@@ -75,7 +75,7 @@ class usuario extends CI_Controller {
                 $this->session->set_userdata('mensaje_usu', 'El usuario ' . $logi_usu . ' ha sido deshabilitado existosamente');
             }
             $data['page'] = 'Usuarios';
-            $usuario['usuarios'] = $this->mod_usuario->get_tbl_usuario();
+            $usuario['usuarios'] = $this->mod_view->view('v_usuario', false, false, false);
             $data['container'] = $this->load->view('usuario/usuario_view', $usuario, true);
             $this->load->view('home/body', $data);
         }
