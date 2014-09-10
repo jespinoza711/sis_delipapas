@@ -18,7 +18,7 @@ class mod_usuario extends CI_Model {
     }
 
     function get_tbl_usuario() {
-        $consulta = $this->db->get("vusuario_rol");
+        $consulta = $this->db->get("vusuario");
         return $consulta->result();
     }
 
