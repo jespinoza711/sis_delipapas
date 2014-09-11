@@ -27,7 +27,7 @@ class caja extends CI_Controller {
         } else {
             $data['page'] = 'Compras';
             $compra['compra'] = $this->mod_view->view('compra', false, false, false);
-            $compra['producto'] = $this->mod_view->view('vproducto', false, false, false);
+            $compra['producto'] = $this->mod_view->view('v_producto', false, false, false);
             $data['container'] = $this->load->view('caja/compra_view', $compra, true);
             $this->load->view('home/body', $data);
         }

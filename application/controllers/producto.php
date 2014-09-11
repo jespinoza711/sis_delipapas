@@ -31,7 +31,7 @@ class producto extends CI_Controller {
             header('location: ' . base_url('login'));
         } else {
             $data['page'] = 'Inventario';
-            $d['producto'] = $this->mod_view->view('vproducto', false, false, false);
+            $d['producto'] = $this->mod_view->view('v_producto', false, false, false);
             $data['container'] = $this->load->view('producto/inventario_view', $d, true);
             $this->load->view('home/body', $data);
         }
