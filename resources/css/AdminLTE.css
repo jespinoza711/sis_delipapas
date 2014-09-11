@@ -3552,6 +3552,24 @@ fieldset[disabled] .btn-vk.active {
 #table_empleado_filter {
     display: inline-table;
 }
+#table-usuario_wrapper > .row > .col-xs-8 > #table-usuario_filter {
+    float: right;
+}
+#table-usuario_filter {
+    display: inline-table;
+}
+#table_proveedor_wrapper > .row > .col-xs-8 > #table_proveedor_filter {
+    float: right;
+}
+#table_proveedor_filter {
+    display: inline-table;
+}
+#table_cliente_wrapper > .row > .col-xs-8 > #table_cliente_filter {
+    float: right;
+}
+#table_cliente_filter {
+    display: inline-table;
+}
 
 .selected {
     color: #8a6d3b;
@@ -3576,6 +3594,40 @@ tr.group:hover {
 #table_empleado tbody tr[role='row'] td:nth-child(4),
 #table_empleado tbody tr[role='row'] td:nth-child(5),
 #table_empleado tbody tr[role='row'] td:nth-child(6){
+    text-align: center;
+    vertical-align: middle;
+}
+
+#table_proveedor tbody tr[role='row'] td:nth-child(3){
+    vertical-align: middle;
+}
+#table_proveedor tbody tr[role='row'] td:nth-child(1),
+#table_proveedor tbody tr[role='row'] td:nth-child(2),
+#table_proveedor tbody tr[role='row'] td:nth-child(4),
+#table_proveedor tbody tr[role='row'] td:nth-child(5),
+#table_proveedor tbody tr[role='row'] td:nth-child(6){
+    text-align: center;
+    vertical-align: middle;
+}
+
+#table_cliente tbody tr[role='row'] td:nth-child(3){
+    vertical-align: middle;
+}
+#table_cliente tbody tr[role='row'] td:nth-child(1),
+#table_cliente tbody tr[role='row'] td:nth-child(2),
+#table_cliente tbody tr[role='row'] td:nth-child(4),
+#table_cliente tbody tr[role='row'] td:nth-child(5),
+#table_cliente tbody tr[role='row'] td:nth-child(6){
+    text-align: center;
+    vertical-align: middle;
+}
+
+#table-usuario tbody tr[role='row'] td:nth-child(1),
+#table-usuario tbody tr[role='row'] td:nth-child(2),
+#table-usuario tbody tr[role='row'] td:nth-child(3),
+#table-usuario tbody tr[role='row'] td:nth-child(4),
+#table-usuario tbody tr[role='row'] td:nth-child(5),
+#table-usuario tbody tr[role='row'] td:nth-child(6){
     text-align: center;
     vertical-align: middle;
 }

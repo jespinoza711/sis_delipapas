@@ -1,4 +1,4 @@
-<div class="row" id="cpo_empleado">
+<div class="row" id="cpo_empleado" style="margin-top: 2%">
     <div class="col-lg-12 col-xs-12">
         <div class="col-md-11" style="margin-left: 4%;">
             <div id="panel-cie" class="panel panel-primary">

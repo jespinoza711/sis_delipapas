@@ -33,8 +33,8 @@
                         <!-- Messages: style can be found in dropdown.less-->
                         <!-- User Account: style can be found in dropdown.less -->
 
-                        <li class="user user-menu"><a href="<?= base_url('cajachica') ?>"><span>CAJA CHICA</span></a></li>
-                        <li class="user user-menu"><a href="<?= base_url('registrodiario') ?>"><span>REGISTRO DIARIO</span></a></li>
+                        <li class="user user-menu"><a href="<?= base_url('cajachica') ?>"><span>Caja chica</span></a></li>
+                        <li class="user user-menu"><a href="<?= base_url('registrodiario') ?>"><span>Registro diario</span></a></li>
 
                         <?php if ($this->session->userdata('logged') == true) { ?>
 
@@ -93,6 +93,8 @@
         <script src="<?= base_url('resources/js/config/empleado.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/producto.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/usuario.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/config/proveedor.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/config/cliente.js') ?>" type="text/javascript"></script>
 
     </body>
 </html>

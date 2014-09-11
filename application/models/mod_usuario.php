@@ -49,5 +49,29 @@ class mod_usuario extends CI_Model {
         $this->db->where('codi_usu', $id);
         return $this->db->update('usuario', $data);
     }
+    
+    function get_vusuario_paginate($limit, $start, $string = "") {
+        $this->db->like('nomb_rol', $string);
+        $this->db->or_like('nomb_usu', $string);
+        $this->db->or_like('codi_usu', $string);
+        $this->db->or_like('esta_usu', $string);
+        $query = $this->db->get('v_usuario');
+        $usuarios = $query->result();
+        $i = 0;
+        $c = 0;
+        $result = array();
+        foreach ($usuarios as $row) {
+            if ($i >= $start) {
+                if ($c < $limit) {
+                    $result[$c] = $row;
+                    $c++;
+                } else {
+                    break;
+                }
+            }
+            $i++;
+        }
+        return $result;
+    }
 
 }
