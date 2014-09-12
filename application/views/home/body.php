@@ -82,9 +82,11 @@
 
         <script src="<?= base_url('resources/js/config/config.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/jquery-2.1.1.min.js') ?>" type="text/javascript"></script>
-        <script src="<?= base_url('resources/js/jquery.dataTables.js') ?>"></script>
-        <script src="<?= base_url('resources/js/dataTables.bootstrap.js') ?>"></script>
         <script src="<?= base_url('resources/js/jquery-number.min.js') ?>"></script>
+        <script src="<?= base_url('resources/js/jquery-ui-1.10.3.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/jquery-ui-1.10.3.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/jquery.dataTables.js') ?>"></script>
+        <script src="<?= base_url('resources/js/dataTables.bootstrap.js') ?>"></script>        
         <script src="<?= base_url('resources/js/plugins/input-mask/jquery.inputmask.js') ?>"></script>
         <script src="<?= base_url('resources/js/plugins/input-mask/jquery.inputmask.extensions.js') ?>"></script>
         <script src="<?= base_url('resources/js/plugins/input-mask/jquery.inputmask.date.extensions.js') ?>"></script>
