@@ -3570,6 +3570,12 @@ fieldset[disabled] .btn-vk.active {
 #table_cliente_filter {
     display: inline-table;
 }
+#table_producto_wrapper > .row > .col-xs-8 > #table_producto_filter {
+    float: right;
+}
+#table_producto_filter {
+    display: inline-table;
+}
 
 .selected {
     color: #8a6d3b;
@@ -3606,6 +3612,18 @@ tr.group:hover {
 #table_proveedor tbody tr[role='row'] td:nth-child(4),
 #table_proveedor tbody tr[role='row'] td:nth-child(5),
 #table_proveedor tbody tr[role='row'] td:nth-child(6){
+    text-align: center;
+    vertical-align: middle;
+}
+
+#table_producto tbody tr[role='row'] td:nth-child(2){
+    vertical-align: middle;
+}
+#table_producto tbody tr[role='row'] td:nth-child(1),
+#table_producto tbody tr[role='row'] td:nth-child(3),
+#table_producto tbody tr[role='row'] td:nth-child(4),
+#table_producto tbody tr[role='row'] td:nth-child(5),
+#table_producto tbody tr[role='row'] td:nth-child(6){
     text-align: center;
     vertical-align: middle;
 }

@@ -227,7 +227,7 @@ class empleado extends CI_Controller {
                 'sexo_emp' => 'M',
                 'afp_emp' => '10',
                 'civi_emp' => 'S',
-                'codi_tem' => "2",
+                'codi_tem' => "1",
                 'codi_pla' => "1",
                 'esta_emp' => 'A'
             );

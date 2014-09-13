@@ -97,6 +97,6 @@
         <script src="<?= base_url('resources/js/config/usuario.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/proveedor.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/cliente.js') ?>" type="text/javascript"></script>
-
+       
     </body>
 </html>

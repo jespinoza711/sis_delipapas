@@ -93,6 +93,7 @@ $(document).ready(function() {
 
 
     var table_empleado = $('#table_empleado').DataTable({
+        "destroy": true,
         "iDisplayLength": 10,
         "aLengthMenu": [10, 25, 50],
         "sPaginationType": "full_numbers",
