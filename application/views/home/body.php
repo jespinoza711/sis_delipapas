@@ -8,6 +8,7 @@
         <link href="<?= base_url('resources/css/bootstrap.min.css') ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('resources/css/font-awesome.min.css') ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('resources/css/ionicons.min.css') ?>" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url('resources/css/jquery-ui.css') ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('resources/css/dataTables.bootstrap.css') ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('resources/css/AdminLTE.css') ?>" rel="stylesheet" type="text/css" />
 
@@ -80,11 +81,10 @@
             </aside>
         </div>
 
-        <script src="<?= base_url('resources/js/config/config.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/jquery-2.1.1.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/config/config.js') ?>" type="text/javascript"></script>        
         <script src="<?= base_url('resources/js/jquery-number.min.js') ?>"></script>
-        <script src="<?= base_url('resources/js/jquery-ui-1.10.3.js') ?>" type="text/javascript"></script>
-        <script src="<?= base_url('resources/js/jquery-ui-1.10.3.min.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/jquery-ui.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/jquery.dataTables.js') ?>"></script>
         <script src="<?= base_url('resources/js/dataTables.bootstrap.js') ?>"></script>        
         <script src="<?= base_url('resources/js/plugins/input-mask/jquery.inputmask.js') ?>"></script>
@@ -97,6 +97,8 @@
         <script src="<?= base_url('resources/js/config/usuario.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/proveedor.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/cliente.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/config/venta.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/SmartNotification.js') ?>" type="text/javascript"></script>
        
     </body>
 </html>

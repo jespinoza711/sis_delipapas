@@ -20,11 +20,12 @@ class mod_producto extends CI_Model {
         $this->db->update('producto', $data);
     }
     
-    public function get_vproducto() {
+    public function get_vproducto($where = array()) {
         $this->db->select('producto.codi_prod, producto.codi_tpro,producto.nomb_prod,producto.obsv_prod,'
-                . 'producto.esta_prod,tipo_producto.nomb_tipo');
+                . 'producto.esta_prod,tipo_producto.nomb_tipo,producto.prec_prod, producto.stoc_prod, producto.fein_prod, producto.fesa_prod');
         $this->db->from('producto');
         $this->db->join('tipo_producto', 'producto.codi_tpro = tipo_producto.codi_tpro');
+        $this->db->where($where);
         $query = $this->db->get();
         return $query->result();
     }

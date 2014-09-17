@@ -48,13 +48,13 @@ class producto extends CI_Controller {
                 $producto = $this->input->post('producto');
                 $this->mod_producto->update($codigo, array("esta_prod" => "D"));
                 $this->session->set_userdata('info_prod', 'El producto ' . $producto . ' ha sido deshabilitado existosamente');
-                header('Location: ' . base_url('producto'));     
+                header('Location: ' . base_url('producto'));
             } if ($this->input->post('registrar_tpro')) {
                 $data['nomb_tipo'] = $this->input->post('nombre');
                 $data['esta_tipo'] = "A";
                 $this->mod_producto->insert_tipo($data);
                 $this->session->set_userdata('info_prod', 'El tipo de producto ' . $data['nomb_tipo'] . ' ha sido registrado existosamente');
-                header('Location: ' . base_url('producto'));  
+                header('Location: ' . base_url('producto'));
             } else {
 
                 $producto['disabled'] = "";
@@ -80,7 +80,7 @@ class producto extends CI_Controller {
                 $producto["nombre"] = array('id' => 'nomb_prod', 'name' => 'nombre', 'class' => "form-control input-lg", 'placeholder' => "Nombre", "maxlength" => "45", 'required' => 'true', 'autocomplete' => 'off');
                 $producto["observa"] = array('id' => 'observa_prod', 'name' => 'observa', 'class' => "form-control input-lg", 'placeholder' => "Escriba la observación...", "maxlength" => "100", "rows" => "5", "autocomplete" => "off");
                 $producto["registrar"] = array('id' => 'registrar_prod', 'name' => 'registrar', 'class' => "btn btn-primary btn-lg", 'value' => "Registrar");
-                
+
                 // Editar producto
                 $producto["form_e"] = array('role' => 'form', "id" => "form_prod_e");
                 $producto["codigo_e"] = array('id' => 'codigo_prod_e', 'name' => 'codigo', 'class' => "form-control input-lg", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true');
@@ -89,11 +89,11 @@ class producto extends CI_Controller {
                 $producto["editar"] = array('id' => 'editar_prod', 'name' => 'editar', 'class' => "btn btn-primary btn-lg", 'value' => "Editar");
 
                 // Añadir tipo de producto
-                
+
                 $producto["form_tpro"] = array('role' => 'form', "id" => "form_tpro");
                 $producto["nombre_tpro"] = array('id' => 'nomb_tpro', 'name' => 'nombre', 'class' => "form-control input-lg", 'placeholder' => "Nombre", "maxlength" => "45", 'required' => 'true', 'autocomplete' => 'off');
                 $producto["registrar_tpro"] = array('id' => 'registrar_tpro', 'name' => 'registrar_tpro', 'class' => "btn btn-primary btn-lg", 'value' => "Registrar");
-                
+
                 $data['page'] = 'Productos';
                 $data['container'] = $this->load->view('producto/producto_view', $producto, true);
                 $this->load->view('home/body', $data);
@@ -137,9 +137,9 @@ class producto extends CI_Controller {
 
             $observación = "-";
             if ($row->obsv_prod != "") {
-                $observación = '<button type="button" class="popover-prod btn btn-default" data-toggle="popover" data-content="'.$row->obsv_prod.'" data-original-title="Observación" data-placement="top"><i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;Ver</button>';
+                $observación = '<button type="button" class="popover-prod btn btn-default" data-toggle="popover" data-content="' . $row->obsv_prod . '" data-original-title="Observación" data-placement="top"><i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;Ver</button>';
             }
-            
+
             $aaData[] = array(
                 $row->codi_prod,
                 $row->nomb_prod,
@@ -163,18 +163,41 @@ class producto extends CI_Controller {
         $data = array();
         $productos = $this->mod_producto->get_vproducto();
         foreach ($productos as $row) {
+            
+            if ($row->fein_prod!=NULL) {
+                $fein_r = strtotime($row->fein_prod);
+                $fein = date("d/m/y h:i:s A", $fein_r);
+            } else {
+                $fein = "-";
+            }
+            if ($row->fesa_prod!=NULL) {
+                $fesa_r = strtotime($row->fesa_prod);
+                $fesa = date("d/m/y h:i:s A", $fesa_r);
+            } else {
+                $fesa = "-";
+            }
+            if ($row->obsv_prod!=NULL) {
+                $obsv = $row->obsv_prod;
+            } else {
+                $obsv = "-";
+            }
+            
             $data[$row->codi_prod] = array(
                 $row->codi_prod,
                 $row->nomb_prod,
                 $row->nomb_tipo,
-                $row->obsv_prod,
+                $obsv,
                 $row->codi_tpro,
-                $row->esta_prod
+                $row->esta_prod,
+                $row->prec_prod,
+                $row->stoc_prod,
+                $fein,
+                $fesa
             );
         }
         echo json_encode($data);
     }
-    
+
     public function get_tipo_producto() {
         $data = array();
         $tipo_producto = $this->mod_view->view('tipo_producto');

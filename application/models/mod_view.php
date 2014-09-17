@@ -87,5 +87,18 @@ class mod_view extends CI_Model {
         $q = $query->row();
         return $q->$dato + $mas;
     }
-
+    
+    function insert($table, $data) {
+        $this->db->insert($table, $data);
+        return $this->db->insert_id();
+    }
+    
+    function insert_only($table, $data) {
+        $this->db->insert($table, $data);
+    }
+    
+    function update($table, $where, $data) {
+        $this->db->where($where);
+        $this->db->update($table, $data);
+    }
 }

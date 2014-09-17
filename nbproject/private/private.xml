@@ -3,12 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/xampp/htdocs/sis_delipapas/application/views/producto/producto_view.php</file>
-            <file>file:/C:/xampp/htdocs/sis_delipapas/application/controllers/producto.php</file>
-            <file>file:/C:/xampp/htdocs/sis_delipapas/resources/js/config/producto.js</file>
-            <file>file:/C:/xampp/htdocs/sis_delipapas/application/models/mod_view.php</file>
-            <file>file:/C:/xampp/htdocs/sis_delipapas/application/views/proveedor/proveedor_view.php</file>
-            <file>file:/C:/xampp/htdocs/sis_delipapas/application/controllers/proveedor.php</file>
+            <file>file:/C:/xampp/htdocs/sis_delipapas/resources/css/AdminLTE.css</file>
+            <file>file:/C:/xampp/htdocs/sis_delipapas/resources/js/config/venta.js</file>
+            <file>file:/C:/xampp/htdocs/sis_delipapas/application/views/home/body.php</file>
+            <file>file:/C:/xampp/htdocs/sis_delipapas/application/controllers/caja.php</file>
+            <file>file:/C:/xampp/htdocs/sis_delipapas/application/views/caja/venta_view.php</file>
         </group>
     </open-files>
 </project-private>
