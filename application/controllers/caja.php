@@ -21,7 +21,7 @@ class caja extends CI_Controller {
             date_default_timezone_set('America/Lima');
             $fecha_actual = date("Y-m-d");
             if (!$this->mod_caja->validar_caja_dia($fecha_actual)) {
-                $error[] = "No se ha aperturado por lo menos una caja por el día de hoy " . date("d-m-Y") . '. <br><strong>Haga click <a href="' . base_url('#') . '">aquí</a> para aperturar una caja</strong>.';
+                $error[] = "No se ha aperturado por lo menos una caja por el día de hoy " . date("d-m-Y") . '. <br><strong>Haga click <a href="' . base_url('abrircaja') . '">aquí</a> para aperturar una caja</strong>.';
             }
 
             $cajas = array();
@@ -81,11 +81,29 @@ class caja extends CI_Controller {
     }
 
     public function abrir_caja() {
-        
+        if (!$this->mod_config->AVP(1)) {
+            header('location: ' . base_url('login'));
+        } else {
+
+            $data['page'] = 'Aperturar caja';
+            $caja["datetime"] =  $this->datetime_es();
+//            $caja["cajas"] =  $this->mod_view->view('caja_dia', false, false, false);
+
+            $data['container'] = $this->load->view('caja/open_caja_view', $caja, true);
+            $this->load->view('home/body', $data);
+        }
     }
 
     public function cerrar_caja() {
         
+    }
+
+    public function datetime_es() {
+        date_default_timezone_set('America/Lima');
+        setlocale(LC_ALL, "es_ES");
+        $dias = array("Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado");
+        $meses = array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+        return $dias[date('w')].", ".date('d')." de ".$meses[date('n')-1]. " de ".date('Y') . " y " . date('g:i A');
     }
 
     public function registrar_compra() {
@@ -113,7 +131,7 @@ class caja extends CI_Controller {
         );
 
         $codi_ven = $this->mod_view->insert('venta', $venta);
-        
+
         // GENERAR NUMERO DE FACTURA
         $cont = $this->mod_view->count('factura') + 1;
         $longitud = strlen($cont);
@@ -129,14 +147,14 @@ class caja extends CI_Controller {
         );
 
         $codi_fac = $this->mod_view->insert('factura', $factura);
-        
+
         foreach ($tbl_venta as $row) {
 
             // ACTUALIZAR STOCK DE PRODUCTO
             $stock_anterior = $this->mod_view->dato('producto', 0, false, array('codi_prod' => $row[0]), 'stoc_prod');
             $stock_actual = (int) $stock_anterior - (int) $row[2];
             $this->mod_view->update('producto', array('codi_prod' => $row[0]), array('stoc_prod' => $stock_actual));
-                        
+
             // REGISTRO DE DETALLE DE VENTA
             $codi_dve = $this->mod_view->count('detalle_venta') + 1;
             $detalle_venta = array(
@@ -149,7 +167,7 @@ class caja extends CI_Controller {
                 'impo_dve' => $row[6]
             );
             $this->mod_view->insert_only('detalle_venta', $detalle_venta);
-            
+
             // REGISTRO DE DETALLE DE FACTURA
             $detalle_factura = array(
                 'codi_fac' => $codi_fac,

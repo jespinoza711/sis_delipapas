@@ -15,15 +15,60 @@ where u.codi_rol = r.codi_rol
 order by u.codi_usu asc;
 
 CREATE VIEW v_producto AS
-SELECT `p`.`codi_prod`,
-`p`.`codi_tpro`,
-`tp`.`nomb_tipo`,
-`p`.`nomb_prod`,
-`p`.`prec_prod`,
-`p`.`fein_prod`,
-`p`.`fesa_prod`,
-`p`.`stoc_prod`,
-`p`.`esta_prod`,
-`p`.`obsv_prod`
+SELECT p.codi_prod,
+p.codi_tpro,
+tp.nomb_tipo,
+p.nomb_prod,
+p.prec_prod,
+p.fein_prod,
+p.fesa_prod,
+p.stoc_prod,
+p.esta_prod,
+p.obsv_prod
 FROM producto p, tipo_producto tp 
-ORDER BY `p`.`codi_prod` ASC;
+ORDER BY p.codi_prod ASC;
+
+create view v_caja_dia as
+select cd.codi_cad,
+cd.codi_caj,
+c.num_caj,
+cd.fein_cad,
+cd.usin_cad,
+ui.nomb_usu,
+cd.sain_cad,
+MAX(cd.fefi_cad),
+cd.usfi_cad,
+uf.nomb_usu,
+cd.safi_cad,
+cd.obsv_cad,
+cd.esta_Cad
+from caja c, caja_dia cd, usuario ui, usuario uf
+where cd.codi_caj = c.codi_caj
+and cd.usin_cad = ui.codi_usu
+and cd.usfi_cad = uf.codi_usu
+group by cd.codi_caj 
+order by cd.codi_caj asc
+
+SELECT 
+c.codi_caj,
+c.num_caj,
+(SELECT 
+cd.codi_cad,
+cd.fein_cad,
+cd.usin_cad,
+ui.nomb_usu,
+cd.sain_cad,
+MAX(cd.fefi_cad) as Maxdatetime,
+cd.usfi_cad,
+uf.nomb_usu,
+cd.safi_cad,
+cd.obsv_cad,
+cd.esta_Cad
+from caja c, caja_dia cd, usuario ui, usuario uf
+where cd.codi_caj = c.codi_caj
+and cd.usin_cad = ui.codi_usu
+and cd.usfi_cad = uf.codi_usu
+group by Maxdatetime) as 
+
+WHERE c.codi_caj = cd.codi_caj
+ORDER BY cd.codi_caj asc
