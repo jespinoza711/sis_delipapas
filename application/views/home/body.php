@@ -95,9 +95,11 @@
         <script src="<?= base_url('resources/js/config/empleado.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/producto.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/usuario.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/config/caja.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/proveedor.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/cliente.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/venta.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/config/reporte.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/SmartNotification.js') ?>" type="text/javascript"></script>
        
     </body>

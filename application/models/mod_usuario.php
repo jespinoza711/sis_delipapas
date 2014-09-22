@@ -51,11 +51,32 @@ class mod_usuario extends CI_Model {
     }
     
     function get_vusuario_paginate($limit, $start, $string = "") {
-        $this->db->like('nomb_rol', $string);
-        $this->db->or_like('nomb_usu', $string);
-        $this->db->or_like('codi_usu', $string);
-        $this->db->or_like('esta_usu', $string);
-        $query = $this->db->get('v_usuario');
+
+        if ($string !="" && preg_match("/^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/", $string)) {
+            
+            // Convertir dd/mm/YYYY a YYYY-mm-dd
+            $date = str_replace('/', '-', $string);
+            $fecha = date('Y-m-d', strtotime($date));
+
+            $this->db->select('usuario.codi_usu AS codi_usu,usuario.codi_rol AS codi_rol,usuario.reg_usu AS reg_usu,
+                rol.nomb_rol AS nomb_rol,usuario.nomb_usu AS nomb_usu,usuario.pass_usu AS pass_usu,
+                usuario.acce_usu AS acce_usu,usuario.ses_usu AS ses_usu,usuario.esta_usu AS esta_usu');
+
+            $this->db->from('compra');
+            $this->db->join('usuario', 'compra.codi_usu = usuario.codi_usu');
+            $this->db->join('rol', 'usuario.codi_rol = rol.codi_rol');
+            $this->db->where(array('DATE(compra.fech_com)' => $fecha, 'compra.esta_com' => 'A'));
+            $this->db->distinct();
+            $query = $this->db->get();
+
+        } else {
+            $this->db->like('nomb_rol', $string);
+            $this->db->or_like('nomb_usu', $string);
+            $this->db->or_like('codi_usu', $string);
+            $this->db->or_like('esta_usu', $string);
+            $query = $this->db->get('v_usuario');
+        }
+
         $usuarios = $query->result();
         $i = 0;
         $c = 0;

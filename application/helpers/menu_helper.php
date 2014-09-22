@@ -13,13 +13,14 @@ if (!function_exists('show_menu')) {
                     '<li><a href="' . base_url('venta') . '">Ventas</a></li>' .
                     '<li><a href="' . base_url('compra') . '">Compras</a></li>' .
                     '<li><a href="' . base_url('inventario') . '">Inventario</a></li>' .
-                    '<li class="active"><a href="#">Registros</a>' .
-                        '<ul class="">' .
-                            '<li><a href="' . base_url('usuario') . '">Usuario</a></li>' .
-                            '<li><a href="' . base_url('proveedor') . '">Proveedor</a></li>' .
-                            '<li><a href="' . base_url('cliente') . '">Cliente</a></li>' .
-                            '<li><a href="' . base_url('empleado') . '">Empleado</a></li>' .
-                            '<li><a href="' . base_url('producto') . '">Producto</a></li>' .
+                    '<li class="treeview"><a href="#"><span>Registros</span><i class="fa pull-right fa-angle-down"></i></a>' .
+                        '<ul class="treeview-menu" style="display: none;">' .
+                            '<li><a href="' . base_url('usuario') . '"><i class="fa fa-angle-double-right"></i>Usuario</a></li>' .
+                            '<li><a href="' . base_url('proveedor') . '"><i class="fa fa-angle-double-right"></i>Proveedor</a></li>' .
+                            '<li><a href="' . base_url('cliente') . '"><i class="fa fa-angle-double-right"></i>Cliente</a></li>' .
+                            '<li><a href="' . base_url('empleado') . '"><i class="fa fa-angle-double-right"></i>Empleado</a></li>' .
+                            '<li><a href="' . base_url('producto') . '"><i class="fa fa-angle-double-right"></i>Producto</a></li>' .
+                            '<li><a href="' . base_url('caja') . '"><i class="fa fa-angle-double-right"></i>Caja</a></li>' .
                         '</ul>' .
                     '</li>' .
                     '<li><a href="' . base_url('reporte') . '">Reportes</a></li>' .

@@ -3739,6 +3739,12 @@ fieldset[disabled] .btn-vk.active {
 #table_producto_filter {
     display: inline-table;
 }
+#table_caja_wrapper > .row > .col-xs-8 > #table_caja_filter {
+    float: right;
+}
+#table_caja_filter {
+    display: inline-table;
+}
 
 .selected {
     color: #8a6d3b;
@@ -3828,6 +3834,48 @@ tr.group:hover {
 #table-usuario tbody tr[role='row'] td:nth-child(4),
 #table-usuario tbody tr[role='row'] td:nth-child(5),
 #table-usuario tbody tr[role='row'] td:nth-child(6){
+    text-align: center;
+    vertical-align: middle;
+}
+
+#table_reporte_1 tbody tr td:nth-child(1),
+#table_reporte_1 tbody tr td:nth-child(3){
+    text-align: center;
+}
+#table_reporte_1 tbody tr td:nth-child(4){
+    text-align: center;
+}
+
+#table_reporte_2 tbody tr td:nth-child(1),
+#table_reporte_2 tbody tr td:nth-child(3),
+#table_reporte_2 tbody tr td:nth-child(4),
+#table_reporte_2 tbody tr td:nth-child(5){
+    text-align: center;
+}
+#table_reporte_2 tbody tr td:nth-child(6){
+    text-align: right;
+}
+
+#table_reporte_3 tbody tr td:nth-child(2),
+#table_reporte_3 tbody tr td:nth-child(3),
+#table_reporte_3 tbody tr td:nth-child(4),
+#table_reporte_3 tbody tr td:nth-child(5){
+    text-align: center;
+}
+
+#table_reporte_4 tbody tr td:nth-child(2),
+#table_reporte_4 tbody tr td:nth-child(3),
+#table_reporte_4 tbody tr td:nth-child(4){
+    text-align: center;
+}
+
+#table_reporte_5 tbody tr td:nth-child(2),
+#table_reporte_5 tbody tr td:nth-child(3),
+#table_reporte_5 tbody tr td:nth-child(4),
+#table_reporte_5 tbody tr td:nth-child(5){
+    text-align: center;
+}
+#table_caja tbody tr td{
     text-align: center;
     vertical-align: middle;
 }

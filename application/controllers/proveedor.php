@@ -156,4 +156,38 @@ class proveedor extends CI_Controller {
         echo json_encode($data);
     }
 
+    public function paginate_report() {
+
+        $nTotal = $this->mod_view->count('proveedor', 0, false, array('esta_pro' => 'A'));
+
+        $proveedores = $this->mod_view->view('proveedor', 0, false, array('esta_pro' => 'A'));
+
+        $aaData = array();
+
+        foreach ($proveedores as $row) {
+
+            if ($row->emai_pro!="") {
+                $email = $row->emai_pro;
+            } else {
+                $email = "-";
+            }
+            
+            $aaData[] = array(
+                $row->nomb_pro,
+                $row->ruc_pro,
+                $row->telf_pro,
+                $email,
+                $row->dire_pro
+            );
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
+    }
+
 }

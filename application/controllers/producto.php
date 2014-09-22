@@ -159,29 +159,68 @@ class producto extends CI_Controller {
         print_r(json_encode($aa));
     }
 
+    public function paginate_report() {
+
+        $nTotal = $this->mod_view->count('producto', 0, false, array('stoc_prod >' => '0'));
+
+        $productos = $this->mod_view->view('producto', 0, false, array('stoc_prod >' => '0'));
+
+        $aaData = array();
+
+        foreach ($productos as $row) {
+
+            $time_in = strtotime($row->fein_prod);
+            $time_sa = strtotime($row->fesa_prod);
+            $fecha_in = date("d/m/Y g:i A", $time_in);
+            
+            if ($row->fesa_prod == "") {
+                $fecha_sa = "-";
+            } else {
+                $fecha_sa = date("d/m/Y g:i A", $time_sa);
+            }
+            
+
+            $aaData[] = array(
+                $row->nomb_prod,
+                $fecha_in,
+                $fecha_sa,
+                'S/. '.$row->prec_prod,
+                $row->stoc_prod
+            );
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
+    }
+
     public function get_vproducto() {
         $data = array();
         $productos = $this->mod_producto->get_vproducto();
         foreach ($productos as $row) {
-            
-            if ($row->fein_prod!=NULL) {
+
+            if ($row->fein_prod != NULL) {
                 $fein_r = strtotime($row->fein_prod);
                 $fein = date("d/m/y h:i:s A", $fein_r);
             } else {
                 $fein = "-";
             }
-            if ($row->fesa_prod!=NULL) {
+            if ($row->fesa_prod != NULL) {
                 $fesa_r = strtotime($row->fesa_prod);
                 $fesa = date("d/m/y h:i:s A", $fesa_r);
             } else {
                 $fesa = "-";
             }
-            if ($row->obsv_prod!=NULL) {
+            if ($row->obsv_prod != NULL) {
                 $obsv = $row->obsv_prod;
             } else {
                 $obsv = "-";
             }
-            
+
             $data[$row->codi_prod] = array(
                 $row->codi_prod,
                 $row->nomb_prod,

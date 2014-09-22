@@ -81,4 +81,26 @@ $(document).ready(function() {
         $("#ModalEditarUsuario").modal("show");
     });
 
+    var sw_search = "default";
+
+    $('.sw_search_usu').click(function() {
+        var input = $(this).find("input");
+
+        var class_search = input.attr('class');
+
+        if (class_search != sw_search) {
+
+            sw_search = class_search;
+            
+            if (class_search == "default") {
+                $('#table-usuario_filter input[type="search"]').inputmask("remove");
+            } else if (class_search == "buy") {
+                $('#table-usuario_filter input[type="search"]').inputmask("mask", {"alias": "dd/mm/yyyy"});
+            }
+
+        }
+
+
+    });
+
 });

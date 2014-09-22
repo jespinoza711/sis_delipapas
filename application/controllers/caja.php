@@ -11,6 +11,144 @@ class caja extends CI_Controller {
         $this->load->library('session');
     }
 
+    public function index() {
+        if (!$this->mod_config->AVP(2)) {
+            header('location: ' . base_url('login'));
+        } else {
+            date_default_timezone_set('America/Lima');
+            if ($this->input->post('registrar')) {
+                $data['num_caj'] = $this->input->post('num_caj');
+                $data['obsv_caj'] = $this->input->post('obsv_caj');
+                $data['fech_caj'] = date('Y-m-d H:i:s');
+                $data['esta_caj'] = 'A';
+                $this->mod_caja->insert($data);
+                $this->session->set_userdata('info', 'La caja de número ' . $data['num_caj'] . ' ha sido registrado existosamente.');
+                header('Location: ' . base_url('caja'));
+            } else if ($this->input->post('editar')) {
+                $codi_caj = $this->input->post('codi_caj_e');
+                $data['num_caj'] = $this->input->post('num_caj');
+                $data['obsv_caj'] = $this->input->post('obsv_caj');
+
+                $this->mod_caja->update($codi_caj, $data);
+                $this->session->set_userdata('info', 'La caja de número ' . $data['num_caj'] . ' ha sido actualizado existosamente.');
+
+                header('Location: ' . base_url('caja'));
+            } else if ($this->input->post('activar')) {
+                $codi_caj = $this->input->post('codigo');
+                $num_caja = $this->input->post('numero');
+                
+                $this->mod_caja->update($codi_caj, array('esta_caj' => 'A'));
+                $this->session->set_userdata('info', 'La caja de número ' . $num_caja . ' ha sido habilitado existosamente.');
+
+                header('Location: ' . base_url('caja'));
+            } else if ($this->input->post('desactivar')) {
+                $codi_caj = $this->input->post('codigo');
+                $num_caja = $this->input->post('numero');
+                
+                $this->mod_caja->update($codi_caj, array('esta_caj' => 'D'));
+                $this->session->set_userdata('info', 'La caja de número ' . $num_caja . ' ha sido deshabilitado existosamente.');
+
+                header('Location: ' . base_url('caja'));
+            } else {
+
+                $caja["form_caj"] = array('role' => 'form', "id" => "form_caj");
+                $caja["num_caj"] = array('id' => 'num_caj', 'name' => 'num_caj', 'class' => "form-control input-lg", "min" => "1", 'required' => 'true', 'autocomplete' => 'off', 'value' => "1", "type" => "number");
+                $caja["obsv_caja"] = array('id' => 'obsv_caj', 'name' => 'obsv_caj', 'class' => "form-control input-lg", 'placeholder' => "Escriba la observación...", "maxlength" => "100", "rows" => "5", "autocomplete" => "off");
+                $caja["registrar"] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Registrar");
+
+                // EDITAR
+                $caja["form_caj_edit"] = array('role' => 'form', "id" => "form_caj_edit");
+                $caja["codi_caj_e"] = array('id' => 'codi_caj_e', 'name' => 'codi_caj_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
+                $caja["num_caj_e"] = array('id' => 'num_caj_e', 'name' => 'num_caj', 'class' => "form-control input-lg", "min" => "1", 'required' => 'true', 'autocomplete' => 'off', 'value' => "1", "type" => "number");
+                $caja["obsv_caja_e"] = array('id' => 'obsv_caj_e', 'name' => 'obsv_caj', 'class' => "form-control input-lg", 'placeholder' => "Escriba la observación...", "maxlength" => "100", "rows" => "5", "autocomplete" => "off");
+                $caja["editar"] = array('name' => 'editar', 'class' => "btn btn-primary", 'value' => "Editar");
+
+                $data['page'] = 'Caja';
+                $data['container'] = $this->load->view('caja/caja_view', $caja, true);
+                $this->load->view('home/body', $data);
+            }
+        }
+    }
+
+    public function paginate() {
+
+        $nTotal = $this->mod_view->count('caja');
+
+        $cajas = $this->mod_caja->get_caja_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch']);
+
+        $form_a = array('role' => 'form', "style" => "display: inline-block;");
+
+        $aaData = array();
+
+        foreach ($cajas as $row) {
+
+
+            $estado = "";
+            $opciones = '<button type="button" class="tooltip_caj btn btn-default btn-circle editar_caj" data-toggle="tooltip" data-placement="top" title="Editar">
+                                                <i class="fa fa-edit"></i>
+                                            </button>';
+            if ($row->esta_caj == "D") {
+                $estado = "Deshabilitado";
+                $opciones .= '<span>' . form_open(base_url() . 'caja', $form_a) . ' 
+                         <input type="hidden" name="codigo" value="' . $row->codi_caj . '">
+                                                    <input type="hidden" name="numero" value="' . $row->num_caj . '">
+                                                    <input name="activar" type="submit" class="tooltip_caj btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar">
+                                                    ' . form_close() . '
+                                                </span>';
+            } else if ($row->esta_caj == "A") {
+                $estado = "Habilitado";
+                $opciones .= '<span>' . form_open(base_url() . 'caja', $form_a) . ' 
+                         <input type="hidden" name="codigo" value="' . $row->codi_caj . '">
+                                                    <input type="hidden" name="numero" value="' . $row->num_caj . '">
+                                                    <input name="desactivar" type="submit" class="tooltip_caj btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
+                                                    ' . form_close() . '
+                                                </span>';
+            }
+            $opciones.="<script>$('.tooltip_caj').tooltip();</script>";
+
+            $time = strtotime($row->fech_caj);
+            $fecha = date("d/m/Y g:i A", $time);
+
+            $observa = "-";
+            if ($row->obsv_caj != "") {
+                $observa = $row->obsv_caj;
+            }
+
+            $aaData[] = array(
+                $row->codi_caj,
+                $row->num_caj,
+                $observa,
+                $fecha,
+                $estado,
+                $opciones
+            );
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
+    }
+
+    public function get_caja() {
+
+        $data = array();
+        $cajas = $this->mod_view->view('caja');
+        foreach ($cajas as $row) {
+            $data[$row->codi_caj] = array(
+                $row->codi_caj,
+                $row->num_caj,
+                $row->obsv_caj,
+                $row->fech_caj,
+                $row->esta_caj
+            );
+        }
+        echo json_encode($data);
+    }
+
     public function venta() {
         if (!$this->mod_config->AVP(1)) {
             header('location: ' . base_url('login'));
@@ -86,7 +224,7 @@ class caja extends CI_Controller {
         } else {
 
             $data['page'] = 'Aperturar caja';
-            $caja["datetime"] =  $this->datetime_es();
+            $caja["datetime"] = $this->datetime_es();
 //            $caja["cajas"] =  $this->mod_view->view('caja_dia', false, false, false);
 
             $data['container'] = $this->load->view('caja/open_caja_view', $caja, true);
@@ -103,7 +241,7 @@ class caja extends CI_Controller {
         setlocale(LC_ALL, "es_ES");
         $dias = array("Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado");
         $meses = array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
-        return $dias[date('w')].", ".date('d')." de ".$meses[date('n')-1]. " de ".date('Y') . " y " . date('g:i A');
+        return $dias[date('w')] . ", " . date('d') . " de " . $meses[date('n') - 1] . " de " . date('Y') . " y " . date('g:i A');
     }
 
     public function registrar_compra() {
@@ -150,10 +288,10 @@ class caja extends CI_Controller {
 
         foreach ($tbl_venta as $row) {
 
-            // ACTUALIZAR STOCK DE PRODUCTO
+            // ACTUALIZAR STOCK Y FECHA DE SALIDA DE PRODUCTO
             $stock_anterior = $this->mod_view->dato('producto', 0, false, array('codi_prod' => $row[0]), 'stoc_prod');
             $stock_actual = (int) $stock_anterior - (int) $row[2];
-            $this->mod_view->update('producto', array('codi_prod' => $row[0]), array('stoc_prod' => $stock_actual));
+            $this->mod_view->update('producto', array('codi_prod' => $row[0]), array('stoc_prod' => $stock_actual, 'fesa_prod' => date("Y-m-d H:i:s")));
 
             // REGISTRO DE DETALLE DE VENTA
             $codi_dve = $this->mod_view->count('detalle_venta') + 1;
@@ -216,6 +354,78 @@ class caja extends CI_Controller {
 
     public function registrar_gasto_caja_chica() {
         
+    }
+
+    public function get_vcompras_paginate() {
+
+        $nTotal = $this->mod_view->count('compra', 0, false, array('esta_com' => 'A'));
+
+        $compras = $this->mod_view->view('v_compra');
+
+        $aaData = array();
+
+        foreach ($compras as $row) {
+
+            $fech_reg = substr($row->fech_com, 0, 7);
+
+            if ($this->session->userdata('input_reporte_1') == $fech_reg) {
+
+                $time = strtotime($row->fech_com);
+                $fecha = date("d/m/Y g:i A", $time);
+
+                $aaData[] = array(
+                    $fecha,
+                    $row->nomb_usu,
+                    $row->num_com,
+                    'S/. ' . $row->tota_com
+                );
+            }
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
+    }
+
+    public function get_v_ventas_paginate() {
+
+        $nTotal = $this->mod_view->count('venta', 0, false, array('esta_ven' => 'A'));
+
+        $ventas = $this->mod_view->view('v_venta');
+
+        $aaData = array();
+
+        foreach ($ventas as $row) {
+
+            $fech_reg = substr($row->fech_ven, 0, 7);
+
+            if ($this->session->userdata('input_reporte_2') == $fech_reg) {
+
+                $time = strtotime($row->fech_ven);
+                $fecha = date("d/m/Y g:i A", $time);
+
+                $aaData[] = array(
+                    $fecha,
+                    $row->apel_cli . ', ' . $row->nomb_cli,
+                    $row->num_caj,
+                    $row->nomb_usu,
+                    $row->nomb_com,
+                    'S/. ' . $row->tota_ven
+                );
+            }
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
     }
 
 }

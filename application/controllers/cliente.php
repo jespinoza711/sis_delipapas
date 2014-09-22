@@ -142,6 +142,33 @@ class cliente extends CI_Controller {
         print_r(json_encode($aa));
     }
 
+    public function paginate_report() {
+
+        $nTotal = $this->mod_view->count('cliente', 0, false, array('esta_cli' => 'A'));
+
+        $clientes = $this->mod_view->view('cliente', 0, false, array('esta_cli' => 'A'));
+
+        $aaData = array();
+
+        foreach ($clientes as $row) {
+
+            $aaData[] = array(
+                $row->nomb_cli . ' ' . $row->apel_cli,
+                $row->telf_cli,
+                $row->ruc_cli,
+                $row->dire_cli
+            );
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
+    }
+
     public function get_cliente() {
 
         $data = array();

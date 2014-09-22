@@ -17,7 +17,7 @@ class mod_caja extends CI_Model {
             return false;
         }
     }
-    
+
     public function get_vcaja($fecha) {
         $this->db->select('*');
         $this->db->from('caja');
@@ -25,6 +25,42 @@ class mod_caja extends CI_Model {
                      WHERE `caja`.`codi_caj` = `caja_dia`.`codi_caj`) =' => $fecha));
         $query = $this->db->get();
         return $query->result();
+    }
+
+    public function get_caja_paginate($limit, $start, $string = "") {
+
+        $this->db->like('codi_caj', $string);
+        $this->db->or_like('num_caj', $string);
+        $this->db->or_like('obsv_caj', $string);
+        $this->db->or_like('fech_caj', $string);
+        
+        $query = $this->db->get('caja');
+
+        $usuarios = $query->result();
+        $i = 0;
+        $c = 0;
+        $result = array();
+        foreach ($usuarios as $row) {
+            if ($i >= $start) {
+                if ($c < $limit) {
+                    $result[$c] = $row;
+                    $c++;
+                } else {
+                    break;
+                }
+            }
+            $i++;
+        }
+        return $result;
+    }
+    
+    function insert($data) {
+        $this->db->insert('caja', $data);
+    }
+    
+    function update($id, $data) {
+        $this->db->where('codi_caj', $id);
+        return $this->db->update('caja', $data);
     }
 
 }
