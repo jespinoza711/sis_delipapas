@@ -19,6 +19,7 @@ class mod_usuario extends CI_Model {
             $this->session->set_userdata('user_codi', $user->codi_usu);
             $this->session->set_userdata('user_name', $user->nomb_usu);
             $this->session->set_userdata('user_rol', $user->codi_rol);
+            $this->session->set_userdata('user_nrol', $user->nomb_rol);
             $this->session->set_userdata('logged', true);
             $this->session->set_userdata('alert', '');
 

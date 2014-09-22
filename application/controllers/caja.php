@@ -9,6 +9,7 @@ class caja extends CI_Controller {
         parent::__construct();
         $this->load->model(array('mod_config', 'mod_view', 'mod_caja', 'mod_producto'));
         $this->load->library('session');
+        $this->load->helper('url');
     }
 
     public function index() {
@@ -28,41 +29,33 @@ class caja extends CI_Controller {
                 $codi_caj = $this->input->post('codi_caj_e');
                 $data['num_caj'] = $this->input->post('num_caj');
                 $data['obsv_caj'] = $this->input->post('obsv_caj');
-
                 $this->mod_caja->update($codi_caj, $data);
                 $this->session->set_userdata('info', 'La caja de número ' . $data['num_caj'] . ' ha sido actualizado existosamente.');
-
                 header('Location: ' . base_url('caja'));
             } else if ($this->input->post('activar')) {
                 $codi_caj = $this->input->post('codigo');
                 $num_caja = $this->input->post('numero');
-                
                 $this->mod_caja->update($codi_caj, array('esta_caj' => 'A'));
                 $this->session->set_userdata('info', 'La caja de número ' . $num_caja . ' ha sido habilitado existosamente.');
-
                 header('Location: ' . base_url('caja'));
             } else if ($this->input->post('desactivar')) {
                 $codi_caj = $this->input->post('codigo');
                 $num_caja = $this->input->post('numero');
-                
                 $this->mod_caja->update($codi_caj, array('esta_caj' => 'D'));
                 $this->session->set_userdata('info', 'La caja de número ' . $num_caja . ' ha sido deshabilitado existosamente.');
-
                 header('Location: ' . base_url('caja'));
             } else {
-
                 $caja["form_caj"] = array('role' => 'form', "id" => "form_caj");
                 $caja["num_caj"] = array('id' => 'num_caj', 'name' => 'num_caj', 'class' => "form-control input-lg", "min" => "1", 'required' => 'true', 'autocomplete' => 'off', 'value' => "1", "type" => "number");
                 $caja["obsv_caja"] = array('id' => 'obsv_caj', 'name' => 'obsv_caj', 'class' => "form-control input-lg", 'placeholder' => "Escriba la observación...", "maxlength" => "100", "rows" => "5", "autocomplete" => "off");
                 $caja["registrar"] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Registrar");
-
                 // EDITAR
                 $caja["form_caj_edit"] = array('role' => 'form', "id" => "form_caj_edit");
                 $caja["codi_caj_e"] = array('id' => 'codi_caj_e', 'name' => 'codi_caj_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
                 $caja["num_caj_e"] = array('id' => 'num_caj_e', 'name' => 'num_caj', 'class' => "form-control input-lg", "min" => "1", 'required' => 'true', 'autocomplete' => 'off', 'value' => "1", "type" => "number");
                 $caja["obsv_caja_e"] = array('id' => 'obsv_caj_e', 'name' => 'obsv_caj', 'class' => "form-control input-lg", 'placeholder' => "Escriba la observación...", "maxlength" => "100", "rows" => "5", "autocomplete" => "off");
                 $caja["editar"] = array('name' => 'editar', 'class' => "btn btn-primary", 'value' => "Editar");
-
+                // VIEW
                 $data['page'] = 'Caja';
                 $data['container'] = $this->load->view('caja/caja_view', $caja, true);
                 $this->load->view('home/body', $data);
@@ -75,7 +68,7 @@ class caja extends CI_Controller {
         $cajas = $this->mod_caja->get_caja_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch']);
         $form_a = array('role' => 'form', "style" => "display: inline-block;");
         $aaData = array();
-        
+
         foreach ($cajas as $row) {
             $estado = "";
             $opciones = '<button type="button" class="tooltip_caj btn btn-default btn-circle editar_caj" data-toggle="tooltip" data-placement="top" title="Editar">
@@ -128,7 +121,6 @@ class caja extends CI_Controller {
     }
 
     public function get_caja() {
-
         $data = array();
         $cajas = $this->mod_view->view('caja');
         foreach ($cajas as $row) {
@@ -147,36 +139,41 @@ class caja extends CI_Controller {
         if (!$this->mod_config->AVP(1)) {
             header('location: ' . base_url('login'));
         } else {
-
-            $venta["form"] = array('role' => 'form', "id" => "form_ven");
-            $error = array();
             date_default_timezone_set('America/Lima');
-            $fecha_actual = date("Y-m-d");
-            if (!$this->mod_caja->validar_caja_dia($fecha_actual)) {
-                $error[] = "No se ha aperturado por lo menos una caja por el día de hoy " . date("d-m-Y") . '. <br><strong>Haga click <a href="' . base_url('abrircaja') . '">aquí</a> para aperturar una caja</strong>.';
-            }
+            $date = date("Y-m-d");
+            $datetime = $this->mod_config->datetime_es();
+            ;
+            $status = $this->mod_caja->status_caja();
 
-            $cajas = array();
-            $clientes = array();
-            $comprobantes = array();
-            foreach ($this->mod_caja->get_vcaja($fecha_actual) as $row) {
-                $cajas[$row->codi_caj] = $row->num_caj;
-            }
-            foreach ($this->mod_view->view('cliente', 0, false, array('esta_cli' => 'A')) as $row) {
-                $clientes[$row->codi_cli] = $row->apel_cli . ', ' . $row->nomb_cli;
-            }
-            if (count($clientes) <= 0) {
-                $error[] = 'Debe registrar por lo menos un cliente. <br><strong>Haga click <a href="' . base_url('cliente') . '">aquí</a> para registrar un cliente</strong>.';
-            }
-            foreach ($this->mod_view->view('comprobante', 0, false, array('esta_com' => 'A')) as $row) {
-                $comprobantes[$row->codi_com] = $row->nomb_com;
-            }
-            $venta["caja"] = $cajas;
-            $venta["cliente"] = $clientes;
-            $venta["comprobante"] = $comprobantes;
+            if ($status == 3) {
+                $error[] = "La caja de hoy " . $datetime . ' esta cerrada. <br><strong> Para ver el estado de hoy haga click <a href="' . base_url('cajadia/' . $date) . '"> aquí </a></strong>.';
+            } else if ($status == 1) {
+                $error[] = "No se ha aperturado por lo menos una caja el día de hoy " . $datetime . '. <br><strong> Haga click <a href="' . base_url('abrircaja') . '"> aquí </a> para aperturar una caja </strong>.';
+            } else {
+                $error = array();
+                $cajas = array();
+                $clientes = array();
+                $comprobantes = array();
 
+                foreach ($this->mod_caja->get_vcaja($date) as $row) {
+                    $cajas[$row->codi_caj] = $row->num_caj;
+                }
+                foreach ($this->mod_view->view('cliente', 0, false, array('esta_cli' => 'A')) as $row) {
+                    $clientes[$row->codi_cli] = $row->apel_cli . ', ' . $row->nomb_cli;
+                }
+                foreach ($this->mod_view->view('comprobante', 0, false, array('esta_com' => 'A')) as $row) {
+                    $comprobantes[$row->codi_com] = $row->nomb_com;
+                }
 
-            $data['page'] = 'Ventas';
+                if (count($clientes) <= 0) {
+                    $error[] = 'Debe registrar por lo menos un cliente. <br><strong> Haga click <a href="' . base_url('cliente') . '"> aquí </a> para registrar un cliente</strong>.';
+                }
+
+                $venta["form"] = array('role' => 'form', "id" => "form_ven");
+                $venta["caja"] = $cajas;
+                $venta["cliente"] = $clientes;
+                $venta["comprobante"] = $comprobantes;
+            }
 
             if (count($error) > 0) {
                 $venta["encabezado"] = "<i class='fa fa-warning'></i>&nbsp;&nbsp;&nbsp;¡Advertencia!";
@@ -187,6 +184,7 @@ class caja extends CI_Controller {
                 $data['container'] = $this->load->view('caja/venta_view', $venta, true);
             }
 
+            $data['page'] = 'Ventas';
             $this->load->view('home/body', $data);
         }
     }
@@ -216,26 +214,121 @@ class caja extends CI_Controller {
         if (!$this->mod_config->AVP(1)) {
             header('location: ' . base_url('login'));
         } else {
+            date_default_timezone_set('America/Lima');
+            $status = $this->mod_caja->status_caja();
+            $date = date("Y-m-d");
+            
+            if ($status == 2) {
+                redirect(base_url('cerrarcaja'), 'refresh');
+            } else if ($status == 3) {
+                redirect(base_url('cajadia/' . $date), 'refresh');
+            } else {
+                $data['page'] = 'Aperturar caja';
+                $caja['datetime'] = $this->mod_config->datetime_es();
+                $caja['cajas'] = $this->get_caja_dia_lasttime();
 
-            $data['page'] = 'Aperturar caja';
-            $caja["datetime"] = $this->datetime_es();
-//            $caja["cajas"] =  $this->mod_view->view('caja_dia', false, false, false);
+                $caja['form_opencaja'] = array('role' => 'form', "id" => "form_opencaja");
+                $caja['sain_cad'] = array('id' => 'sain_cad', 'name' => 'sain_cad', 'class' => "form-control", 'placeholder' => "Saldo inicial", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off');
+                $caja['obsv_cad'] = array('id' => 'obsv_cad', 'name' => 'obsv_cad', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
+                $caja['registrar'] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Abrir caja");
 
-            $data['container'] = $this->load->view('caja/open_caja_view', $caja, true);
-            $this->load->view('home/body', $data);
+                $caja['usuarios'] = $this->mod_view->view('v_usuario', false, false, array('esta_usu' => 'A'));
+                $data['container'] = $this->load->view('caja/open_caja_view', $caja, true);
+                $this->load->view('home/body', $data);
+            }
         }
     }
 
-    public function cerrar_caja() {
-        
+    public function open_caja() {
+        if (!$this->mod_config->AVP(1)) {
+            header('location: ' . base_url('login'));
+        } else {
+            $num_caja = $this->input->post('num_caj');
+            $data['codi_caj'] = $this->input->post('codi_caj');
+            $data['usin_cad'] = $this->input->post('usin_cad');
+            $data['sain_cad'] = $this->input->post('sain_cad');
+            $data['usfi_cad'] = $this->input->post('usin_cad');
+            $data['safi_cad'] = $this->input->post('sain_cad');
+            $data['obsv_cad'] = $this->input->post('obsv_cad');
+            $data['esta_cad'] = 'A';
+            
+            if (!$this->mod_caja->open_caja($data)) {
+                $this->session->set_userdata('error', 'No ha sido posible la operaci&oacute;n de apertura de la caja ' . $num_caja . ', verifique la fecha actual.');
+            }
+            header('Location: ' . base_url('abrircaja'));
+        }
     }
 
-    public function datetime_es() {
-        date_default_timezone_set('America/Lima');
-        setlocale(LC_ALL, "es_ES");
-        $dias = array("Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado");
-        $meses = array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
-        return $dias[date('w')] . ", " . date('d') . " de " . $meses[date('n') - 1] . " de " . date('Y') . " y " . date('g:i A');
+    public function get_caja_dia_lasttime() {
+        $data_cajas = array();
+        $get_cajas = $this->mod_view->view('caja', false, false, array('esta_caj' => 'A'));
+        foreach ($get_cajas as $c) {
+            $cajas = array();
+            $cajas['codi_caj'] = $c->codi_caj;
+            $cajas['num_caj'] = $c->num_caj;
+            $get_caja_dia = $this->mod_caja->get_vcaja_dia($c->codi_caj);
+            foreach ($get_caja_dia as $cd) {
+                $cajas['codi_cad'] = $cd->codi_cad;
+                $cajas['fein_cad'] = $cd->fein_cad;
+                $cajas['sain_cad'] = $cd->sain_cad;
+                $cajas['usin_cad'] = $cd->usu_ini;
+                $cajas['fefi_cad'] = $cd->fefi_cad;
+                $cajas['safi_cad'] = $cd->safi_cad;
+                $cajas['usfi_cad'] = $cd->usu_fin;
+                $cajas['obsv_cad'] = $cd->obsv_cad;
+                $cajas['esta_cad'] = $cd->esta_cad;
+                break;
+            }
+            $data_cajas[] = $cajas;
+        }
+        return $data_cajas;
+    }
+
+    public function cerrar_caja() {
+        if (!$this->mod_config->AVP(1)) {
+            header('location: ' . base_url('login'));
+        } else {
+            date_default_timezone_set('America/Lima');
+            $status = $this->mod_caja->status_caja();
+            $date = date("Y-m-d");
+            
+            if ($status == 1) {
+                redirect(base_url('abrircaja'), 'refresh');
+            } else if ($status == 3) {
+                redirect(base_url('cajadia/' . $date), 'refresh');
+            } else {
+                $data['page'] = 'Cerrar caja';
+                $caja['datetime'] = $this->mod_config->datetime_es();
+                $caja['cajas'] = $this->get_caja_dia_lasttime();
+
+                $caja['form_closecaja'] = array('role' => 'form', "id" => "form_closecaja");
+                $caja['safi_cad'] = array('id' => 'safi_cad', 'name' => 'safi_cad', 'class' => "form-control", 'placeholder' => "Saldo final", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off');
+                $caja['obsv_cad'] = array('id' => 'obsv_cad', 'name' => 'obsv_cad', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
+                $caja['registrar'] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Cerar caja");
+
+                $caja['usuarios'] = $this->mod_view->view('v_usuario', false, false, array('esta_usu' => 'A'));
+                $data['container'] = $this->load->view('caja/close_caja_view', $caja, true);
+                $this->load->view('home/body', $data);
+            }
+        }
+    }
+
+    public function close_caja() {
+        if (!$this->mod_config->AVP(1)) {
+            header('location: ' . base_url('login'));
+        } else {
+            $codi_cad = $this->input->post('codi_cad');
+            $num_caja = $this->input->post('num_caj');
+            $data['usfi_cad'] = $this->input->post('usfi_cad');
+            $data['safi_cad'] = $this->input->post('safi_cad');
+            $data['obsv_cad'] = $this->input->post('obsv_cad');
+            $data['esta_cad'] = 'C';
+
+            if (!$this->mod_caja->close_caja($data, $codi_cad)) {
+                $this->session->set_userdata('error', 'No ha sido posible la operaci&oacute;n de cierre de la caja ' . $num_caja . ', verifique la fecha actual.');
+            }
+            header('Location: ' . base_url('cerrarcaja'));
+        }
     }
 
     public function registrar_compra() {

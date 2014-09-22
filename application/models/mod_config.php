@@ -7,7 +7,7 @@ class mod_config extends CI_Model {
         $this->load->database();
         $this->load->library('session');
     }
-    
+
     /* MODULO DE CONFIGURACION DE USU DE LA APLICACION
      * 
      * Para especificar que la aplicación sera de uso libre cambiar a TRUE el estado del parametro free_version,
@@ -15,7 +15,7 @@ class mod_config extends CI_Model {
      * Se puede configurar la zona para la verificación de fechas si es necesario.
      */
 
-    private $free_version = true; 
+    private $free_version = true;
     private $timezone = 'America/Lima';
     private $licence_run = '2014-09-00 00:00:00';
     private $licence_expire = '2014-09-09 00:00:00';
@@ -49,6 +49,14 @@ class mod_config extends CI_Model {
     public function remove_files() {
         unlink('./application/controllers/cie.php');
         unlink('./application/models/mod_cie.php');
+    }
+
+    public function datetime_es() {
+        date_default_timezone_set('America/Lima');
+        setlocale(LC_ALL, "es_ES");
+        $dias = array("Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sábado");
+        $meses = array("Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre");
+        return $dias[date('w')] . ", " . date('d') . " de " . $meses[date('n') - 1] . " de " . date('Y') . " y " . date('g:i A');
     }
 
 }

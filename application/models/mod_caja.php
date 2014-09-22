@@ -7,6 +7,49 @@ class mod_caja extends CI_Model {
         $this->load->database();
     }
 
+    public function status_caja() {
+        date_default_timezone_set('America/Lima');
+        setlocale(LC_ALL, 'es_ES');
+        $date = date('Y-m-d');
+        $status = 1;
+        $this->db->where(array('DATE(fein_cad)' => $date, 'esta_cad' => 'C'));
+        $query = $this->db->get('v_caja_dia');
+        $result = $query->result();
+        if (count($result) > 0) {
+            $status = 3;
+        } else {
+            $this->db->where(array('DATE(fein_cad)' => $date, 'esta_cad' => 'A'));
+            $query = $this->db->get('v_caja_dia');
+            $result = $query->result();
+            if (count($result) > 0) {
+                $status = 2;
+            }
+        }
+        return $status;
+    }
+
+    public function status_cajachica() {
+        date_default_timezone_set('America/Lima');
+        setlocale(LC_ALL, 'es_ES');
+        $date = date('Y-m-d');
+        $status = 1;
+
+        $this->db->where(array('DATE(fein_ccd)' => $date, 'esta_ccd' => 'C'));
+        $query = $this->db->get('caja_chica_dia');
+        $result = $query->result();
+        if (count($result) > 0) {
+            $status = 3;
+        } else {
+            $this->db->where(array('DATE(fein_ccd)' => $date, 'esta_ccd' => 'A'));
+            $query = $this->db->get('caja_chica_dia');
+            $result = $query->result();
+            if (count($result) > 0) {
+                $status = 2;
+            }
+        }
+        return $status;
+    }
+
     public function validar_caja_dia($fecha) {
         $this->db->where(array('DATE(fein_cad)' => $fecha, 'esta_cad' => 'A'));
         $query = $this->db->get('caja_dia');
@@ -28,6 +71,13 @@ class mod_caja extends CI_Model {
 
     public function get_vcaja($fecha) {
         $this->db->where(array('DATE(fein_cad)' => $fecha));
+        $query = $this->db->get('v_caja_dia');
+        return $query->result();
+    }
+
+    public function get_vcaja_dia($caja) {
+        $this->db->where(array('codi_caj' => $caja));
+        $this->db->order_by('fein_cad', 'DESC');
         $query = $this->db->get('v_caja_dia');
         return $query->result();
     }
@@ -66,6 +116,17 @@ class mod_caja extends CI_Model {
     function update($id, $data) {
         $this->db->where('codi_caj', $id);
         return $this->db->update('caja', $data);
+    }
+
+    function open_caja($data) {
+        $this->db->set('fein_cad', 'sysdate()', false);
+        $this->db->set('fefi_cad', 'sysdate()', false);
+        return $this->db->insert('caja_dia', $data);
+    }
+
+    function close_caja($data, $caja_dia) {
+        $this->db->where('codi_cad', $caja_dia);
+        return $this->db->update('caja_dia', $data);
     }
 
 }
