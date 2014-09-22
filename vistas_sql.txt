@@ -34,20 +34,20 @@ cd.codi_caj,
 c.num_caj,
 cd.fein_cad,
 cd.usin_cad,
-ui.nomb_usu,
+ui.nomb_usu AS usu_ini,
 cd.sain_cad,
-MAX(cd.fefi_cad),
+cd.fefi_cad,
 cd.usfi_cad,
-uf.nomb_usu,
+uf.nomb_usu AS usu_fin,
 cd.safi_cad,
 cd.obsv_cad,
-cd.esta_Cad
+cd.esta_cad
 from caja c, caja_dia cd, usuario ui, usuario uf
 where cd.codi_caj = c.codi_caj
 and cd.usin_cad = ui.codi_usu
 and cd.usfi_cad = uf.codi_usu
-group by cd.codi_caj 
 order by cd.codi_caj asc
+
 
 SELECT 
 c.codi_caj,
@@ -69,6 +69,20 @@ where cd.codi_caj = c.codi_caj
 and cd.usin_cad = ui.codi_usu
 and cd.usfi_cad = uf.codi_usu
 group by Maxdatetime) as 
-
 WHERE c.codi_caj = cd.codi_caj
 ORDER BY cd.codi_caj asc
+
+SELECT 
+c.codi_caj,
+c.num_caj,
+(SELECT MAX(cd.fein_cad)
+FROM caja_dia cd
+WHERE cd.codi_caj = c.codi_caj) AS fein_cad,
+(SELECT MAX(cd.fefi_cad)
+FROM caja_dia cd
+WHERE cd.codi_caj = c.codi_caj) AS fefi_cad,
+c.fech_caj,
+c.obsv_caj,
+c.esta_caj
+FROM caja c
+ORDER BY c.codi_caj ASC

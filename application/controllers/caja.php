@@ -71,38 +71,32 @@ class caja extends CI_Controller {
     }
 
     public function paginate() {
-
         $nTotal = $this->mod_view->count('caja');
-
         $cajas = $this->mod_caja->get_caja_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch']);
-
         $form_a = array('role' => 'form', "style" => "display: inline-block;");
-
         $aaData = array();
-
+        
         foreach ($cajas as $row) {
-
-
             $estado = "";
             $opciones = '<button type="button" class="tooltip_caj btn btn-default btn-circle editar_caj" data-toggle="tooltip" data-placement="top" title="Editar">
-                                                <i class="fa fa-edit"></i>
-                                            </button>';
+                            <i class="fa fa-edit"></i>
+                        </button>';
             if ($row->esta_caj == "D") {
                 $estado = "Deshabilitado";
                 $opciones .= '<span>' . form_open(base_url() . 'caja', $form_a) . ' 
-                         <input type="hidden" name="codigo" value="' . $row->codi_caj . '">
-                                                    <input type="hidden" name="numero" value="' . $row->num_caj . '">
-                                                    <input name="activar" type="submit" class="tooltip_caj btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar">
-                                                    ' . form_close() . '
-                                                </span>';
+                                <input type="hidden" name="codigo" value="' . $row->codi_caj . '">
+                                <input type="hidden" name="numero" value="' . $row->num_caj . '">
+                                <input name="activar" type="submit" class="tooltip_caj btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar">
+                                ' . form_close() . '
+                            </span>';
             } else if ($row->esta_caj == "A") {
                 $estado = "Habilitado";
                 $opciones .= '<span>' . form_open(base_url() . 'caja', $form_a) . ' 
-                         <input type="hidden" name="codigo" value="' . $row->codi_caj . '">
-                                                    <input type="hidden" name="numero" value="' . $row->num_caj . '">
-                                                    <input name="desactivar" type="submit" class="tooltip_caj btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
-                                                    ' . form_close() . '
-                                                </span>';
+                                <input type="hidden" name="codigo" value="' . $row->codi_caj . '">
+                                <input type="hidden" name="numero" value="' . $row->num_caj . '">
+                                <input name="desactivar" type="submit" class="tooltip_caj btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
+                                ' . form_close() . '
+                            </span>';
             }
             $opciones.="<script>$('.tooltip_caj').tooltip();</script>";
 
