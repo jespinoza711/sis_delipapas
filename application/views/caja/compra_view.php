@@ -46,17 +46,19 @@
                                 <?php foreach ($producto as $row) { ?>
                                 
                                     <tr style="background-color:none">
-                                        <td style="text-align: center;"><?= $row->codi_prod ?></td>
-                                        <td style="text-align: center;"><?= $row->nomb_tipo ?></td>
-                                        <td style="text-align: center;"><?= $row->nomb_prod ?></td>
-                                        <td style="text-align: center;"><?= $row->prec_prod ?></td>
-                                        <td style="text-align: center;"><?= $row->stoc_prod ?></td>
-                                        <td style="text-align: center;"><?= $row->obsv_prod ?></td>
-                                        <td style="text-align: center;"><?= form_input($cantidad) ?></td>
-                                        <td style="text-align: center;">
+                                        <td style="text-align:center;vertical-align:middle"><?= $row->codi_prod ?></td>
+                                        <td style="text-align:center;vertical-align:middle"><?= $row->nomb_tipo ?></td>
+                                        <td style="text-align:center;vertical-align:middle"><?= $row->nomb_prod ?></td>
+                                        <td style="text-align:center;vertical-align:middle"><?= $row->prec_prod ?></td>
+                                        <td style="text-align:center;vertical-align:middle"><?= $row->stoc_prod ?></td>
+                                        <td style="text-align:center;vertical-align:middle"><?= $row->obsv_prod ?></td>
+                                        <td style="text-align:center;vertical-align:middle">
+                                            <input id="cant_pro_compra" type="number" min="1" class="form-control" value="0" style="width:80px">
+                                        </td>
+                                        <td style="text-align:center;vertical-align:middle">
                                             <select id="codi_rol" class="form-control" name="codi_pro"><?php foreach ($proveedor as $r) { ?> <option value="<?= $r->codi_pro ?>"><?= $r->nomb_pro ?></option> <?php } ?></select>
                                         </td>
-                                        <td style="vertical-align: middle; text-align: center;">                                            
+                                        <td style="text-align:center;vertical-align:middle">                                            
                                             <input name="agregar" type="button" class="tooltip-emp btn btn-primary btn-circle fa agregar_prod_compra" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Agregar al carrito">                                              
                                         </td>
                                     </tr>
@@ -104,9 +106,10 @@
                             </table>
                         </div>
                     </section>
+                    <div class="form-group"><label> Observaci&oacute;n de la compra: </label> <?= form_textarea($obsv_com) ?> </div>
                     <input id="tbl_compra_reg" name="tbl_compra" type="hidden">
                     <input id="total_compra_reg" name="total" type="hidden">
-                    <input type="submit" value="Registrar" id="register_compra" name="registrar" class="btn btn-block btn-lg btn-primary" disabled>
+                    <input type="submit" value="Registrar compra" id="register_compra" name="registrar" class="btn btn-block btn-lg btn-primary" disabled>
                     
                     <?= form_close() ?>
                     

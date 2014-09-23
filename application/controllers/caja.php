@@ -206,7 +206,7 @@ class caja extends CI_Controller {
             } else {
                 $error = array();
                 $compra['form_compra'] = array('role' => 'form', "id" => "form_compra");
-                $compra['cantidad'] = array('id' => 'catidad', 'name' => 'catidad', 'class' => "form-control", 'placeholder' => "Cantidad", "maxlength" => "10", 'required' => 'true', 'autocomplete' => 'off');
+                $compra['obsv_com'] = array('id' => 'obsv_com', 'name' => 'obsv_com', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
                 $compra['producto'] = $this->mod_view->view('v_producto', false, false, array('esta_prod' => 'A'));
                 $compra['proveedor'] = $this->mod_view->view('proveedor', false, false, array('esta_pro' => 'A'));
 
@@ -249,7 +249,7 @@ class caja extends CI_Controller {
             // REGISTRO DE COMPRA
             date_default_timezone_set('America/Lima');
             $compra = array(
-                'fech_ven' => date("Y-m-d H:i:s"),
+                'fech_com' => date("Y-m-d H:i:s"),
                 'codi_usu' => $this->session->userdata('user_codi'),
                 'num_com' => $num_compra,                
                 'tota_com' => $total,
@@ -269,7 +269,8 @@ class caja extends CI_Controller {
                     'codi_com' => $codi_compra,
                     'codi_prod' => $row[0],
                     'codi_prov' => $this->mod_view->dato('proveedor', 0, false, array('nomb_pro' => $row[4]), 'codi_pro'),
-                    'cantidad' => $row[2],
+                    'prec_prod' => $row[3],
+                    'cant_prod' => $row[2],
                     'suto_com' => $row[5]
                 );
                 $this->mod_view->insert_only('detalle_compra', $detalle_compra);
