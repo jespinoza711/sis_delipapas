@@ -66,9 +66,8 @@
                             </tbody>
                         </table>
                     </div>
-                    <button id="agregar_pro_compra" class="btn btn-block btn-lg btn-primary">Agregar producto</button>
   
-                    <?= form_open(base_url('registrarcompra'), $form_compra) ?>
+                    <?= form_open(base_url('caja/registrar_compra'), $form_compra) ?>
                     
                     <section id="detalle_compra" class="content invoice" style="width: 100%;">
                         <div class="form-group" id="cpo_det_compra">

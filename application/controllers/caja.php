@@ -233,7 +233,50 @@ class caja extends CI_Controller {
     }
 
     public function registrar_compra() {
-        
+        if (!$this->mod_config->AVP(1)) {
+            header('location: ' . base_url('login'));
+        } else {
+            $tbl_compra = json_decode($this->input->post('tbl_compra'));
+            $total = $this->input->post('total');
+            $obsv = $this->input->post('obsv_com');
+            
+            // GENERAR NUMERO DE COMPRA
+            $cont = $this->mod_view->count('compra') + 1;
+            $longitud = strlen($cont);
+            $numero = 'C000000000000';
+            $num_compra = substr($numero, 0, 13 - $longitud) . $cont;
+
+            // REGISTRO DE COMPRA
+            date_default_timezone_set('America/Lima');
+            $compra = array(
+                'fech_ven' => date("Y-m-d H:i:s"),
+                'codi_usu' => $this->session->userdata('user_codi'),
+                'num_com' => $num_compra,                
+                'tota_com' => $total,
+                'obsv_com' => $obsv,
+                'esta_com' => 'A'
+            );
+            $codi_compra = $this->mod_view->insert('compra', $compra);
+
+            foreach ($tbl_compra as $row) {
+                // ACTUALIZAR STOCK Y FECHA DE INGRESO DE PRODUCTO
+                $stock_anterior = $this->mod_view->dato('producto', 0, false, array('codi_prod' => $row[0]), 'stoc_prod');
+                $stock_actual = (int) $stock_anterior + (int) $row[2];
+                $this->mod_view->update('producto', array('codi_prod' => $row[0]), array('stoc_prod' => $stock_actual, 'fein_prod' => date("Y-m-d H:i:s")));
+
+                // REGISTRO DE DETALLE DE COMPRA
+                $detalle_compra = array(
+                    'codi_com' => $codi_compra,
+                    'codi_prod' => $row[0],
+                    'codi_prov' => $this->mod_view->dato('proveedor', 0, false, array('nomb_pro' => $row[4]), 'codi_pro'),
+                    'cantidad' => $row[2],
+                    'suto_com' => $row[5]
+                );
+                $this->mod_view->insert_only('detalle_compra', $detalle_compra);
+            }
+            $this->session->set_userdata('info', 'La compra ha sido registrada con éxito');
+            header('location: ' . base_url('compra'));
+        }
     }
 
     /* CAJA */
