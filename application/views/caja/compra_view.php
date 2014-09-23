@@ -1,134 +1,121 @@
-<div class="row">
+<div class="row" id="cpo_ventas">
     <div class="col-lg-12 col-xs-12">
+        
+        <?php if ($this->session->userdata('info') != '') { ?>
 
-        <div class="col-md-11" style="margin-left: 4%;">
-            <div id="panel-cie" class="panel panel-primary">
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                <?= $this->session->userdata('info') ?>
+            </div>
+
+        <?php $this->session->set_userdata('info', ''); } if ($this->session->userdata('error') != '') { ?>
+
+            <div class="alert alert-danger">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                <?= $this->session->userdata('error') ?>
+            </div>
+
+        <?php $this->session->set_userdata('error', ''); } ?>
+        
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Productos registrados</h3>
+                    Nueva Compra
                 </div>
                 <div class="panel-body">
-
-                    <?php if ($this->session->userdata('mensaje_compra') && $this->session->userdata('mensaje_compra') != "") { ?>
-
-                        <div class="alert alert-success alert-dismissable">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <?= $this->session->userdata('mensaje_compra') ?>
-                        </div>
-
-                        <?php
-                        $this->session->unset_userdata('mensaje_emp');
-                    }
-                    ?>
-
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevoEmpleado"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Nueva compra</button>
-                    <br><br>
+                    <div class="form-group">
+                        <label>Buscar producto: </label>
+                    </div>                    
                     <div class="table-responsive">
-                        <table id="table-usuario" class="table table-bordered">
+                        <table id="table-producto" class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th style="text-align: center;">Codigo</th>
                                     <th style="text-align: center;">Tipo</th>
                                     <th style="text-align: center;">Nombre</th>
+                                    <th style="text-align: center;">Precio</th>
                                     <th style="text-align: center;">Stock</th>
-                                    <th style="text-align: center;">Proveedor</th>
-                                    <th style="text-align: center;">Opciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($producto as $row) { ?>
-<!--                                    <tr style="background-color: none;">
-                                        <td style="text-align: center;"><?= $row->codi_prod ?></td>
-                                        <td><?= $row->nomb_tipo ?></td>
-                                        <td style="text-align: center;"><?= $row->dire_emp ?></td>
-                                        <td style="text-align: center;"><?= $row->telf_emp ?></td>
-                                        <td style="text-align: center;"><?php
-                                            if ($row->esta_emp == "A") {
-                                                echo "Habilitado";
-                                            } else if ($row->esta_emp == "D") {
-                                                echo "Deshabilitado";
-                                            }
-                                            ?></td>
-                                        <td style="vertical-align: middle; text-align: center;">
-                                            <button type="button" class="tooltip-emp btn btn-success btn-circle editar_emp" data-toggle="tooltip" data-placement="top" title="Editar">
-                                                <i class="fa fa-edit"></i>
-                                            </button>
-                                            <?php if ($row->esta_emp == "D") { ?>
-                                                <span>
-                                                    <?= form_open(base_url() . 'empleado', $form_a) ?>
-                                                    <input type="hidden" name="codigo" value="<?= $row->codi_emp ?>">
-                                                    <input type="hidden" name="empleado" value="<?= $row->nomb_emp . ' ' . $row->apel_emp ?>">
-                                                    <input name="activar" type="submit" class="tooltip-emp btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar">
-                                                    <?= form_close() ?>
-                                                </span>
-                                            <?php } else if ($row->esta_emp == "A") { ?>
-                                                <span>
-                                                    <?= form_open(base_url() . 'empleado', $form_a) ?>
-                                                    <input type="hidden" name="codigo" value="<?= $row->codi_emp ?>">
-                                                    <input type="hidden" name="empleado" value="<?= $row->nomb_emp . ' ' . $row->apel_emp ?>">
-                                                    <input name="desactivar" type="submit" class="tooltip-emp btn btn-danger btn-circle fa" value="&#xf05e;" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
-                                                    <?= form_close() ?>
-                                                </span>
-                                            <?php } ?>
-                                        </td>
-                                    </tr>-->
-                                <?php } ?>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="modal-footer">
-                        <div style="float: right;">
-                            <button id="btnCancelarModalMedico" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            <button id="btnEditarModalMedico" type="button" class="btn btn-primary" disabled>Editar</button>
-                            <button id="btnDeshabilitarMedico" type="button" class="btn btn-danger" data-toggle="modal" data-target="#ModalDeshabilitar" disabled>Deshabilitar</button>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-11" style="margin-left: 4%;">
-            <div id="panel-cie" class="panel panel-primary">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Nueva lista de compra</h3>
-                </div>
-                <div class="panel-body">
-
-                    <?php if ($this->session->userdata('mensaje_compra') && $this->session->userdata('mensaje_compra') != "") { ?>
-
-                        <div class="alert alert-success alert-dismissable">
-                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                            <?= $this->session->userdata('mensaje_compra') ?>
-                        </div>
-
-                        <?php
-                        $this->session->unset_userdata('mensaje_emp');
-                    }
-                    ?>
-
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevoEmpleado"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Nueva compra</button>
-                    <br><br>
-                    <div class="table-responsive">
-                        <table id="table-usuario" class="table table-bordered">
-                            <thead>
-                                <tr>
-                                    <th style="text-align: center;">Código</th>
-                                    <th style="text-align: center;">Nombre</th>
+                                    <th style="text-align: center;">Observ.</th>
                                     <th style="text-align: center;">Cantidad</th>
-                                    <th style="text-align: center;">Observación</th>
                                     <th style="text-align: center;">Proveedor</th>
-                                    <th style="text-align: center;">Opciones</th>
+                                    <th style="text-align: center;">Carrito</th>
                                 </tr>
                             </thead>
                             <tbody>
-
+                                
+                                <?php foreach ($producto as $row) { ?>
+                                
+                                    <tr style="background-color: none;">
+                                        <td style="text-align: center;"><?= $row->codi_prod ?></td>
+                                        <td style="text-align: center;"><?= $row->nomb_tipo ?></td>
+                                        <td style="text-align: center;"><?= $row->nomb_prod ?></td>
+                                        <td style="text-align: center;"><?= $row->prec_prod ?></td>
+                                        <td style="text-align: center;"><?= $row->stoc_prod ?></td>
+                                        <td style="text-align: center;"><?= $row->obsv_prod ?></td>
+                                        <td style="text-align: center;"><?= form_input($cantidad) ?></td>
+                                        <td style="text-align: center;">
+                                            <select id="codi_rol" class="form-control" name="codi_pro"><?php foreach ($proveedor as $r) { ?> <option value="<?= $r->codi_pro ?>"><?= $r->nomb_pro ?></option> <?php } ?></select>
+                                        </td>
+                                        <td style="vertical-align: middle; text-align: center;">                                            
+                                            <span>
+                                                <input type="hidden" name="codigo" value="<?= $row->codi_prod ?>">
+                                                <input type="hidden" name="empleado" value="<?= $row->nomb_prod ?>">
+                                                <input name="agregar" type="submit" class="tooltip-emp btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Agregar al carrito">                                              
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    
+                                <?php } ?>
+                                    
                             </tbody>
                         </table>
                     </div>
+  
+                    <?= form_open(base_url('registrarcompra'), $form_compra) ?>
+                    
+                    <section id="detalle_ven" class="content invoice" style="width: 100%;">
+                        <div class="form-group" id="cpo_det_ven">
+                            <label> Detalle de la compra: </label>
+                            <table id="detalle_productos_ven" class="table table-bordered">
+                                <thead>
+                                    <tr style="background-color: #428bca; color: white;">
+                                        <th style="text-align: center;"><span class="tooltip_ven" data-toggle="tooltip" data-placement="top" title="Código">Código</span></th>
+                                        <th style="text-align: center;"><span class="tooltip_ven" data-toggle="tooltip" data-placement="top" title="Producto">Producto</span></th>
+                                        <th style="text-align: center;"><span class="tooltip_ven" data-toggle="tooltip" data-placement="top" title="Cantidad">Cantidad</span></th>
+                                        <th style="text-align: center;"><span class="tooltip_ven" data-toggle="tooltip" data-placement="top" title="Valor unitario">Valor unitario</span></th>
+                                        <th style="text-align: center;"><span class="tooltip_ven" data-toggle="tooltip" data-placement="top" title="Proveedor">Proveedor</span></th>
+                                        <th style="text-align: center;"><span class="tooltip_ven" data-toggle="tooltip" data-placement="top" title="Importe">Importe</span></th>
+                                        <th style="text-align: center;"><span class="tooltip_ven" data-toggle="tooltip" data-placement="top" title="Opciones">Opciones</span></th>
+                                        <th></th>
+                                    </tr>
+                                </thead>                                    
+                                <tfoot>
+                                    <tr>
+                                        <td colspan="6" style="text-align: right;"><strong>Total:</strong></td>
+                                        <td id="total_ven"></td>
+                                        <td></td>
+                                    </tr>
+                                </tfoot>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="8">
+                                            <div class="callout callout-danger">
+                                                <p class="text-danger">Busque y agregue un producto</p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+                    <input id="tbl_venta_reg" name="tbl_venta" type="hidden">
+                    <input id="total_ven_reg" name="total" type="hidden">
+                    <input type="submit" value="Registrar" id="register_ven" name="registrar" class="btn btn-block btn-lg btn-primary" disabled>
+                    
+                    <?= form_close() ?>
+                    
                 </div>
             </div>
         </div>
-
     </div>
 </div>

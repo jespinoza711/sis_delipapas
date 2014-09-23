@@ -72,9 +72,9 @@ class caja extends CI_Controller {
             header('location: ' . base_url('login'));
         } else {
             date_default_timezone_set('America/Lima');
-            $date = date("Y-m-d");
             $datetime = $this->mod_config->datetime_es();
             $status = $this->mod_caja->status_caja();
+            $date = date("Y-m-d");
 
             if ($status == 3) {
                 $error[] = "La caja de hoy " . $datetime . ' esta cerrada. <br><strong> Para ver el estado de hoy haga click <a href="' . base_url('home') . '"> aquí </a></strong>.';
@@ -195,10 +195,39 @@ class caja extends CI_Controller {
         if (!$this->mod_config->AVP(1)) {
             header('location: ' . base_url('login'));
         } else {
+            date_default_timezone_set('America/Lima');
+            $datetime = $this->mod_config->datetime_es();
+            $status = $this->mod_caja->status_caja();
+
+            if ($status == 3) {
+                $error[] = "La caja de hoy " . $datetime . ' esta cerrada. <br><strong> Para ver el estado de hoy haga click <a href="' . base_url('home') . '"> aquí </a></strong>.';
+            } else if ($status == 1) {
+                $error[] = "No se ha aperturado por lo menos una caja el día de hoy " . $datetime . '. <br><strong> Haga click <a href="' . base_url('abrircaja') . '"> aquí </a> para aperturar una caja </strong>.';
+            } else {
+                $error = array();
+                $compra['form_compra'] = array('role' => 'form', "id" => "form_compra");
+                $compra['cantidad'] = array('id' => 'catidad', 'name' => 'catidad', 'class' => "form-control", 'placeholder' => "Cantidad", "maxlength" => "10", 'required' => 'true', 'autocomplete' => 'off');
+                $compra['producto'] = $this->mod_view->view('v_producto', false, false, array('esta_prod' => 'A'));
+                $compra['proveedor'] = $this->mod_view->view('proveedor', false, false, array('esta_pro' => 'A'));
+
+                if (count($compra['producto']) <= 0) {
+                    $error[] = 'Debe registrar por lo menos un producto. <br><strong> Haga click <a href="' . base_url('producto') . '"> aquí </a> para registrar un producto </strong>.';
+                }
+                if (count($compra['proveedor']) <= 0) {
+                    $error[] = 'Debe registrar por lo menos un proveedor. <br><strong> Haga click <a href="' . base_url('proveedor') . '"> aquí </a> para registrar un proveeedor </strong>.';
+                }
+            }
+
+            if (count($error) > 0) {
+                $info["encabezado"] = "<i class='fa fa-warning'></i>&nbsp;&nbsp;&nbsp;¡Advertencia!";
+                $info["panel"] = 'yellow';
+                $info["cuerpo"] = $error;
+                $data['container'] = $this->load->view('error', $info, true);
+            } else {
+                $data['container'] = $this->load->view('caja/compra_view', $compra, true);
+            }
+
             $data['page'] = 'Compras';
-            $compra['compra'] = $this->mod_view->view('compra', false, false, false);
-            $compra['producto'] = $this->mod_view->view('v_producto', false, false, false);
-            $data['container'] = $this->load->view('caja/compra_view', $compra, true);
             $this->load->view('home/body', $data);
         }
     }

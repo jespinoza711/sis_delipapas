@@ -20,7 +20,7 @@
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    Nueva venta
+                    Nueva Venta
                 </div>
                 <div class="panel-body">
                     <div class="form-group">
