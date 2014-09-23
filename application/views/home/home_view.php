@@ -45,7 +45,7 @@
                             <h4><i class="fa fa-fw fa-check"></i> CAJA CERRADA</h4>
                         </div>
                         <div class="panel-body">
-                            <a href="<?= base_url('caja') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/calendar.png' ?>" alt="Ir"></a>
+                            <a href="<?= base_url('home') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/calendar.png' ?>" alt="Ir"></a>
                         </div>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                             <h4><i class="fa fa-fw fa-check"></i> CAJA CHICA CERRADA </h4>
                         </div>
                         <div class="panel-body">
-                            <a href="<?= base_url('cajachica') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/calendar.png' ?>" alt="Ir"></a>
+                            <a href="<?= base_url('home') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/calendar.png' ?>" alt="Ir"></a>
                         </div>
                     </div>
                 </div>

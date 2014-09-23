@@ -1,5 +1,5 @@
 <div class="modal-dialog demo-modal">
-    <div class="modal-content panel panel-yellow">
+    <div class="modal-content panel panel-success">
         <div class="modal-header panel-heading">
             <h4 class="modal-title"> Aperturar Caja </h4>
         </div>
@@ -12,20 +12,14 @@
                     <?= $this->session->userdata('info') ?>
                 </div>
 
-                <?php
-                $this->session->set_userdata('info', '');
-            } if ($this->session->userdata('error') != '') {
-                ?>
+            <?php $this->session->set_userdata('info', ''); } if ($this->session->userdata('error') != '') { ?>
 
                 <div class="alert alert-danger">
                     <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
                     <?= $this->session->userdata('error') ?>
                 </div>
 
-                <?php
-                $this->session->set_userdata('error', '');
-            }
-            ?>
+            <?php $this->session->set_userdata('error', ''); } ?>
 
             <p style="text-align:center">
                 Hoy es: <br><h3 style="text-align:center"> <?= $datetime ?></h3><br> Porfavor verifique que la fecha y hora indicada sea la correcta 
@@ -58,7 +52,7 @@
                             <td><label> &nbsp;&nbsp; <?= $row['usfi_cad'] ?> </label></td>
                         </tr>
                         <tr>
-                            <td><label> Saldo inicial (S/.): </label></td>
+                            <td><label> Saldo final (S/.): </label></td>
                             <td><label> &nbsp;&nbsp; <?= $row['safi_cad'] ?> </label></td>
                         </tr>
                     </table>

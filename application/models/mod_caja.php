@@ -12,6 +12,7 @@ class mod_caja extends CI_Model {
         setlocale(LC_ALL, 'es_ES');
         $date = date('Y-m-d');
         $status = 1;
+        
         $this->db->where(array('DATE(fein_cad)' => $date, 'esta_cad' => 'C'));
         $query = $this->db->get('v_caja_dia');
         $result = $query->result();
@@ -83,15 +84,13 @@ class mod_caja extends CI_Model {
     }
 
     public function get_caja_paginate($limit, $start, $string = "") {
-
         $this->db->like('codi_caj', $string);
         $this->db->or_like('num_caj', $string);
         $this->db->or_like('obsv_caj', $string);
         $this->db->or_like('fech_caj', $string);
-
         $query = $this->db->get('caja');
-
         $usuarios = $query->result();
+        
         $i = 0;
         $c = 0;
         $result = array();
