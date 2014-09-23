@@ -1,4 +1,4 @@
-<div class="row" id="cpo_ventas">
+<div class="row" id="cpo_compra">
     <div class="col-lg-12 col-xs-12">
         
         <?php if ($this->session->userdata('info') != '') { ?>
@@ -45,7 +45,7 @@
                                 
                                 <?php foreach ($producto as $row) { ?>
                                 
-                                    <tr style="background-color: none;">
+                                    <tr style="background-color:none">
                                         <td style="text-align: center;"><?= $row->codi_prod ?></td>
                                         <td style="text-align: center;"><?= $row->nomb_tipo ?></td>
                                         <td style="text-align: center;"><?= $row->nomb_prod ?></td>
@@ -57,11 +57,7 @@
                                             <select id="codi_rol" class="form-control" name="codi_pro"><?php foreach ($proveedor as $r) { ?> <option value="<?= $r->codi_pro ?>"><?= $r->nomb_pro ?></option> <?php } ?></select>
                                         </td>
                                         <td style="vertical-align: middle; text-align: center;">                                            
-                                            <span>
-                                                <input type="hidden" name="codigo" value="<?= $row->codi_prod ?>">
-                                                <input type="hidden" name="empleado" value="<?= $row->nomb_prod ?>">
-                                                <input name="agregar" type="submit" class="tooltip-emp btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Agregar al carrito">                                              
-                                            </span>
+                                            <input name="agregar" type="button" class="tooltip-emp btn btn-primary btn-circle fa agregar_prod_compra" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Agregar al carrito">                                              
                                         </td>
                                     </tr>
                                     
@@ -70,13 +66,14 @@
                             </tbody>
                         </table>
                     </div>
+                    <button id="agregar_pro_compra" class="btn btn-block btn-lg btn-primary">Agregar producto</button>
   
                     <?= form_open(base_url('registrarcompra'), $form_compra) ?>
                     
-                    <section id="detalle_ven" class="content invoice" style="width: 100%;">
-                        <div class="form-group" id="cpo_det_ven">
+                    <section id="detalle_compra" class="content invoice" style="width: 100%;">
+                        <div class="form-group" id="cpo_det_compra">
                             <label> Detalle de la compra: </label>
-                            <table id="detalle_productos_ven" class="table table-bordered">
+                            <table id="detalle_productos_compra" class="table table-bordered">
                                 <thead>
                                     <tr style="background-color: #428bca; color: white;">
                                         <th style="text-align: center;"><span class="tooltip_ven" data-toggle="tooltip" data-placement="top" title="Código">Código</span></th>
@@ -92,7 +89,7 @@
                                 <tfoot>
                                     <tr>
                                         <td colspan="6" style="text-align: right;"><strong>Total:</strong></td>
-                                        <td id="total_ven"></td>
+                                        <td id="total_compra"></td>
                                         <td></td>
                                     </tr>
                                 </tfoot>
@@ -108,9 +105,9 @@
                             </table>
                         </div>
                     </section>
-                    <input id="tbl_venta_reg" name="tbl_venta" type="hidden">
-                    <input id="total_ven_reg" name="total" type="hidden">
-                    <input type="submit" value="Registrar" id="register_ven" name="registrar" class="btn btn-block btn-lg btn-primary" disabled>
+                    <input id="tbl_compra_reg" name="tbl_compra" type="hidden">
+                    <input id="total_compra_reg" name="total" type="hidden">
+                    <input type="submit" value="Registrar" id="register_compra" name="registrar" class="btn btn-block btn-lg btn-primary" disabled>
                     
                     <?= form_close() ?>
                     
