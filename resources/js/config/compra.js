@@ -35,6 +35,14 @@ $(document).ready(function() {
             }
         };
 
+        $.ajax({
+            url: base_url + 'producto/get_vproducto',
+            type: 'post',
+            success: function(data) {
+                productos = $.parseJSON(data);
+            }
+        });
+
         $('.tooltip_compra').tooltip();
 
 //--- ADD PRODUCT
@@ -202,7 +210,7 @@ $(document).ready(function() {
                 }
 
                 productos[codigo][6] = parseInt(productos[codigo][6]) - parseInt(cantidad);
-                
+
                 $('#register_compra').prop('disabled', false);
                 $("#detalle_compra_ven").slideUp("fast");
                 $("html,body").animate({scrollTop: $("#cpo_det_compra").eq(0).offset().top}, 1000);
@@ -217,7 +225,7 @@ $(document).ready(function() {
                 actualizar_tbl_compra();
             }
         });
-        
+
         /* REMOVE */
 
         $(document).on('click', '.quitar_prod_compra', function() {
@@ -226,7 +234,7 @@ $(document).ready(function() {
             var producto = $(this).parent().parent().find("td").eq(1).html();
             var cantidad = $(this).parent().parent().find("td").eq(2).html();
             var total = 0;
-            
+
             $("#detalle_productos_compra tbody tr").each(function() {
                 if ($(this).find("td").eq(0).html() != codigo) {
                     total += parseFloat($(this).find("td").eq(5).html().substring(4));
@@ -240,7 +248,8 @@ $(document).ready(function() {
             if (total != 0) {
                 $('#total_compra').html("S/. " + total.toFixed(2));
                 $('#total_compra_reg').val(total);
-                
+                actualizar_tbl_compra();
+
             } else {
                 $('#total_compra').html("");
                 $('#total_compra_reg').val("0");
@@ -260,8 +269,7 @@ $(document).ready(function() {
                 color: "#C46A69",
                 iconSmall: "fa fa-times fa-2x fadeInRight animated",
                 timeout: 6000
-            });
-            actualizar_tbl_compra();
+            });            
         });
     }
 

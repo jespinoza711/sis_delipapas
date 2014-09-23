@@ -351,6 +351,8 @@ $(document).ready(function() {
             if (total != 0) {
                 $('#total_ven').html("S/. " + total.toFixed(2));
                 $('#total_ven_reg').val(total);
+                actualizar_tbl_compra();
+                
             } else {
                 $('#total_ven').html("");
                 $('#total_ven_reg').val("0");
@@ -371,7 +373,6 @@ $(document).ready(function() {
                 iconSmall: "fa fa-times fa-2x fadeInRight animated",
                 timeout: 6000
             });
-            actualizar_tbl_venta();
         });
     }
 
