@@ -15,6 +15,7 @@ $route['abrircajachica'] = "caja/abrir_caja_chica";
 $route['opencajachica'] = "caja/open_caja_chica";
 $route['cerrarcajachica'] = "caja/cerrar_caja_chica";
 $route['closecajachica'] = "caja/close_caja_chica";
+$route['regcajachica'] = "caja/registro_gasto_caja_chica";
 
 $route['registrodiario'] = "registro/registro_diario";
 

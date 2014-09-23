@@ -308,42 +308,162 @@ class caja extends CI_Controller {
     /* CAJA CHICA */
 
     public function caja_chica() {
-        $data['page'] = 'Caja chica';
+        if (!$this->mod_config->AVP(1)) {
+            header('location: ' . base_url('login'));
+        } else {
+            date_default_timezone_set('America/Lima');
+            $datetime = $this->mod_config->datetime_es();
+            $status = $this->mod_caja->status_cajachica();
+            $date = date("Y-m-d");
 
-        $caja["form_cajachica"] = array('role' => 'form', "id" => "form_cajachica");
-        $caja["codi_cac"] = array('id' => 'codi_cac', 'name' => 'codi_cac', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
-        $caja["nomb_gas"] = array('id' => 'nomb_gas', 'name' => 'nomb_gas', 'class' => "form-control", 'placeholder' => "Descripción", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off');
-        $caja["impo_gas"] = array('id' => 'impo_gas', 'name' => 'impo_gas', 'class' => "form-control", 'placeholder' => "Importe", "maxlength" => "10", 'required' => 'true', 'autocomplete' => 'off');
-        $caja["obsv_gas"] = array('id' => 'obsv_gas', 'name' => 'obsv_gas', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
-        $caja["registrar"] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Registrar");
+            if ($status == 3) {
+                $error[] = "La caja chica de hoy " . $datetime . ' esta cerrada. <br><strong> Para ver el estado de hoy haga click <a href="' . base_url('home') . '"> aquí </a></strong>.';
+            } else if ($status == 1) {
+                $error[] = "No se ha aperturado la caja chica hoy " . $datetime . '. <br><strong> Haga click <a href="' . base_url('abrircajachica') . '"> aquí </a> para aperturar una la caja chica </strong>.';
+            } else {
+                $error = array();
+                $caja['cajachica'] = $this->mod_view->one('caja_chica', false, false, array('esta_cac' => 'A'));
+                $caja['concepto'] = $this->mod_view->view('concepto', false, false, array('esta_con' => 'A'));
 
-        $caja['empleado'] = $this->mod_view->view('empleado', false, false, false);
-        $caja['concepto'] = $this->mod_view->view('concepto', false, false, false);
+                if (count($caja['concepto']) <= 0) {
+                    $error[] = 'Debe registrar por lo menos un concepto de gasto. <br><strong> Haga click <a href="' . base_url('concepto') . '"> aquí </a> para registrar un concepto de gasto </strong>.';
+                }
 
-        $data['container'] = $this->load->view('caja/cajachica_view', $caja, true);
-        $this->load->view('home/body', $data);
+                $caja['form_regcajachica'] = array('role' => 'form', "id" => "form_regcajachica");
+                $caja['codi_cac'] = array('id' => 'codi_cac', 'name' => 'codi_cac', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
+                $caja['codi_usu'] = array('id' => 'codi_usu', 'name' => 'codi_usu', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
+                $caja['nomb_gas'] = array('id' => 'nomb_gas', 'name' => 'nomb_gas', 'class' => "form-control", 'placeholder' => "Descripción", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off');
+                $caja['impo_gas'] = array('id' => 'impo_gas', 'name' => 'impo_gas', 'class' => "form-control", 'placeholder' => "Importe", "maxlength" => "10", 'required' => 'true', 'autocomplete' => 'off');
+                $caja['obsv_gas'] = array('id' => 'obsv_gas', 'name' => 'obsv_gas', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
+                $caja['registrar'] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Registrar gasto");
+            }
+
+            if (count($error) > 0) {
+                $cajachica["encabezado"] = "<i class='fa fa-warning'></i>&nbsp;&nbsp;&nbsp;¡Advertencia!";
+                $cajachica["panel"] = 'yellow';
+                $cajachica["cuerpo"] = $error;
+                $data['container'] = $this->load->view('error', $cajachica, true);
+            } else {
+                $data['container'] = $this->load->view('caja/cajachica_view', $caja, true);
+            }
+
+            $data['page'] = 'Caja chica';
+            $this->load->view('home/body', $data);
+        }
     }
 
     public function abrir_caja_chica() {
-        
+        if (!$this->mod_config->AVP(1)) {
+            header('location: ' . base_url('login'));
+        } else {
+            $status = $this->mod_caja->status_cajachica();
+            if ($status == 2) {
+                redirect(base_url('cerrarcajachica'), 'refresh');
+            } else if ($status == 3) {
+                redirect(base_url('home'), 'refresh');
+            } else {
+                $data['page'] = 'Aperturar caja chica';
+                $cajachica['datetime'] = $this->mod_config->datetime_es();
+                $cajachica['cajas'] = $this->get_cajachica_dia_lasttime();
+
+                $cajachica['form_opencajachica'] = array('role' => 'form', "id" => "form_opencajachica");
+                $cajachica['sain_ccd'] = array('id' => 'sain_ccd', 'name' => 'sain_ccd', 'class' => "form-control", 'placeholder' => "Saldo inicial", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off');
+                $cajachica['obsv_ccd'] = array('id' => 'obsv_ccd', 'name' => 'obsv_ccd', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
+                $cajachica['registrar'] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Abrir caja chica");
+
+                $cajachica['usuarios'] = $this->mod_view->view('v_usuario', false, false, array('esta_usu' => 'A'));
+                $data['container'] = $this->load->view('caja/open_cajachica_view', $cajachica, true);
+                $this->load->view('home/body', $data);
+            }
+        }
     }
 
     public function open_caja_chica() {
-        
+        if (!$this->mod_config->AVP(1)) {
+            header('location: ' . base_url('login'));
+        } else {
+            $codi_caja = $this->input->post('codi_cac');
+            $data['codi_cac'] = $this->input->post('codi_cac');
+            $data['usin_ccd'] = $this->input->post('usin_ccd');
+            $data['sain_ccd'] = $this->input->post('sain_ccd');
+            $data['usfi_ccd'] = $this->input->post('usin_ccd');
+            $data['safi_ccd'] = $this->input->post('sain_ccd');
+            $data['obsv_ccd'] = $this->input->post('obsv_ccd');
+            $data['esta_ccd'] = 'A';
+
+            if (!$this->mod_caja->open_cajachica($data)) {
+                $this->session->set_userdata('error', 'No ha sido posible la operaci&oacute;n de apertura de la caja chica ' . $codi_caja . ', verifique la fecha actual.');
+            }
+            header('Location: ' . base_url('abrircajachica'));
+        }
     }
 
     public function cerrar_caja_chica() {
-        
+        if (!$this->mod_config->AVP(1)) {
+            header('location: ' . base_url('login'));
+        } else {
+            $status = $this->mod_caja->status_cajachica();
+            if ($status == 1) {
+                redirect(base_url('abrircajachica'), 'refresh');
+            } else if ($status == 3) {
+                redirect(base_url('home'), 'refresh');
+            } else {
+                $data['page'] = 'Cerrar caja chica';
+                $cajachica['datetime'] = $this->mod_config->datetime_es();
+                $cajachica['cajas'] = $this->get_cajachica_dia_lasttime();
+
+                $cajachica['form_closecajachica'] = array('role' => 'form', "id" => "form_closecajachica");
+                $cajachica['safi_ccd'] = array('id' => 'safi_ccd', 'name' => 'safi_ccd', 'class' => "form-control", 'placeholder' => "Saldo final", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off');
+                $cajachica['obsv_ccd'] = array('id' => 'obsv_ccd', 'name' => 'obsv_ccd', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
+                $cajachica['registrar'] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Cerrar caja chica");
+
+                $cajachica['usuarios'] = $this->mod_view->view('v_usuario', false, false, array('esta_usu' => 'A'));
+                $data['container'] = $this->load->view('caja/close_cajachica_view', $cajachica, true);
+                $this->load->view('home/body', $data);
+            }
+        }
     }
 
     public function close_caja_chica() {
-        
+        if (!$this->mod_config->AVP(1)) {
+            header('location: ' . base_url('login'));
+        } else {
+            $codi_ccd = $this->input->post('codi_ccd');
+            $sain_ccd = $this->input->post('sain_ccd');
+            $data['usfi_ccd'] = $this->input->post('usfi_ccd');
+            $data['safi_ccd'] = $this->input->post('safi_ccd');
+            $data['dife_ccd'] = $data['safi_ccd'] - $sain_ccd;
+            $data['obsv_ccd'] = $this->input->post('obsv_ccd');
+            $data['esta_ccd'] = 'C';
+
+            if (!$this->mod_caja->close_cajachica($data, $codi_ccd)) {
+                $this->session->set_userdata('error', 'No ha sido posible la operaci&oacute;n de cierre de la caja chica ' . $codi_caja . ', verifique la fecha actual.');
+            }
+            header('Location: ' . base_url('cerrarcajachica'));
+        }
     }
 
-    public function registrar_gasto_caja_chica() {
-        
+    public function registro_gasto_caja_chica() {
+        if (!$this->mod_config->AVP(1)) {
+            header('location: ' . base_url('login'));
+        } else {
+            $data['codi_cac'] = $this->input->post('codi_cac');
+            $data['codi_usu'] = $this->session->userdata('user_codi');
+            $data['codi_con'] = $this->input->post('codi_con');
+            $data['nomb_gas'] = $this->input->post('nomb_gas');
+            $data['impo_gas'] = $this->input->post('impo_gas');
+            $data['obsv_gas'] = $this->input->post('obsv_gas');
+            $data['esta_gas'] = 'A';
+
+            if ($this->mod_caja->registro_gasto_cajachica($data)) {
+                $this->session->set_userdata('info', 'Se ha registrado el gasto de la caja chica ' . $data['codi_cac'] . ' exitosamente.');
+            } else {
+                $this->session->set_userdata('error', 'No ha sido posible registrar el gasto de la caja chica ' . $data['codi_cac'] . ', verifique los datos proporcionados.');
+            }
+            header('Location: ' . base_url('cajachica'));
+        }
     }
-    
+
     /* GET DATA PHP */
 
     public function get_caja_dia_lasttime() {
@@ -370,7 +490,31 @@ class caja extends CI_Controller {
         }
         return $data_cajas;
     }
-    
+
+    public function get_cajachica_dia_lasttime() {
+        $data_cajas = array();
+        $get_cajas = $this->mod_view->view('caja_chica', false, false, array('esta_cac' => 'A'));
+        foreach ($get_cajas as $c) {
+            $cajas = array();
+            $cajas['codi_cac'] = $c->codi_cac;
+            $get_caja_dia = $this->mod_caja->get_vcajachica_dia($c->codi_cac);
+            foreach ($get_caja_dia as $cd) {
+                $cajas['codi_ccd'] = $cd->codi_ccd;
+                $cajas['fein_ccd'] = $cd->fein_ccd;
+                $cajas['sain_ccd'] = $cd->sain_ccd;
+                $cajas['usin_ccd'] = $cd->usu_ini;
+                $cajas['fefi_ccd'] = $cd->fefi_ccd;
+                $cajas['safi_ccd'] = $cd->safi_ccd;
+                $cajas['usfi_ccd'] = $cd->usu_fin;
+                $cajas['obsv_ccd'] = $cd->obsv_ccd;
+                $cajas['esta_ccd'] = $cd->esta_ccd;
+                break;
+            }
+            $data_cajas[] = $cajas;
+        }
+        return $data_cajas;
+    }
+
     /* GET DATA JSON */
 
     public function paginate() {
