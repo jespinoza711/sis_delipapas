@@ -18,6 +18,7 @@ $route['closecajachica'] = "caja/close_caja_chica";
 $route['regcajachica'] = "caja/registro_gasto_caja_chica";
 
 $route['registrodiario'] = "registro/registro_diario";
+$route['registrodiariodia'] = "registro/registro_diario_dia";
 
 $route['inventario'] = "producto/inventario";
 $route['aproducto'] = "producto/activar_producto";

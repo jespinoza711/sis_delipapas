@@ -86,5 +86,10 @@ class mod_empleado extends CI_Model {
         $query = $this->db->get('planilla');
         return $query->result();
     }
+    
+    function registro_diario_dia($data){
+        $this->db->set('fech_dpl', 'sysdate()', false);
+        return $this->db->insert('registro_planilla', $data);;
+    }
 
 }
