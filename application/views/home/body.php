@@ -34,16 +34,16 @@
                         <!-- Messages: style can be found in dropdown.less-->
                         <!-- User Account: style can be found in dropdown.less -->
 
-                        <li class="user user-menu"><a href="<?= base_url('cajachica') ?>"><span>Caja chica</span></a></li>
-                        <li class="user user-menu"><a href="<?= base_url('registrodiario') ?>"><span>Registro diario</span></a></li>
+                        <li class="user user-menu"><a href="<?= base_url('cajachica') ?>"><span>CAJA CHICA</span></a></li>
+                        <li class="user user-menu"><a href="<?= base_url('registrodiario') ?>"><span>REGISTRO DIARIO</span></a></li>
 
                         <?php if ($this->session->userdata('logged') == true) { ?>
 
-                            <li class="user user-menu"><a href="<?= base_url('close') ?>"><span>Cerrar sesión</span></a></li>
+                            <li class="user user-menu"><a href="<?= base_url('close') ?>"><span>CERRAR SESION</span></a></li>
 
                         <?php } else { ?>
 
-                            <li class="user user-menu"><a href="<?= base_url('login') ?>"><span>Iniciar sesión</span></a></li>
+                            <li class="user user-menu"><a href="<?= base_url('login') ?>"><span>INICIAR SESION</span></a></li>
 
                         <?php } ?>
 

@@ -23,8 +23,8 @@ p.prec_prod,
 p.fein_prod,
 p.fesa_prod,
 p.stoc_prod,
-p.esta_prod,
-p.obsv_prod
+p.obsv_prod,
+p.esta_prod
 FROM producto p, tipo_producto tp 
 ORDER BY p.codi_prod ASC;
 
@@ -46,43 +46,23 @@ from caja c, caja_dia cd, usuario ui, usuario uf
 where cd.codi_caj = c.codi_caj
 and cd.usin_cad = ui.codi_usu
 and cd.usfi_cad = uf.codi_usu
-order by cd.codi_caj asc
+order by cd.fein_cad desc;
 
-
-SELECT 
-c.codi_caj,
-c.num_caj,
-(SELECT 
-cd.codi_cad,
-cd.fein_cad,
-cd.usin_cad,
-ui.nomb_usu,
-cd.sain_cad,
-MAX(cd.fefi_cad) as Maxdatetime,
-cd.usfi_cad,
-uf.nomb_usu,
-cd.safi_cad,
-cd.obsv_cad,
-cd.esta_Cad
-from caja c, caja_dia cd, usuario ui, usuario uf
-where cd.codi_caj = c.codi_caj
-and cd.usin_cad = ui.codi_usu
-and cd.usfi_cad = uf.codi_usu
-group by Maxdatetime) as 
-WHERE c.codi_caj = cd.codi_caj
-ORDER BY cd.codi_caj asc
-
-SELECT 
-c.codi_caj,
-c.num_caj,
-(SELECT MAX(cd.fein_cad)
-FROM caja_dia cd
-WHERE cd.codi_caj = c.codi_caj) AS fein_cad,
-(SELECT MAX(cd.fefi_cad)
-FROM caja_dia cd
-WHERE cd.codi_caj = c.codi_caj) AS fefi_cad,
-c.fech_caj,
-c.obsv_caj,
-c.esta_caj
-FROM caja c
-ORDER BY c.codi_caj ASC
+create view v_caja_chica_dia as
+select cc.codi_ccd,
+cc.codi_cac,
+cc.fein_ccd,
+cc.usin_ccd,
+ui.nomb_usu AS usu_ini,
+cc.sain_ccd,
+cc.fefi_ccd,
+cc.usfi_ccd,
+uf.nomb_usu AS usu_fin,
+cc.safi_ccd,
+cc.dife_ccd,
+cc.obsv_ccd,
+cc.esta_ccd
+from caja_chica_dia cc, usuario ui, usuario uf
+where cc.usin_ccd = ui.codi_usu
+and cc.usfi_ccd = uf.codi_usu
+order by cc.fein_ccd desc;

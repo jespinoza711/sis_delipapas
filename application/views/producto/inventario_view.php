@@ -24,10 +24,8 @@
 
                     <?php $this->session->set_userdata('error', ''); } ?>
 
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevoEmpleado"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Nuevo producto</button>
-                    <br><br>
                     <div class="table-responsive">
-                        <table id="table-usuario" class="table table-bordered">
+                        <table id="table-producto" class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th style="text-align: center;">Codigo</th>
@@ -38,7 +36,7 @@
                                     <th style="text-align: center;">Ult. Salida</th>
                                     <th style="text-align: center;">Stock</th>
                                     <th style="text-align: center;">Observ.</th>
-                                    <th style="text-align: center;">Opciones</th>
+                                    <th style="text-align: center;">Estado</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -55,15 +53,6 @@
                                         <td style="text-align: center;"><?= $row->stoc_prod ?></td>
                                         <td style="text-align: center;"><?= $row->obsv_prod ?></td>
                                         <td style="text-align: center;"><?= $row->esta_prod == 'A' ? 'Activo' : 'Inactivo' ?></td>
-                                        <td style="vertical-align: middle; text-align: center;">                                            
-                                            <span>
-                                                <?= form_open(base_url('aproducto'), 'frmProducto') ?>
-                                                <input type="hidden" name="codigo" value="<?= $row->codi_prod ?>">
-                                                <input type="hidden" name="empleado" value="<?= $row->nomb_prod ?>">
-                                                <input name="activar" type="submit" class="tooltip-emp btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar">
-                                                <?= form_close() ?>
-                                            </span>
-                                        </td>
                                     </tr>
                                     
                                 <?php } ?>

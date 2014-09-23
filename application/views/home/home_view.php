@@ -19,7 +19,7 @@
                             <h4><i class="fa fa-fw fa-check"></i> CERRAR CAJA </h4>
                         </div>
                         <div class="panel-body">
-                            <a href="<?= base_url('cerrarcaja') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/calendar.png' ?>" alt="Ir"></a>
+                            <a href="<?= base_url('cerrarcaja') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/caja.png' ?>" alt="Ir"></a>
                         </div>
                     </div>
                 </div>
@@ -32,7 +32,7 @@
                             <h4><i class="fa fa-fw fa-check"></i> APERTURAR CAJA </h4>
                         </div>
                         <div class="panel-body">
-                            <a href="<?= base_url('abrircaja') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/calendar.png' ?>" alt="Ir"></a>
+                            <a href="<?= base_url('abrircaja') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/caja.png' ?>" alt="Ir"></a>
                         </div>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                             <h4><i class="fa fa-fw fa-check"></i> CAJA CERRADA</h4>
                         </div>
                         <div class="panel-body">
-                            <a href="<?= base_url('home') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/calendar.png' ?>" alt="Ir"></a>
+                            <a href="<?= base_url('home') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/caja.png' ?>" alt="Ir"></a>
                         </div>
                     </div>
                 </div>
@@ -58,7 +58,7 @@
                             <h4><i class="fa fa-fw fa-check"></i> CERRAR CAJA CHICA </h4>
                         </div>
                         <div class="panel-body">
-                            <a href="<?= base_url('cerrarcajachica') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/calendar.png' ?>" alt="Ir"></a>
+                            <a href="<?= base_url('cerrarcajachica') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/caja_chica.png' ?>" alt="Ir"></a>
                         </div>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                             <h4><i class="fa fa-fw fa-check"></i> APERTURAR CAJA CHICA </h4>
                         </div>
                         <div class="panel-body">
-                            <a href="<?= base_url('abrircajachica') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/calendar.png' ?>" alt="Ir"></a>
+                            <a href="<?= base_url('abrircajachica') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/caja_chica.png' ?>" alt="Ir"></a>
                         </div>
                     </div>
                 </div>
@@ -84,7 +84,7 @@
                             <h4><i class="fa fa-fw fa-check"></i> CAJA CHICA CERRADA </h4>
                         </div>
                         <div class="panel-body">
-                            <a href="<?= base_url('home') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/calendar.png' ?>" alt="Ir"></a>
+                            <a href="<?= base_url('home') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/caja_chica.png' ?>" alt="Ir"></a>
                         </div>
                     </div>
                 </div>
@@ -97,7 +97,7 @@
                         <h4><i class="fa fa-fw fa-check"></i> REGISTRO DIARIO </h4>
                     </div>
                     <div class="panel-body">
-                        <a href="<?= base_url('registrodiario') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/calendar.png' ?>" alt="Ir"></a>
+                        <a href="<?= base_url('registrodiario') ?>" class="btn btn-default" style="width: 100%"><img src="<?= base_url() . 'resources/images/personal.png' ?>" alt="Ir"></a>
                     </div>
                 </div>
             </div>
