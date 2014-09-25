@@ -32,5 +32,16 @@ $route['producto'] = "producto/producto";
 $route['ajustes'] = "ajustes";
 $route['reporte'] = "reporte";
 
+$route['planilla'] = "ajustes/planilla";
+$route['registrarplanilla'] = "ajustes/registrar_planilla";
+$route['editarplanilla'] = "ajustes/editar_planilla";
+
+$route['concepto'] = "ajustes/concepto_gasto";
+$route['registrarconcepto'] = "ajustes/registrar_concepto_gasto";
+$route['editarconcepto'] = "ajustes/editar_concepto_gasto";
+
+$route['igv'] = "ajustes/igv";
+$route['editarigv'] = "ajustes/editar_igv";
+
 $route['default_controller'] = "home";
 $route['404_override'] = '';
