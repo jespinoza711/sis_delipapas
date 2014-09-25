@@ -66,3 +66,14 @@ from caja_chica_dia cc, usuario ui, usuario uf
 where cc.usin_ccd = ui.codi_usu
 and cc.usfi_ccd = uf.codi_usu
 order by cc.fein_ccd desc;
+
+create view v_concepto as
+select c.codi_con,
+c.fech_con,
+c.codi_usu,
+u.nomb_usu,
+c.nomb_con,
+c.esta_con
+from concepto c, usuario u
+where c.codi_usu = u.codi_usu
+order by c.codi_con asc
