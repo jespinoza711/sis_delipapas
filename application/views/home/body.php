@@ -100,6 +100,7 @@
         <script src="<?= base_url('resources/js/config/cliente.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/venta.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/compra.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/config/registrodiario.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/reporte.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/planilla.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/concepto.js') ?>" type="text/javascript"></script>

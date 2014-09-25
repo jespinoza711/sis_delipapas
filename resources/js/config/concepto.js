@@ -9,7 +9,7 @@ $(document).ready(function() {
             type: 'post',
             success: function(data) {
                 conceptos = $.parseJSON(data);
-                console.log(conceptos);
+//                console.log(conceptos);
             }
         });
 
