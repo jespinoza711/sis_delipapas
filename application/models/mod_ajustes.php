@@ -7,11 +7,17 @@ class mod_ajustes extends CI_Model {
         $this->load->database();
     }
 
+    public function update_negocio($codi, $data) {
+        $this->db->where(array('codi_neg' => $codi));
+        return $this->db->update('negocio', $data);
+    }
+
     public function get_planilla_paginate($limit, $start, $string = "") {
         $this->db->like('codi_pla', $string);
         $this->db->or_like('fech_pla', $string);
         $this->db->or_like('suel_pla', $string);
         $this->db->or_like('obsv_pla', $string);
+        $this->db->order_by('codi_pla', 'DESC');
         $query = $this->db->get('planilla');
         $planilla = $query->result();
 

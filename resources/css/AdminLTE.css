@@ -3901,6 +3901,13 @@ tr.group:hover {
     vertical-align: middle;
 }
 
+#num_ini_orden{
+    height: 3.5em
+}
+#num_ini_factura{
+    height: 3.5em
+}
+
 #table_concepto tbody tr td{
     text-align: center;
     vertical-align: middle;

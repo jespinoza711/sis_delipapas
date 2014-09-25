@@ -9,7 +9,7 @@
             </div>
         </div>
         <hr>
-        <div class="row">            
+        <div class="row">
 
             <?php if ($status_caja == 2) { ?>
             

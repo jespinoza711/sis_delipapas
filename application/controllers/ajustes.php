@@ -17,6 +17,37 @@ class ajustes extends CI_Controller {
         } else {
             date_default_timezone_set('America/Lima');
             $ajustes['datetime'] = date('Y-m-d H:i:s');
+            $ajustes['negocio'] = $this->mod_view->one('negocio');
+            // NEGOCIO
+            if ($this->input->post('registrar_negocio')) {
+                $data["ruc_neg"] = $this->input->post('ruc_neg');
+                $data["nomb_neg"] = $this->input->post('nomb_neg');
+                $data["dire_neg"] = $this->input->post('dire_neg');
+                $data["tel1_neg"] = $this->input->post('tel1_neg');
+                $data["tel2_neg"] = $this->input->post('tel2_neg');
+                $data["email_neg"] = $this->input->post('email_neg');
+                $data["web_neg"] = $this->input->post('web_neg');
+                $data["desc_neg"] = $this->input->post('desc_neg');
+                $data['esta_neg'] = 'A';                
+                $this->mod_ajustes->update_negocio('1', $data);
+                $this->session->set_userdata('info_negocio', 'La informaci&oacute;n de la empresa ha sido actualizado existosamente.');
+                header('Location: ' . base_url('ajustes'));
+            } else if ($this->input->post('registrar_igv')) {
+                $data['igv_pla'] = $this->input->post('igv_pla');
+                $this->mod_ajustes->update_negocio('1', $data);
+                $this->session->set_userdata('info_negocio', 'El I.G.V para operaciones del sistema ha sido actualizado existosamente.');
+                header('Location: ' . base_url('ajustes'));
+            } else if ($this->input->post('registrar_num_orden')) {
+                $data['num_ini_orden'] = $this->input->post('num_ini_orden');
+                $this->mod_ajustes->update_negocio('1', $data);
+                $this->session->set_userdata('info_negocio', 'Se ha establecido el n&uacute;mero incial para la Orden de despacho.');
+                header('Location: ' . base_url('ajustes'));
+            } else if ($this->input->post('registrar_num_factura')) {
+                $data['num_ini_factura'] = $this->input->post('num_ini_factura');
+                $this->mod_ajustes->update_negocio('1', $data);
+                $this->session->set_userdata('info_negocio', 'Se ha establecido el n&uacute;mero incial para la Factura.');
+                header('Location: ' . base_url('ajustes'));
+            } else 
             // PLANILLA
             if ($this->input->post('registrar_planilla')) {
                 $data['fech_pla'] = $ajustes['datetime'];
@@ -58,26 +89,52 @@ class ajustes extends CI_Controller {
                 header('Location: ' . base_url('ajustes'));
             } else if ($this->input->post('activar_concepto')) {
                 $codi_con = $this->input->post('codi_con');
+                $nomb_con = $this->input->post('nomb_con');
                 $this->mod_ajustes->update_concepto($codi_con, array('esta_con' => 'A'));
-                $this->session->set_userdata('info_concepto', 'El concepto de gasto ' . $data['nomb_con'] . ' ha sido habilitado existosamente.');
+                $this->session->set_userdata('info_concepto', 'El concepto de gasto ' . $nomb_con . ' ha sido habilitado existosamente.');
                 header('Location: ' . base_url('ajustes'));
             } else if ($this->input->post('desactivar_concepto')) {
                 $codi_con = $this->input->post('codi_con');
+                $nomb_con = $this->input->post('nomb_con');
                 $this->mod_ajustes->update_concepto($codi_con, array('esta_con' => 'D'));
-                $this->session->set_userdata('info_concepto', 'El concepto de gasto ' . $data['nomb_con'] . ' ha sido deshabilitado existosamente.');
+                $this->session->set_userdata('info_concepto', 'El concepto de gasto ' . $nomb_con . ' ha sido deshabilitado existosamente.');
                 header('Location: ' . base_url('ajustes'));
             } else {
+                // NEGOCIO
+                $ajustes["form_negocio"] = array('role' => 'form', "id" => "form_negocio");
+                $ajustes["ruc_neg"] = array('id' => 'ruc_neg', 'name' => 'ruc_neg', 'class' => "form-control", 'maxlength' => '11', 'required' => 'true');
+                $ajustes["nomb_neg"] = array('id' => 'nomb_neg', 'name' => 'nomb_neg', 'class' => "form-control", 'maxlength' => '50', 'required' => 'true');
+                $ajustes["dire_neg"] = array('id' => 'dire_neg', 'name' => 'dire_neg', 'class' => "form-control", 'maxlength' => '100', 'required' => 'true');
+                $ajustes["tel1_neg"] = array('id' => 'tel1_neg', 'name' => 'tel1_neg', 'class' => "form-control", 'maxlength' => '20', 'required' => 'true');
+                $ajustes["tel2_neg"] = array('id' => 'tel2_neg', 'name' => 'tel2_neg', 'class' => "form-control", 'maxlength' => '20', );
+                $ajustes["email_neg"] = array('id' => 'email_neg', 'name' => 'email_neg', 'class' => "form-control", 'maxlength' => '50', 'type' => 'email');
+                $ajustes["web_neg"] = array('id' => 'web_neg', 'name' => 'web_neg', 'class' => "form-control", 'maxlength' => '100');
+                $ajustes["desc_neg"] = array('id' => 'desc_neg', 'name' => 'desc_neg', 'class' => "form-control input-lg", 'placeholder' => "Escriba una descripci&oacute;n de la empresa...", "maxlength" => "1000", "rows" => "3", "autocomplete" => "off");
+                $ajustes["registrar_negocio"] = array('name' => 'registrar_negocio', 'class' => "btn btn-primary", 'value' => "Actualizar datos de la empresa");
+                // IGV
+                $ajustes["form_igv"] = array('role' => 'form', "id" => "form_igv");
+                $ajustes["igv_pla"] = array('id' => 'igv_pla', 'name' => 'igv_pla', 'class' => "form-control input-lg", "min" => "1", 'required' => 'true', 'autocomplete' => 'off', "type" => "number", "step" => "any");
+                $ajustes["registrar_igv"] = array('name' => 'registrar_igv', 'class' => "btn btn-primary btn-sm", 'value' => "Actualizar IGV");
+                // MUNERACION INCIAL DE ORDEN
+                $ajustes["form_num_orden"] = array('role' => 'form', "id" => "form_num_orden");
+                $ajustes["num_ini_orden"] = array('id' => 'num_ini_orden', 'name' => 'num_ini_orden', 'class' => "form-control", 'maxlength' => '50', 'required' => 'true', "type" => "text");
+                $ajustes["registrar_num_orden"] = array('name' => 'registrar_num_orden', 'class' => "btn btn-primary btn-sm", 'value' => "Iniciar Numeración");
+                // MUNERACION INCIAL DE FACTURA
+                $ajustes["form_num_factura"] = array('role' => 'form', "id" => "form_num_factura");
+                $ajustes["num_ini_factura"] = array('id' => 'num_ini_factura', 'name' => 'num_ini_factura', 'class' => "form-control", 'maxlength' => '50', 'required' => 'true', "type" => "text");
+                $ajustes["registrar_num_factura"] = array('name' => 'registrar_num_factura', 'class' => "btn btn-primary btn-sm", 'value' => "Iniciar Numeración");
+                
                 // PLANILLA INSERT
                 $ajustes["form_planilla"] = array('role' => 'form', "id" => "form_planilla");
                 $ajustes["fech_pla"] = array('id' => 'fech_pla', 'name' => 'fech_pla', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
-                $ajustes["suel_pla"] = array('id' => 'suel_pla', 'name' => 'suel_pla', 'class' => "form-control input-lg", "min" => "1", 'required' => 'true', 'autocomplete' => 'off', 'value' => "1", "type" => "number");
+                $ajustes["suel_pla"] = array('id' => 'suel_pla', 'name' => 'suel_pla', 'class' => "form-control input-lg", "min" => "1", 'required' => 'true', 'autocomplete' => 'off', 'value' => "1", "type" => "number", "step" => "any");
                 $ajustes["obsv_pla"] = array('id' => 'obsv_pla', 'name' => 'obsv_pla', 'class' => "form-control input-lg", 'placeholder' => "Escriba la observación...", "maxlength" => "100", "rows" => "5", "autocomplete" => "off");
                 $ajustes["registrar_planilla"] = array('name' => 'registrar_planilla', 'class' => "btn btn-primary", 'value' => "Registrar planilla");
                 // PLANILLA EDIT
                 $ajustes["form_planilla_edit"] = array('role' => 'form', "id" => "form_planilla_edit");
                 $ajustes["fech_pla_e"] = array('id' => 'fech_pla_e', 'name' => 'fech_pla_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
                 $ajustes["codi_pla_e"] = array('id' => 'codi_pla_e', 'name' => 'codi_pla_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
-                $ajustes["suel_pla_e"] = array('id' => 'suel_pla_e', 'name' => 'suel_pla_e', 'class' => "form-control input-lg", "min" => "1", 'required' => 'true', 'autocomplete' => 'off', 'value' => "1", "type" => "number");
+                $ajustes["suel_pla_e"] = array('id' => 'suel_pla_e', 'name' => 'suel_pla_e', 'class' => "form-control input-lg", "min" => "1", 'required' => 'true', 'autocomplete' => 'off', 'value' => "1", "type" => "number", "step" => "any");
                 $ajustes["obsv_pla_e"] = array('id' => 'obsv_pla_e', 'name' => 'obsv_pla_e', 'class' => "form-control input-lg", 'placeholder' => "Escriba la observación...", "maxlength" => "100", "rows" => "5", "autocomplete" => "off");
                 $ajustes["editar_planilla"] = array('name' => 'editar_planilla', 'class' => "btn btn-primary", 'value' => "Editar planilla");
                 
@@ -91,7 +148,7 @@ class ajustes extends CI_Controller {
                 $ajustes["form_concepto_edit"] = array('role' => 'form', "id" => "form_concepto_edit");
                 $ajustes["fech_con_e"] = array('id' => 'fech_con_e', 'name' => 'fech_con_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
                 $ajustes["codi_con_e"] = array('id' => 'codi_con_e', 'name' => 'codi_con_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
-                $ajustes["codi_con_e"] = array('id' => 'codi_con_e', 'name' => 'codi_con_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
+                $ajustes["nomb_usu_e"] = array('id' => 'nomb_usu_e', 'name' => 'nomb_usu_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
                 $ajustes["nomb_con_e"] = array('id' => 'nomb_con_e', 'name' => 'nomb_con_e', 'class' => "form-control", 'required' => 'true');
                 $ajustes["editar_concepto"] = array('name' => 'editar_concepto', 'class' => "btn btn-primary", 'value' => "Editar concepto de gasto");
 
@@ -101,19 +158,6 @@ class ajustes extends CI_Controller {
                 $this->load->view('home/body', $data);
             }
         }
-    }
-
-
-    public function registrar_concepto() {
-        
-    }
-
-    public function registrar_pago_hora_empleado() {
-        
-    }
-
-    public function registrar_igv() {
-        
     }
 
     public function get_planilla() {
@@ -213,6 +257,7 @@ class ajustes extends CI_Controller {
                 $estado = "Deshabilitado";
                 $opciones .= '<span>' . form_open(base_url('ajustes'), $form_a) . ' 
                                 <input type="hidden" name="codi_con" value="' . $row->codi_con . '">
+                                <input type="hidden" name="nomb_con" value="' . $row->nomb_con . '">
                                 <input name="activar_concepto" type="submit" class="tooltip_concepto btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar este concepto">
                                 ' . form_close() . '
                             </span>';
@@ -220,6 +265,7 @@ class ajustes extends CI_Controller {
                 $estado = "Habilitado";
                 $opciones .= '<span>' . form_open(base_url('ajustes'), $form_a) . ' 
                                 <input type="hidden" name="codi_con" value="' . $row->codi_con . '">
+                                <input type="hidden" name="nomb_con" value="' . $row->nomb_con . '">
                                 <input name="desactivar_concepto" type="submit" class="tooltip_concepto btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Deshabilitar este concepto">
                                 ' . form_close() . '
                             </span>';
