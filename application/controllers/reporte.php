@@ -12,7 +12,7 @@ class reporte extends CI_Controller {
     }
 
     public function index() {
-        if (!$this->mod_config->AVP(2)) {
+        if (!$this->mod_config->AVP(1)) {
             header('location: ' . base_url('login'));
         } else {
             $data['page'] = 'Reportes';

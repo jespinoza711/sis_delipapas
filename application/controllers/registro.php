@@ -75,5 +75,9 @@ class registro extends CI_Controller {
             header('Location: ' . base_url('registrodiario'));
         }
     }
+    
+    public function pago_empleado(){
+        
+    }
 
 }

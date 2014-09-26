@@ -3,7 +3,7 @@
         <div class="col-md-10 col-md-offset-1">
             <div id="panel-cie" class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title"> Registro Di&aacute;rio </h3>
+                    <h3 class="panel-title"> Registro Di&aacute;rio del Personal </h3>
                 </div>
                 <div class="panel-body">
 
@@ -40,7 +40,7 @@
                     </div>
                     <div class="modal-footer">
                         <div style="float: right;">
-                            <button id="btnCancelarNuevoUsu" type="button" class="btn btn-default" data-dismiss="modal">limpiar</button>
+                            <button id="btnLimpiarRegistroDiario" type="button" class="btn btn-default" data-dismiss="modal">Limpiar</button>
                             <?= form_submit($registrar) ?>
                         </div>
                     </div>

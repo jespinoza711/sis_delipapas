@@ -1,7 +1,6 @@
-<div class="row">
+<div class="row" id="cpo_registrodiario">
     <div class="col-lg-12 col-xs-12">
-
-        <div class="col-md-11" style="margin-left: 4%;">
+        <div class="col-md-10 col-md-offset-1">
             <div id="panel-cie" class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title">Caja chica</h3>
