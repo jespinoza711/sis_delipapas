@@ -31,9 +31,9 @@ class registro extends CI_Controller {
 
             $control['form_regdiario'] = array('role' => 'form', "id" => "form_regdiario");
             $control['suel_pla'] = array('id' => 'suel_pla', 'name' => 'suel_pla', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true', 'type' => 'number', 'step' => 'any');
-            $control['cant_dpl'] = array('id' => 'cant_dpl', 'name' => 'cant_dpl', 'class' => "form-control", 'placeholder' => "Cantidad procesada", "maxlength" => "10", 'required' => 'true', 'autocomplete' => 'off');
+            $control['cant_dpl'] = array('id' => 'cant_dpl', 'name' => 'cant_dpl', 'class' => "form-control", 'placeholder' => "Cantidad procesada", "maxlength" => "10", "min" => "1",  'required' => 'true', 'autocomplete' => 'off');
             $control['suto_dpl'] = array('id' => 'suto_dpl', 'name' => 'suto_dpl', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true', 'type' => 'number', 'step' => 'any');
-            $control['desc_dpl'] = array('id' => 'desc_dpl', 'name' => 'desc_dpl', 'class' => "form-control", 'placeholder' => "Descuento observado", "maxlength" => "10", 'required' => 'true', 'autocomplete' => 'off');
+            $control['desc_dpl'] = array('id' => 'desc_dpl', 'name' => 'desc_dpl', 'class' => "form-control", 'placeholder' => "Descuento observado", "maxlength" => "10", "min" => "0", 'required' => 'true', 'autocomplete' => 'off');
             $control['tota_dpl'] = array('id' => 'tota_dpl', 'name' => 'tota_dpl', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true', 'type' => 'number', 'step' => 'any');
             $control['obsv_dpl'] = array('id' => 'obsv_dpl', 'name' => 'obsv_dpl', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
             $control['registrar'] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Registrar trabajo");
@@ -45,7 +45,7 @@ class registro extends CI_Controller {
                 $info["cuerpo"] = $error;
                 $data['container'] = $this->load->view('error', $info, true);
             } else {
-                $data['container'] = $this->load->view('empleado/controldiario_view', $control, true);
+                $data['container'] = $this->load->view('empleado/registrodiario_view', $control, true);
             }
 
             $data['page'] = 'Control di&aacute;rio de personal';
