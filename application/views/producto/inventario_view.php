@@ -1,6 +1,6 @@
 <div class="row" id="cpo_inventario">
     <div class="col-lg-12 col-xs-12">
-        <div class="col-md-11" style="margin-left: 4%;">
+        <div class="col-md-12">
             <div id="panel-cie" class="panel panel-primary">
                 <div class="panel-heading">
                     <h3 class="panel-title">Productos en inventario</h3>
