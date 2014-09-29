@@ -26,6 +26,7 @@ p.stoc_prod,
 p.obsv_prod,
 p.esta_prod
 FROM producto p, tipo_producto tp 
+where p.codi_tpro = tp.codi_tpro
 ORDER BY p.codi_prod ASC;
 
 create view v_caja_dia as

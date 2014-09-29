@@ -814,8 +814,8 @@ class caja extends CI_Controller {
                             </span>';
                 }
             } else {
-                $opciones = '<button type="button" class="btn btn-default btn-circle editar_regcajachica disabled">
-                            <i class="fa fa-edit"></i></button>&nbsp;';
+                $opciones = '<button type="button" class="btn btn-default btn-circle disabled">
+                            <i class="glyphicon glyphicon-ban-circle"></i></button>&nbsp;';
             }
 
             $opciones .= "<script>$('.tooltip_regcajachica').tooltip(); $('.popover-regcajachica').popover();</script>";

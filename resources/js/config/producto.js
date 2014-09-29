@@ -28,7 +28,7 @@ $(document).ready(function() {
         "sPaginationType": "full_numbers",
         "bProcessing": true,
         "bServerSide": true,
-        "sAjaxSource": base_url + "producto/paginate",
+        "sAjaxSource": base_url + "producto/paginate/prod",
         "sServerMethod": "POST",
         "bPaginate": true,
         "bFilter": true,

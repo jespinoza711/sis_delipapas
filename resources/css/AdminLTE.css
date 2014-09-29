@@ -3783,6 +3783,13 @@ fieldset[disabled] .btn-vk.active {
 #table_regcajachica_all_filter {
     display: inline-table;
 }
+/* INVENTARIO */
+#table_inventario_wrapper > .row > .col-xs-8 > #table_inventario_filter {
+    float: right;
+}
+#table_inventario_filter {
+    display: inline-table;
+}
 
 .selected {
     color: #8a6d3b;
@@ -3992,6 +3999,24 @@ tr.group:hover {
 }
 #table_regcajachica_all tbody tr td{
     text-align: center;
+    vertical-align: middle;
+}
+/* INVENTARIO */
+#table_inventario thead tr th,
+#table_inventario tbody tr td:nth-child(1),
+#table_inventario tbody tr td:nth-child(5),
+#table_inventario tbody tr td:nth-child(6),
+#table_inventario tbody tr td:nth-child(7),
+#table_inventario tbody tr td:nth-child(8),
+#table_inventario tbody tr td:nth-child(9),
+#table_inventario tbody tr td:nth-child(10),
+#table_inventario tbody tr td:nth-child(11){
+    text-align: center;
+    vertical-align: middle;
+}
+#table_inventario tbody tr td:nth-child(2),
+#table_inventario tbody tr td:nth-child(3),
+#table_inventario tbody tr td:nth-child(4){
     vertical-align: middle;
 }
 

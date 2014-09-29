@@ -16,10 +16,14 @@ class producto extends CI_Controller {
         if (!$this->mod_config->AVP(2)) {
             header('location: ' . base_url('login'));
         } else {
+            date_default_timezone_set('America/Lima');
+            $datetime = date("Y-m-d H:m:s");
 
             if ($this->input->post('registrar')) {
                 $data['codi_tpro'] = $this->input->post('tipo');
                 $data['nomb_prod'] = $this->input->post('nombre');
+                $data['fein_prod'] = $datetime;
+                $data['fesa_prod'] = $datetime;
                 if ($this->input->post('observa') != "") {
                     $data['obsv_prod'] = $this->input->post('observa');
                 }
@@ -101,47 +105,77 @@ class producto extends CI_Controller {
         }
     }
 
-    public function paginate() {
-        $nTotal = $this->mod_view->count('producto');
+    public function paginate($table) {
+        $nTotal = $this->mod_view->count('v_producto');
         $productos = $this->mod_producto->get_vproducto_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch']);
         $form_a = array('role' => 'form', "style" => "display: inline-block;");
         $aaData = array();
 
         foreach ($productos as $row) {
-            $opciones = '<button type="button" class="tooltip-prod btn btn-default btn-circle editar_prod" data-toggle="tooltip" data-placement="top" title="Editar">
-                            <i class="fa fa-edit"></i>
-                        </button>';
-            $estado = "";
-            if ($row->esta_prod == "D") {
-                $estado = "Deshabilitado";
-                $opciones .= '<span>' . form_open(base_url() . 'producto', $form_a) . ' 
+            $url = '';
+            $estado = $row->esta_prod == 'A' ? 'Activo' : 'Oculto';
+            $opciones = '';
+
+            if ($this->session->userdata('user_rol') == 1) {
+                if ($table == 'inv') {
+                    $url = 'inventario';
+                    $opciones = '<button type="button" class="tooltip-inv btn btn-success btn-circle editar_inv" data-toggle="tooltip" data-placement="top" title="Actualizar stock / precio"><i class="fa fa-edit"></i></button>';
+                } else {
+                    $url = 'producto';
+                    $opciones = '<button type="button" class="tooltip-prod btn btn-success btn-circle editar_prod" data-toggle="tooltip" data-placement="top" title="Editar producto"><i class="fa fa-edit"></i></button>';
+                }
+                if ($estado == "Oculto") {
+                    $opciones .= '&nbsp;<span>' . form_open(base_url($url), $form_a) . ' 
                                 <input type="hidden" name="codigo" value="' . $row->codi_prod . '">
                                 <input type="hidden" name="producto" value="' . $row->nomb_prod . '">
                                 <input name="activar" type="submit" class="tooltip-prod btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar">
                             ' . form_close() . '</span>';
-            } else if ($row->esta_prod == "A") {
-                $estado = "Habilitado";
-                $opciones .= '<span>' . form_open(base_url() . 'producto', $form_a) . ' 
+                } else {
+                    $opciones .= '&nbsp;<span>' . form_open(base_url($url), $form_a) . ' 
                                 <input type="hidden" name="codigo" value="' . $row->codi_prod . '">
                                 <input type="hidden" name="producto" value="' . $row->nomb_prod . '">
                                 <input name="desactivar" type="submit" class="tooltip-prod btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
                             ' . form_close() . '</span>';
+                }
+                $opciones.= "<script>$('.tooltip-prod').tooltip(); $('.tooltip-inv').tooltip();</script>";
+            } else {
+                $opciones = '<button type="button" class="btn btn-default btn-circle disabled"><i class="glyphicon glyphicon-ban-circle"></i></button>&nbsp;';
             }
-            $opciones.="<script>$('.tooltip-prod').tooltip(); $('.popover-prod').popover();</script>";
+            
+            $fein = strtotime($row->fein_prod);
+            $fesa = strtotime($row->fesa_prod);
+            $fein_prod = date("d/m/Y g:i A", $fein);
+            $fesa_prod = date("d/m/Y g:i A", $fesa);
 
             $observación = "-";
             if ($row->obsv_prod != "") {
                 $observación = $row->obsv_prod;
             }
 
-            $aaData[] = array(
-                $row->codi_prod,
-                $row->nomb_prod,
-                $row->nomb_tipo,
-                $observación,
-                $estado,
-                $opciones
-            );
+            if ($table == 'inv') {
+                $aaData[] = array(
+                    $row->codi_prod,
+                    $row->nomb_tipo,
+                    $row->nomb_prod,
+                    $observación,
+                    $fein_prod,
+                    $fesa_prod,
+                    $row->prec_prod,
+                    $row->stoc_prod,
+                    number_format($row->prec_prod * $row->stoc_prod, 2),                    
+                    $estado,
+                    $opciones
+                );
+            } else {
+                $aaData[] = array(
+                    $row->codi_prod,
+                    $row->nomb_prod,
+                    $row->nomb_tipo,
+                    $observación,
+                    $estado,
+                    $opciones
+                );
+            }
         }
 
         $aa = array(
@@ -163,19 +197,19 @@ class producto extends CI_Controller {
             $time_in = strtotime($row->fein_prod);
             $time_sa = strtotime($row->fesa_prod);
             $fecha_in = date("d/m/Y g:i A", $time_in);
-            
+
             if ($row->fesa_prod == "") {
                 $fecha_sa = "-";
             } else {
                 $fecha_sa = date("d/m/Y g:i A", $time_sa);
             }
-            
+
 
             $aaData[] = array(
                 $row->nomb_prod,
                 $fecha_in,
                 $fecha_sa,
-                'S/. '.$row->prec_prod,
+                'S/. ' . $row->prec_prod,
                 $row->stoc_prod
             );
         }
@@ -245,10 +279,40 @@ class producto extends CI_Controller {
         if (!$this->mod_config->AVP(1)) {
             header('location: ' . base_url('login'));
         } else {
-            $data['page'] = 'Inventario';
-            $d['producto'] = $this->mod_view->view('v_producto', false, false, false);
-            $data['container'] = $this->load->view('producto/inventario_view', $d, true);
-            $this->load->view('home/body', $data);
+            if ($this->input->post('inventario_update')) {
+                $codi_prod = $this->input->post('codi_prod_e');
+                $nomb_prod = $this->input->post('nomb_prod_e');
+                $data['prec_prod'] = $this->input->post('prec_prod_e');
+                $data['stoc_prod'] = $this->input->post('stoc_prod_e');
+                $this->mod_producto->update($codi_prod, $data);
+                $this->session->set_userdata('info', 'El stock / precio de producto ' . $nomb_prod . ' ha sido actualizado existosamente.');
+                header('Location: ' . base_url('inventario'));
+            } if ($this->input->post('activar')) {
+                $codi_prod = $this->input->post('codigo');
+                $nomb_prod = $this->input->post('producto');
+                $this->mod_producto->update($codi_prod, array("esta_prod" => "A"));
+                $this->session->set_userdata('info', 'El producto ' . $nomb_prod . ' ha sido habilitado existosamente');
+                header('Location: ' . base_url('inventario'));
+            } if ($this->input->post('desactivar')) {
+                $codi_prod = $this->input->post('codigo');
+                $nomb_prod = $this->input->post('producto');
+                $this->mod_producto->update($codi_prod, array("esta_prod" => "D"));
+                $this->session->set_userdata('info', 'El producto ' . $nomb_prod . ' ha sido deshabilitado existosamente');
+                header('Location: ' . base_url('inventario'));
+            } else {
+                // Editar stock/precio producto
+                $inventario["form_inventario"] = array('role' => 'form', "id" => "form_inventario");
+                $inventario["codi_prod_e"] = array('id' => 'codi_prod_e', 'name' => 'codi_prod_e', 'class' => "form-control input-lg", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true');
+                $inventario["nomb_tipo_e"] = array('id' => 'nomb_tipo_e', 'name' => 'nomb_tipo_e', 'class' => "form-control input-lg", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true');
+                $inventario["nomb_prod_e"] = array('id' => 'nomb_prod_e', 'name' => 'nomb_prod_e', 'class' => "form-control input-lg", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true');
+                $inventario["prec_prod_e"] = array('id' => 'prec_prod_e', 'name' => 'prec_prod_e', 'class' => "form-control input-lg", 'placeholder' => "Precio unitario", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off', 'type' => 'number', 'step' => 'any', 'min' => '0');
+                $inventario["stoc_prod_e"] = array('id' => 'stoc_prod_e', 'name' => 'stoc_prod_e', 'class' => "form-control input-lg", 'placeholder' => "Stock actual", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off', 'type' => 'number', 'step' => 'any', 'min' => '0');
+                $inventario["inventario_update"] = array('id' => 'inventario_update', 'name' => 'inventario_update', 'class' => "btn btn-primary btn-lg", 'value' => "Actualizar producto");
+
+                $data['page'] = 'Inventario';
+                $data['container'] = $this->load->view('producto/inventario_view', $inventario, true);
+                $this->load->view('home/body', $data);
+            }
         }
     }
 

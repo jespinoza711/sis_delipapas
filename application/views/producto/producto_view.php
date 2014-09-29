@@ -24,16 +24,16 @@
 
                     <?php $this->session->set_userdata('error_prod', ''); } ?>
                     
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevoProducto" <?= $disabled ?>><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Nuevo</button>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevoProducto" <?= $disabled ?>><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Nuevo producto</button>
                     <br><br>
                     <div class="table-responsive">
                         <table id="table_producto" class="table table-bordered">
                             <thead>
                                 <tr>
-                                    <th style="text-align: center;">Codigo</th>
-                                    <th style="text-align: center;">Nombre</th>
-                                    <th style="text-align: center;">Tipo</th>
-                                    <th style="text-align: center;">Observación</th>
+                                    <th style="text-align: center;">C&oacute;digo</th>
+                                    <th style="text-align: center;">Nombre</th>  
+                                    <th style="text-align: center;">Tipo</th>                                                                      
+                                    <th style="text-align: center;">Descripci&oacute;n</th>
                                     <th style="text-align: center;">Estado</th>
                                     <th style="text-align: center;">Acciones</th>
                                 </tr>
