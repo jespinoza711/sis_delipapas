@@ -27,7 +27,24 @@ p.obsv_prod,
 p.esta_prod
 FROM producto p, tipo_producto tp 
 where p.codi_tpro = tp.codi_tpro
-ORDER BY p.codi_prod ASC;
+ORDER BY tp.nomb_tipo ASC;
+
+CREATE VIEW v_producto_operacion AS
+SELECT p.codi_prod,
+p.codi_tpro,
+tp.nomb_tipo,
+p.nomb_prod,
+p.prec_prod,
+p.fein_prod,
+p.fesa_prod,
+p.stoc_prod,
+p.obsv_prod,
+p.esta_prod
+FROM producto p, tipo_producto tp 
+where p.codi_tpro = tp.codi_tpro
+and p.prec_prod > 0
+and p.stoc_prod > 0
+ORDER BY tp.nomb_tipo ASC;
 
 create view v_caja_dia as
 select cd.codi_cad,

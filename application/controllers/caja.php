@@ -268,7 +268,7 @@ class caja extends CI_Controller {
                 $error = array();
                 $compra['form_compra'] = array('role' => 'form', "id" => "form_compra");
                 $compra['obsv_com'] = array('id' => 'obsv_com', 'name' => 'obsv_com', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
-                $compra['producto'] = $this->mod_view->view('v_producto', false, false, array('esta_prod' => 'A'));
+                $compra['producto'] = $this->mod_view->view('v_producto_operacion', false, false, array('esta_prod' => 'A'));
                 $compra['proveedor'] = $this->mod_view->view('proveedor', false, false, array('esta_pro' => 'A'));
 
                 if (count($compra['producto']) <= 0) {
