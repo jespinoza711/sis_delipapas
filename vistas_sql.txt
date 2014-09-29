@@ -126,4 +126,4 @@ AS
 SELECT f.codi_fac, f.desp_fac, c.apel_cli, c.nomb_cli, c.dire_cli, c.ruc_cli, f.fech_fac,
 v.cantidad, p.nomb_prod, p.prec_prod ,v.impo_dve, e.tota_ven
 FROM factura f, detalle_factura d, detalle_venta v, producto p, venta e, cliente c
-WHERE f.codi_fac = d.codi_fac AND d.codi_dve = v.codi_dve AND v.codi_prod = p.codi_prod AND v.codi_ven = e.codi_ven AND c.codi_cli = e.codi_cli
+WHERE f.codi_fac = d.codi_fac AND d.codi_dve = v.codi_dve AND v.codi_prod = p.codi_prod AND v.codi_ven = e.codi_ven AND c.codi_cli = e.codi_cli;

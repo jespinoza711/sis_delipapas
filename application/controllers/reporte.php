@@ -664,7 +664,7 @@ class reporte extends CI_Controller {
 
         if ($tipo == "0") {
 
-            $registro = $this->mod_view->view('v_registro_diario', 0, false, array());
+            $registro = $this->mod_view->view('v_registro_planilla', 0, false, array());
 
             foreach ($registro as $row) {
                 $time = strtotime($row->fech_dpl);
