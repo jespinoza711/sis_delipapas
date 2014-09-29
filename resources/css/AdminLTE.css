@@ -3776,6 +3776,13 @@ fieldset[disabled] .btn-vk.active {
 #table_regcajachica_filter {
     display: inline-table;
 }
+/* GASTO CAJA CHICA ALL */
+#table_regcajachica_all_wrapper > .row > .col-xs-8 > #table_regcajachica_all_filter {
+    float: right;
+}
+#table_regcajachica_all_filter {
+    display: inline-table;
+}
 
 .selected {
     color: #8a6d3b;
@@ -3943,6 +3950,15 @@ tr.group:hover {
     vertical-align: middle;
 }
 #table_regcajachica tbody tr td{
+    text-align: center;
+    vertical-align: middle;
+}
+/* GASTO CAJA CHICA */
+#table_regcajachica_all thead tr th{
+    text-align: center;
+    vertical-align: middle;
+}
+#table_regcajachica_all tbody tr td{
     text-align: center;
     vertical-align: middle;
 }

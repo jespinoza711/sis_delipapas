@@ -564,6 +564,70 @@ class caja extends CI_Controller {
         }
     }
 
+    public function edit_gasto_caja_chica_all() {
+        if (!$this->mod_config->AVP(2)) {
+            header('location: ' . base_url('login'));
+        } else {
+            $codi_gas = $this->input->post('codi_gas_e');
+            $codi_cac = $this->input->post('codi_cac_e');
+            $data['codi_con'] = $this->input->post('codi_con_e');
+            $data['nomb_gas'] = $this->input->post('nomb_gas_e');
+            $data['impo_gas'] = $this->input->post('impo_gas_e');
+            $data['obsv_gas'] = $this->input->post('obsv_gas_e');
+
+            if ($this->mod_caja->edit_gasto_cajachica($codi_gas, $data)) {
+                $this->session->set_userdata('info', 'Se ha actualizado el gasto de la caja chica ' . $codi_cac . ' exitosamente.');
+            } else {
+                $this->session->set_userdata('error', 'No ha sido posible actualizar el gasto de la caja chica ' . $codi_cac . ', verifique los datos proporcionados.');
+            }
+            header('Location: ' . base_url('hiscajachica'));
+        }
+    }
+
+    public function history_caja_chica() {
+        if (!$this->mod_config->AVP(1)) {
+            header('location: ' . base_url('login'));
+        } else {
+            $caja['datetime'] = $this->mod_config->datetime_es();
+            $status = $this->mod_caja->status_cajachica();
+
+            if ($status == 3) {
+                $error[] = "La caja chica de hoy " . $caja['datetime'] . ' esta cerrada. <br><strong> Para ver el estado de hoy haga click <a href="' . base_url('home') . '"> aquí </a></strong>.';
+            } else if ($status == 1) {
+                $error[] = "No se ha aperturado la caja chica hoy " . $caja['datetime'] . '. <br><strong> Haga click <a href="' . base_url('abrircajachica') . '"> aquí </a> para aperturar una la caja chica </strong>.';
+            } else {
+                $error = array();
+                $caja['cajachica'] = $this->mod_view->one('caja_chica', false, false, array('esta_cac' => 'A'));
+                $caja['concepto'] = $this->mod_view->view('concepto', false, false, array('esta_con' => 'A'));
+
+                if (count($caja['concepto']) <= 0) {
+                    $error[] = 'Debe registrar por lo menos un concepto de gasto. <br><strong> Haga click <a href="' . base_url('concepto') . '"> aquí </a> para registrar un concepto de gasto </strong>.';
+                }
+                /* UPDATE */
+                $caja['form_regcajachica_edit'] = array('role' => 'form', "id" => "form_regcajachica_edit");
+                $caja['codi_cac_e'] = array('id' => 'codi_cac_e', 'name' => 'codi_cac_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
+                $caja['codi_gas_e'] = array('id' => 'codi_gas_e', 'name' => 'codi_gas_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
+                $caja['nomb_usu_e'] = array('id' => 'nomb_usu_e', 'name' => 'nomb_usu_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
+                $caja['nomb_gas_e'] = array('id' => 'nomb_gas_e', 'name' => 'nomb_gas_e', 'class' => "form-control", 'placeholder' => "Descripción", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off');
+                $caja['impo_gas_e'] = array('id' => 'impo_gas_e', 'name' => 'impo_gas_e', 'class' => "form-control", 'placeholder' => "Importe", "maxlength" => "10", 'required' => 'true', 'autocomplete' => 'off', 'type' => 'number', 'step' => 'any', 'min' => '0');
+                $caja['obsv_gas_e'] = array('id' => 'obsv_gas_e', 'name' => 'obsv_gas_e', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
+                $caja['cajachica_edit'] = array('id' => 'cajachica_edit', 'name' => 'cajachica_edit', 'class' => "btn btn-primary", 'value' => "Actualizar gasto");
+            }
+
+            if (count($error) > 0) {
+                $cajachica["encabezado"] = "<i class='fa fa-warning'></i>&nbsp;&nbsp;&nbsp;¡Advertencia!";
+                $cajachica["panel"] = 'yellow';
+                $cajachica["cuerpo"] = $error;
+                $data['container'] = $this->load->view('error', $cajachica, true);
+            } else {
+                $data['container'] = $this->load->view('caja/cajachica_all_view', $caja, true);
+            }
+
+            $data['page'] = 'Historial de caja chica';
+            $this->load->view('home/body', $data);
+        }
+    }
+
     /* GET DATA PHP */
 
     public function get_caja_dia_lasttime() {
@@ -617,12 +681,18 @@ class caja extends CI_Controller {
 
     /* GET DATA JSON */
 
-    public function paginate_caja_chica_dia() {
+    public function paginate_caja_chica_dia($query) {
         date_default_timezone_set('America/Lima');
         $date = date('Y-m-d');
-        $nTotal = $this->mod_view->count('v_gastos', false, false, array('DATE(fech_gas)' => $date));
-        $gastos = $this->mod_caja->get_caja_chica_dia_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch']);
         $aaData = array();
+        
+        if($query == 'one'){
+            $nTotal = $this->mod_view->count('v_gastos', false, false, array('DATE(fech_gas)' => $date));
+        } else {
+            $nTotal = $this->mod_view->count('v_gastos', false, false, false);
+        }
+        $gastos = $this->mod_caja->get_caja_chica_dia_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch'], $query);
+        
 
         foreach ($gastos as $row) {
             $estado = $row->esta_gas == 'A' ? 'Realizado' : 'Bloqueado';

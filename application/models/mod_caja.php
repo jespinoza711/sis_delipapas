@@ -115,7 +115,7 @@ class mod_caja extends CI_Model {
         return $result;
     }
 
-    public function get_caja_chica_dia_paginate($limit, $start, $string = "") {
+    public function get_caja_chica_dia_paginate($limit, $start, $string = '', $subquery = '') {
         date_default_timezone_set('America/Lima');
         $date = date('Y-m-d');
         $this->db->or_like('codi_gas', $string);
@@ -123,7 +123,6 @@ class mod_caja extends CI_Model {
         $this->db->or_like('nomb_usu', $string);
         $this->db->or_like('nomb_con', $string);
         $this->db->or_like('nomb_gas', $string);
-//        $this->db->where(array('DATE(fech_gas)' => $date));
         $query = $this->db->get('v_gastos');
         $gastos = $query->result();
 
@@ -133,7 +132,12 @@ class mod_caja extends CI_Model {
         foreach ($gastos as $row) {
             if ($i >= $start) {
                 if ($c < $limit) {
-                    if (substr($row->fech_gas, 0, 10) == $date) {
+                    if ($subquery == 'one') {
+                        if (substr($row->fech_gas, 0, 10) == $date) {
+                            $result[$c] = $row;
+                            $c++;
+                        }
+                    } else {
                         $result[$c] = $row;
                         $c++;
                     }

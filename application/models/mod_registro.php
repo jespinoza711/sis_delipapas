@@ -14,7 +14,6 @@ class mod_registro extends CI_Model {
         $this->db->or_like('nomb_usu', $string);
         $this->db->or_like('nomb_emp', $string);
         $this->db->or_like('apel_emp', $string);
-        $this->db->where(array('DATE(fech_dpl)' => $date));
         $query = $this->db->get('v_registro_planilla');
         $control = $query->result();
 

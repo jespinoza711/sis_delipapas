@@ -17,6 +17,8 @@ $route['cerrarcajachica'] = "caja/cerrar_caja_chica";
 $route['closecajachica'] = "caja/close_caja_chica";
 $route['cajachicainsert'] = "caja/registro_gasto_caja_chica";
 $route['cajachicaedit'] = "caja/edit_gasto_caja_chica";
+$route['cajachicaeditall'] = "caja/edit_gasto_caja_chica_all";
+$route['hiscajachica'] = "caja/history_caja_chica";
 
 $route['registrodiario'] = "registro/registro_diario";
 $route['regdiarioinsert'] = "registro/registro_diario_dia";

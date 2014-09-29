@@ -30,7 +30,24 @@ $(document).ready(function() {
             "sPaginationType": "full_numbers",
             "bProcessing": true,
             "bServerSide": true,
-            "sAjaxSource": base_url + "caja/paginate_caja_chica_dia",
+            "sAjaxSource": base_url + "caja/paginate_caja_chica_dia/one",
+            "sServerMethod": "POST",
+            "bPaginate": true,
+            "bFilter": true,
+            "bSort": false,
+            "displayLength": 10
+        });
+    }
+
+    if ($("#cpo_regcajachica_all").is(':visible')) {
+
+        $('#table_regcajachica_all').DataTable({
+            "iDisplayLength": 30,
+            "aLengthMenu": [30, 60, 100],
+            "sPaginationType": "full_numbers",
+            "bProcessing": true,
+            "bServerSide": true,
+            "sAjaxSource": base_url + "caja/paginate_caja_chica_dia/all",
             "sServerMethod": "POST",
             "bPaginate": true,
             "bFilter": true,
