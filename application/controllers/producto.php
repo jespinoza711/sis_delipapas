@@ -109,30 +109,29 @@ class producto extends CI_Controller {
 
         foreach ($productos as $row) {
             $opciones = '<button type="button" class="tooltip-prod btn btn-default btn-circle editar_prod" data-toggle="tooltip" data-placement="top" title="Editar">
-                                                <i class="fa fa-edit"></i>
-                                            </button>';
+                            <i class="fa fa-edit"></i>
+                        </button>';
             $estado = "";
             if ($row->esta_prod == "D") {
                 $estado = "Deshabilitado";
                 $opciones .= '<span>' . form_open(base_url() . 'producto', $form_a) . ' 
-                                            <input type="hidden" name="codigo" value="' . $row->codi_prod . '">
-                                            <input type="hidden" name="producto" value="' . $row->nomb_prod . '">
-                                            <input name="activar" type="submit" class="tooltip-prod btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar">
-                                      ' . form_close() . '
-                                                </span>';
+                                <input type="hidden" name="codigo" value="' . $row->codi_prod . '">
+                                <input type="hidden" name="producto" value="' . $row->nomb_prod . '">
+                                <input name="activar" type="submit" class="tooltip-prod btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar">
+                            ' . form_close() . '</span>';
             } else if ($row->esta_prod == "A") {
                 $estado = "Habilitado";
                 $opciones .= '<span>' . form_open(base_url() . 'producto', $form_a) . ' 
-                                         <input type="hidden" name="codigo" value="' . $row->codi_prod . '">
-                                         <input type="hidden" name="producto" value="' . $row->nomb_prod . '">
-                                         <input name="desactivar" type="submit" class="tooltip-prod btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
-                                    ' . form_close() . '</span>';
+                                <input type="hidden" name="codigo" value="' . $row->codi_prod . '">
+                                <input type="hidden" name="producto" value="' . $row->nomb_prod . '">
+                                <input name="desactivar" type="submit" class="tooltip-prod btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
+                            ' . form_close() . '</span>';
             }
             $opciones.="<script>$('.tooltip-prod').tooltip(); $('.popover-prod').popover();</script>";
 
             $observación = "-";
             if ($row->obsv_prod != "") {
-                $observación = '<button type="button" class="popover-prod btn btn-default" data-toggle="popover" data-content="' . $row->obsv_prod . '" data-original-title="Observación" data-placement="top"><i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;Ver</button>';
+                $observación = $row->obsv_prod;
             }
 
             $aaData[] = array(
