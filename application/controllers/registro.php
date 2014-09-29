@@ -199,7 +199,7 @@ class registro extends CI_Controller {
 
         if ($tipo == "0") {
             $nTotal = $this->mod_view->count('registro_planilla', 0, false, array());
-            $registro = $this->mod_view->view('v_registro_diario', 0, false, array());
+            $registro = $this->mod_view->view('v_registro_planilla', 0, false, array());
 
             foreach ($registro as $row) {
                 $time = strtotime($row->fech_dpl);

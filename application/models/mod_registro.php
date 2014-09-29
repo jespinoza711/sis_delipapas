@@ -50,7 +50,7 @@ class mod_registro extends CI_Model {
     
     function get_registro_interval($interval){
         $this->db->where($interval);
-        $query = $this->db->get('v_registro_diario');
+        $query = $this->db->get('v_registro_planilla');
         return $query->result();
     }
 
