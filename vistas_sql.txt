@@ -29,7 +29,7 @@ FROM producto p, tipo_producto tp
 where p.codi_tpro = tp.codi_tpro
 ORDER BY tp.nomb_tipo ASC;
 
-CREATE VIEW v_producto_operacion AS
+CREATE VIEW v_producto_compra AS
 SELECT p.codi_prod,
 p.codi_tpro,
 tp.nomb_tipo,
@@ -43,7 +43,7 @@ p.esta_prod
 FROM producto p, tipo_producto tp 
 where p.codi_tpro = tp.codi_tpro
 and p.prec_prod > 0
-and p.stoc_prod > 0
+and p.esta_prod = 'A'
 ORDER BY tp.nomb_tipo ASC;
 
 create view v_caja_dia as

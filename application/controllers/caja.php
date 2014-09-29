@@ -246,7 +246,7 @@ class caja extends CI_Controller {
             $this->mod_view->insert_only('detalle_factura', $detalle_factura);
         }
         $this->session->set_userdata('reg_ventas', $codi_fac);
-        $this->session->set_userdata('info_ven', 'La venta ha sido registrada con éxito. <strong><a href="'.base_url('reporte/reg_venta').'" target="_blank">Ver documento en PDF</a></strong>');
+        $this->session->set_userdata('info_ven', 'La venta ha sido registrada con éxito. <strong><a href="' . base_url('reporte/reg_venta') . '" target="_blank">Ver documento en PDF</a></strong>');
         header('location: ' . base_url('venta'));
     }
 
@@ -268,7 +268,7 @@ class caja extends CI_Controller {
                 $error = array();
                 $compra['form_compra'] = array('role' => 'form', "id" => "form_compra");
                 $compra['obsv_com'] = array('id' => 'obsv_com', 'name' => 'obsv_com', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
-                $compra['producto'] = $this->mod_view->view('v_producto_operacion', false, false, array('esta_prod' => 'A'));
+                $compra['producto'] = $this->mod_view->view('v_producto_compra', false, false, false);
                 $compra['proveedor'] = $this->mod_view->view('proveedor', false, false, array('esta_pro' => 'A'));
 
                 if (count($compra['producto']) <= 0) {
@@ -293,6 +293,49 @@ class caja extends CI_Controller {
         }
     }
 
+    public function paginate_inv_compra() {
+        $nTotal = $this->mod_view->count('v_producto_compra');
+        $productos = $this->mod_producto->get_vproducto_operacion_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch']);
+        $proveedor = $this->mod_view->view('proveedor', false, false, array('esta_pro' => 'A'));
+        $aaData = array();
+
+        $prov = '<select id="codi_pro" class="form-control" name="codi_pro">';
+        foreach ($proveedor as $r) {
+            $prov .= '<option value="' . $r->codi_pro . '">' . $r->nomb_pro . '</option>';
+        }
+        $prov .= '</select>';
+
+        foreach ($productos as $row) {
+
+            $observación = "-";
+            if ($row->obsv_prod != "") {
+                $observación = $row->obsv_prod;
+            }
+            $cantidad = '<input id="cant_pro_compra" type="number" min="1" class="form-control" value="0" style="width:80px">';
+            $opciones = '<button type="button" class="tooltip-prod btn btn-success btn-circle agregar_prod_compra" data-toggle="tooltip" data-placement="top" title="Agregar al carrito de compra"><i class="glyphicon glyphicon-shopping-cart"></i></button><script>$(".tooltip-prod").tooltip();</script>';
+
+            $aaData[] = array(
+                $row->codi_prod,
+                $row->nomb_tipo,
+                $row->nomb_prod,
+                $observación,
+                $row->prec_prod,
+                $row->stoc_prod,
+                $cantidad,
+                $prov,
+                $opciones
+            );
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
+    }
+
     public function registrar_compra() {
         if (!$this->mod_config->AVP(1)) {
             header('location: ' . base_url('login'));
@@ -301,13 +344,13 @@ class caja extends CI_Controller {
             $total = $this->input->post('total');
             $obsv = $this->input->post('obsv_com');
 
-            // GENERAR NUMERO DE COMPRA
+// GENERAR NUMERO DE COMPRA
             $cont = $this->mod_view->count('compra') + 1;
             $longitud = strlen($cont);
             $numero = 'C000000000000';
             $num_compra = substr($numero, 0, 13 - $longitud) . $cont;
 
-            // REGISTRO DE COMPRA
+// REGISTRO DE COMPRA
             date_default_timezone_set('America/Lima');
             $compra = array(
                 'fech_com' => date("Y-m-d H:i:s"),
@@ -320,12 +363,12 @@ class caja extends CI_Controller {
             $codi_compra = $this->mod_view->insert('compra', $compra);
 
             foreach ($tbl_compra as $row) {
-                // ACTUALIZAR STOCK Y FECHA DE INGRESO DE PRODUCTO
+// ACTUALIZAR STOCK Y FECHA DE INGRESO DE PRODUCTO
                 $stock_anterior = $this->mod_view->dato('producto', 0, false, array('codi_prod' => $row[0]), 'stoc_prod');
                 $stock_actual = (int) $stock_anterior + (int) $row[2];
                 $this->mod_view->update('producto', array('codi_prod' => $row[0]), array('stoc_prod' => $stock_actual, 'fein_prod' => date("Y-m-d H:i:s")));
 
-                // REGISTRO DE DETALLE DE COMPRA
+// REGISTRO DE DETALLE DE COMPRA
                 $detalle_compra = array(
                     'codi_com' => $codi_compra,
                     'codi_prod' => $row[0],
@@ -799,26 +842,27 @@ class caja extends CI_Controller {
             $opciones = '';
             if ($this->session->userdata('user_rol') == 1) {
                 $opciones .= '<button type="button" class="tooltip_regcajachica btn btn-success btn-circle editar_regcajachica" data-toggle="tooltip" data-placement="top" title="Editar gasto">
-                            <i class="fa fa-edit"></i></button>&nbsp;';
+    <i class="fa fa-edit"></i></button>&nbsp;';
                 if ($estado == 'Bloqueado') {
                     $opciones .= '<span>' . form_open(base_url($form_url), $form_aregcajachica) . ' 
-                                <input type="hidden" name="codi_gas" value="' . $row->codi_gas . '">
-                                <input name="activar_gasto" type="submit" class="tooltip_regcajachica btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Desbloquear gasto">
-                                ' . form_close() . '
-                            </span>';
+    <input type="hidden" name="codi_gas" value="' . $row->codi_gas . '">
+    <input name="activar_gasto" type="submit" class="tooltip_regcajachica btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Desbloquear gasto">
+    ' . form_close() . '
+</span>';
                 } else {
                     $opciones .= '<span>' . form_open(base_url($form_url), $form_aregcajachica) . ' 
-                                <input type="hidden" name="codi_gas" value="' . $row->codi_gas . '">
-                                <input name="desactivar_gasto" type="submit" class="tooltip_regcajachica btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Bloquear gasto">
-                                ' . form_close() . '
-                            </span>';
+    <input type="hidden" name="codi_gas" value="' . $row->codi_gas . '">
+    <input name="desactivar_gasto" type="submit" class="tooltip_regcajachica btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Bloquear gasto">
+    ' . form_close() . '
+</span>';
                 }
             } else {
                 $opciones = '<button type="button" class="btn btn-default btn-circle disabled">
-                            <i class="glyphicon glyphicon-ban-circle"></i></button>&nbsp;';
+    <i class="glyphicon glyphicon-ban-circle"></i></button>&nbsp;';
             }
 
-            $opciones .= "<script>$('.tooltip_regcajachica').tooltip(); $('.popover-regcajachica').popover();</script>";
+            $opciones .= "<script>$('.tooltip_regcajachica').tooltip();
+                $('.popover-regcajachica').popover();</script>";
 
             $time = strtotime($row->fech_gas);
             $fecha = date("d/m/Y g:i A", $time);
@@ -860,24 +904,24 @@ class caja extends CI_Controller {
         foreach ($cajas as $row) {
             $estado = "";
             $opciones = '<button type="button" class="tooltip_caj btn btn-default btn-circle editar_caj" data-toggle="tooltip" data-placement="top" title="Editar">
-                            <i class="fa fa-edit"></i>
-                        </button>';
+    <i class="fa fa-edit"></i>
+</button>';
             if ($row->esta_caj == "D") {
                 $estado = "Deshabilitado";
                 $opciones .= '<span>' . form_open(base_url() . 'caja', $form_a) . ' 
-                                <input type="hidden" name="codigo" value="' . $row->codi_caj . '">
-                                <input type="hidden" name="numero" value="' . $row->num_caj . '">
-                                <input name="activar" type="submit" class="tooltip_caj btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar">
-                                ' . form_close() . '
-                            </span>';
+    <input type="hidden" name="codigo" value="' . $row->codi_caj . '">
+    <input type="hidden" name="numero" value="' . $row->num_caj . '">
+    <input name="activar" type="submit" class="tooltip_caj btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar">
+    ' . form_close() . '
+</span>';
             } else if ($row->esta_caj == "A") {
                 $estado = "Habilitado";
                 $opciones .= '<span>' . form_open(base_url() . 'caja', $form_a) . ' 
-                                <input type="hidden" name="codigo" value="' . $row->codi_caj . '">
-                                <input type="hidden" name="numero" value="' . $row->num_caj . '">
-                                <input name="desactivar" type="submit" class="tooltip_caj btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
-                                ' . form_close() . '
-                            </span>';
+    <input type="hidden" name="codigo" value="' . $row->codi_caj . '">
+    <input type="hidden" name="numero" value="' . $row->num_caj . '">
+    <input name="desactivar" type="submit" class="tooltip_caj btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
+    ' . form_close() . '
+</span>';
             }
             $opciones .= "<script>$('.tooltip_caj').tooltip();</script>";
 
@@ -941,7 +985,7 @@ class caja extends CI_Controller {
         }
         echo json_encode($autocomplete);
     }
-    
+
     public function get_vcompras_paginate() {
 
         $tipo = $this->session->userdata('type_1');

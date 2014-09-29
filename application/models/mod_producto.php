@@ -54,4 +54,28 @@ class mod_producto extends CI_Model {
         return $result;
     }
 
+    function get_vproducto_operacion_paginate($limit, $start, $string = "") {
+        $this->db->like('codi_prod', $string);
+        $this->db->or_like('nomb_tipo', $string);
+        $this->db->or_like('nomb_prod', $string);
+        $this->db->or_like('obsv_prod', $string);
+        $query = $this->db->get('v_producto_compra');
+        $productos = $query->result();
+        $i = 0;
+        $c = 0;
+        $result = array();
+        foreach ($productos as $row) {
+            if ($i >= $start) {
+                if ($c < $limit) {
+                    $result[$c] = $row;
+                    $c++;
+                } else {
+                    break;
+                }
+            }
+            $i++;
+        }
+        return $result;
+    }
+
 }

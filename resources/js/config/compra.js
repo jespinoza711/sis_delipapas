@@ -42,6 +42,20 @@ $(document).ready(function() {
             }
         });
 
+        $('#table_compra_inv').DataTable({
+            "iDisplayLength": 10,
+            "aLengthMenu": [10, 25, 50],
+            "sPaginationType": "full_numbers",
+            "bProcessing": true,
+            "bServerSide": true,
+            "sAjaxSource": base_url + "caja/paginate_inv_compra",
+            "sServerMethod": "POST",
+            "bPaginate": true,
+            "bFilter": true,
+            "bSort": false,
+            "displayLength": 10
+        });
+
         $('.tooltip_compra').tooltip();
 
         /* ADD PRODUCT */
@@ -50,14 +64,14 @@ $(document).ready(function() {
 
             var codigo = $(this).parent().parent().find("td").eq(0).html();
             var producto = $(this).parent().parent().find("td").eq(2).html();
-            var precio = $(this).parent().parent().find("td").eq(3).html();
+            var precio = $(this).parent().parent().find("td").eq(4).html();
             var cantidad = $(this).parent().parent().find("td").eq(6).find("input").val();
-            var proveedor = $(this).parent().parent().find("td").eq(7).find("select").find("option").html();
+            var proveedor = $(this).parent().parent().find("td").eq(7).find("select").find(":selected").text();
             var sw = true;
 
             if (cantidad <= 0) {
                 alert('Debe elegir una cantidad mayor a cero del producto ' + producto + ' para agregar a la compra.');
-                
+
             } else {
                 if ($('#detalle_productos_compra tbody tr td').is(":contains('Busque y agregue un producto')")) {
                     $('#detalle_productos_compra tbody tr').remove();
@@ -78,7 +92,16 @@ $(document).ready(function() {
                             if (ButtonPressed === "Actualizar") {
 
                                 var cant_ant = $("#detalle_productos_compra tbody tr td:contains('" + codigo + "')").parent().find("td").eq(2).html();
-                                $("#detalle_productos_compra tbody tr td:contains('" + codigo + "')").parent().remove();
+
+//                            $("#detalle_productos_compra tbody tr td:contains('" + codigo + "')").parent().remove();
+
+                                $("#detalle_productos_compra tbody tr").each(function() {
+                                    if ($(this).find('td').eq(0).html() == codigo) {
+                                        $(this).remove();
+                                        return false;
+                                    }
+                                });
+
                                 var venta = (parseFloat(precio) * parseInt(cantidad)).toFixed(2);
                                 var importe = (parseFloat(venta) + 0).toFixed(2);
 
@@ -138,6 +161,7 @@ $(document).ready(function() {
                                 var importe = (parseFloat(venta) + 0).toFixed(2);
 
                                 fila.find("td").eq(2).html(cant_act);
+                                fila.find("td").eq(4).html(proveedor);
                                 fila.find("td").eq(5).html("S/. " + importe);
 
                                 if ($('#total_compra').html() == "") {
