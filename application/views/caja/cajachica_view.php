@@ -1,9 +1,11 @@
-<div class="row" id="cpo_registrodiario">
+<!--CAJA CHICA-->
+
+<div class="row">
     <div class="col-lg-12 col-xs-12">
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-11" style="margin-left: 4%">
             <div id="panel-cie" class="panel panel-primary">
                 <div class="panel-heading">
-                    <h3 class="panel-title">Caja chica</h3>
+                    <h3 class="panel-title">Registro de Gastos de Caja Chica</h3>
                 </div>
                 <div class="panel-body">
 
@@ -22,25 +24,30 @@
                         </div>
 
                     <?php $this->session->set_userdata('error', ''); } ?>
+                    
+                    <div class="row">
+                        <div class="breadcrumb" style="text-align:center;margin:0%;border-radius:0px;background-color:#d9f6de">
+                             <h3><?= $datetime ?></h3>
+                        </div>
+                    </div>
 
                     <?= form_open(base_url('regcajachica'), $form_regcajachica) ?>
 
                     <div class="modal-body">
 
-                        <div class="form-group"><label> # Caja: * </label><?= form_input($codi_cac, $cajachica->codi_cac) ?></div>
-                        <div class="form-group"><label> Usuario: * </label><?= form_input($codi_usu, $this->session->userdata('user_name')) ?></div>
+                        <div class="form-group"><label> # Caja: </label><?= form_input($codi_cac, $cajachica->codi_cac) ?></div>
+                        <div class="form-group"><label> Usuario activo: </label><?= form_input($codi_usu, $this->session->userdata('user_name')) ?></div>
                         <div class="form-group">
-                            <label>Concepto: *</label>
+                            <label>Concepto de Gasto: </label>
                             <select id="codi_rol" class="form-control" name="codi_con"><?php foreach ($concepto as $r) { ?> <option value="<?= $r->codi_con ?>"><?= $r->nomb_con ?></option> <?php } ?></select>
                         </div>
-                        <div class="form-group"><label> Descripci&oacute;n: * </label><?= form_input($nomb_gas) ?></div>
-                        <div class="form-group"><label> Importe: * </label><?= form_input($impo_gas) ?></div>
-                        <div class="form-group"><label> Observaci&oacute;n: * </label><?= form_textarea($obsv_gas) ?></div>
+                        <div class="form-group"><label> Descripci&oacute;n del Gasto: * </label><?= form_input($nomb_gas) ?></div>
+                        <div class="form-group"><label> Importe utilizado (S/ 0.00): * </label><?= form_input($impo_gas) ?></div>
+                        <div class="form-group"><label> Observaci&oacute;n: </label><?= form_textarea($obsv_gas) ?></div>
 
                     </div>
                     <div class="modal-footer">
                         <div style="float: right;">
-                            <button id="btnCancelarNuevoUsu" type="button" class="btn btn-default" data-dismiss="modal">limpiar</button>
                             <?= form_submit($registrar) ?>
                         </div>
                     </div>
@@ -50,6 +57,5 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>

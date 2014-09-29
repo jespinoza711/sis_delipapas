@@ -384,15 +384,13 @@ class caja extends CI_Controller {
         if (!$this->mod_config->AVP(1)) {
             header('location: ' . base_url('login'));
         } else {
-            date_default_timezone_set('America/Lima');
-            $datetime = $this->mod_config->datetime_es();
+            $caja['datetime'] = $this->mod_config->datetime_es();
             $status = $this->mod_caja->status_cajachica();
-            $date = date("Y-m-d");
 
             if ($status == 3) {
-                $error[] = "La caja chica de hoy " . $datetime . ' esta cerrada. <br><strong> Para ver el estado de hoy haga click <a href="' . base_url('home') . '"> aquí </a></strong>.';
+                $error[] = "La caja chica de hoy " . $caja['datetime'] . ' esta cerrada. <br><strong> Para ver el estado de hoy haga click <a href="' . base_url('home') . '"> aquí </a></strong>.';
             } else if ($status == 1) {
-                $error[] = "No se ha aperturado la caja chica hoy " . $datetime . '. <br><strong> Haga click <a href="' . base_url('abrircajachica') . '"> aquí </a> para aperturar una la caja chica </strong>.';
+                $error[] = "No se ha aperturado la caja chica hoy " . $caja['datetime'] . '. <br><strong> Haga click <a href="' . base_url('abrircajachica') . '"> aquí </a> para aperturar una la caja chica </strong>.';
             } else {
                 $error = array();
                 $caja['cajachica'] = $this->mod_view->one('caja_chica', false, false, array('esta_cac' => 'A'));
@@ -406,7 +404,7 @@ class caja extends CI_Controller {
                 $caja['codi_cac'] = array('id' => 'codi_cac', 'name' => 'codi_cac', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
                 $caja['codi_usu'] = array('id' => 'codi_usu', 'name' => 'codi_usu', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
                 $caja['nomb_gas'] = array('id' => 'nomb_gas', 'name' => 'nomb_gas', 'class' => "form-control", 'placeholder' => "Descripción", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off');
-                $caja['impo_gas'] = array('id' => 'impo_gas', 'name' => 'impo_gas', 'class' => "form-control", 'placeholder' => "Importe", "maxlength" => "10", 'required' => 'true', 'autocomplete' => 'off');
+                $caja['impo_gas'] = array('id' => 'impo_gas', 'name' => 'impo_gas', 'class' => "form-control", 'placeholder' => "Importe", "maxlength" => "10", 'required' => 'true', 'autocomplete' => 'off', 'type' => 'number', 'step' => 'any' , 'min' => '0');
                 $caja['obsv_gas'] = array('id' => 'obsv_gas', 'name' => 'obsv_gas', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
                 $caja['registrar'] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Registrar gasto");
             }
