@@ -77,3 +77,23 @@ c.esta_con
 from concepto c, usuario u
 where c.codi_usu = u.codi_usu
 order by c.codi_con asc
+
+create view v_registro_planilla as
+select rp.codi_dpl,
+rp.codi_usu,
+rp.fech_dpl,
+u.nomb_usu,
+rp.codi_emp,
+e.nomb_emp,
+e.apel_emp,
+rp.suel_pla,
+rp.cant_dpl,
+rp.suto_dpl,
+rp.desc_dpl,
+rp.tota_dpl,
+rp.obsv_dpl,
+rp.esta_dpl
+from registro_planilla rp, usuario u, empleado e
+where rp.codi_usu = u.codi_usu
+and rp.codi_emp = e.codi_emp
+order by rp.fech_dpl desc;

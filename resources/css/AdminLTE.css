@@ -3710,7 +3710,7 @@ fieldset[disabled] .btn-vk.active {
     width: 80px;
 }
 
-/* IN - CUSTOM STYLES */
+/* AdminLTE - CUSTOM STYLES IN */
 
 #table_empleado_wrapper > .row > .col-xs-8 > #table_empleado_filter {
     float: right;
@@ -3748,16 +3748,25 @@ fieldset[disabled] .btn-vk.active {
 #table_caja_filter {
     display: inline-table;
 }
+/* AJUSTES -> PLANILLA */
 #table_planilla_wrapper > .row > .col-xs-8 > #table_planilla_filter {
     float: right;
 }
 #table_planilla_filter {
     display: inline-table;
 }
+/* AJUSTES -> CONCEPTO */
 #table_concepto_wrapper > .row > .col-xs-8 > #table_concepto_filter {
     float: right;
 }
 #table_concepto_filter {
+    display: inline-table;
+}
+/* REGISTRO DIARIO */
+#table_registrodiario_wrapper > .row > .col-xs-8 > #table_registrodiario_filter {
+    float: right;
+}
+#table_registrodiario_filter {
     display: inline-table;
 }
 
@@ -3912,8 +3921,17 @@ tr.group:hover {
     text-align: center;
     vertical-align: middle;
 }
+/* REGISTRO DIARIO */
+#table_registrodiario thead tr th{
+    text-align: center;
+    vertical-align: middle;
+}
+#table_registrodiario tbody tr td{
+    text-align: center;
+    vertical-align: middle;
+}
 
-/* OUT - CUSTOM STYLES */
+/* AdminLTE - CUSTOM STYLES OUT */
 
 .ui-autocomplete {
     max-height: 200px;
