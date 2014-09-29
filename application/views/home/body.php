@@ -9,6 +9,7 @@
         <link href="<?= base_url('resources/css/font-awesome.min.css') ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('resources/css/ionicons.min.css') ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('resources/css/jquery-ui.css') ?>" rel="stylesheet" type="text/css" />
+        <link href="<?= base_url('resources/css/daterangepicker/daterangepicker-bs3.css') ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('resources/css/dataTables.bootstrap.css') ?>" rel="stylesheet" type="text/css" />
         <link href="<?= base_url('resources/css/AdminLTE.css') ?>" rel="stylesheet" type="text/css" />
 

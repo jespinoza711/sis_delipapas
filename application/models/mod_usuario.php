@@ -96,4 +96,27 @@ class mod_usuario extends CI_Model {
         return $result;
     }
 
+    function get_vusuario_paginate_report($limit, $start) {
+
+        $this->db->where(array('esta_usu' => 'A'));
+        $query = $this->db->get('v_usuario');
+
+        $usuarios = $query->result();
+        $i = 0;
+        $c = 0;
+        $result = array();
+        foreach ($usuarios as $row) {
+            if ($i >= $start) {
+                if ($c < $limit) {
+                    $result[$c] = $row;
+                    $c++;
+                } else {
+                    break;
+                }
+            }
+            $i++;
+        }
+        return $result;
+    }
+    
 }

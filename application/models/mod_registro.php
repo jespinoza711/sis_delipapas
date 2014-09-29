@@ -47,5 +47,11 @@ class mod_registro extends CI_Model {
         return $this->db->update('registro_planilla', $data);
         ;
     }
+    
+    function get_registro_interval($interval){
+        $this->db->where($interval);
+        $query = $this->db->get('v_registro_diario');
+        return $query->result();
+    }
 
 }

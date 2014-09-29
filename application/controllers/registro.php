@@ -191,4 +191,61 @@ class registro extends CI_Controller {
         print_r(json_encode($aa));
     }
 
+    public function paginate_report() {
+
+        $tipo = $this->session->userdata('type_10');
+
+        $aaData = array();
+
+        if ($tipo == "0") {
+            $nTotal = $this->mod_view->count('registro_planilla', 0, false, array());
+            $registro = $this->mod_view->view('v_registro_diario', 0, false, array());
+
+            foreach ($registro as $row) {
+                $time = strtotime($row->fech_dpl);
+                $fecha = date("d/m/Y g:i A", $time);
+                $aaData[] = array(
+                    $fecha,
+                    $row->nomb_usu,
+                    $row->apel_emp . ', ' . $row->nomb_emp,
+                    $row->cant_dpl . ' Kls',
+                    'S/. ' . $row->tota_dpl
+                );
+            }
+        } else if ($tipo == "1") {
+            $dates = str_replace('/', '-', $this->session->userdata('input_reporte_10'));
+            $fecha_a = date('Y-m-d', strtotime(substr($dates, 0, 10)));
+            $fecha_b = date('Y-m-d', strtotime(substr($dates, 13)) + 86400);
+
+            if (substr($this->session->userdata('input_reporte_10'), 0, 10) == substr($this->session->userdata('input_reporte_10'), 13)) {
+                $registro = $this->mod_registro->get_registro_interval("DATE(fech_dpl) = '$fecha_a'");
+            } else {
+                $registro = $this->mod_registro->get_registro_interval("fech_dpl BETWEEN '$fecha_a'  AND '$fecha_b'");
+            }
+
+
+            $nTotal = count($registro);
+
+            foreach ($registro as $row) {
+                $time = strtotime($row->fech_dpl);
+                $fecha = date("d/m/Y g:i A", $time);
+                $aaData[] = array(
+                    $fecha,
+                    $row->nomb_usu,
+                    $row->apel_emp . ', ' . $row->nomb_emp,
+                    $row->cant_dpl . ' Kls',
+                    'S/. ' . $row->tota_dpl
+                );
+            }
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
+    }
+
 }

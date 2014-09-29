@@ -75,18 +75,16 @@ $(document).ready(function() {
 
                                     $('#cant_pro_ven').attr('max', row[7]);
                                     $('#cant_pro_ven').val('1');
-                                    $('#igv_pro_ven').val('18');
+                                    $('#igv_pro_ven').val($('#igv_pro_ven_neg').val());
 
                                     if (parseInt(row[7]) == 0) {
                                         $("#error_stock_ven").css('display', 'inherit');
                                         $('#cant_pro_ven').prop('disabled', true);
-                                        $('#igv_pro_ven').prop('disabled', true);
                                         $('#sw_igv_ven').prop('disabled', true);
                                         $('#agregar_pro_ven').prop('disabled', true);
                                     } else {
                                         $("#error_stock_ven").css('display', 'none');
                                         $('#cant_pro_ven').prop('disabled', false);
-                                        $('#igv_pro_ven').prop('disabled', false);
                                         $('#sw_igv_ven').prop('disabled', false);
                                         $('#agregar_pro_ven').prop('disabled', false);
                                     }
@@ -140,8 +138,14 @@ $(document).ready(function() {
                         if (ButtonPressed === "Actualizar") {
 
                             var cant_ant = $("#detalle_productos_ven tbody tr td:contains('" + codigo + "')").parent().find("td").eq(2).html();
-                            $("#detalle_productos_ven tbody tr td:contains('" + codigo + "')").parent().remove();
-
+                            
+                            $("#detalle_productos_ven tbody tr").each(function (){
+                                if ($(this).find('td').eq(0).html() == codigo){
+                                    $(this).remove();
+                                    return false;
+                                }
+                            });
+                            
                             var venta = (parseFloat(precio.substring(4)) * parseInt(cantidad)).toFixed(2);
                             var igv = (parseFloat(venta) * (parseFloat($('#igv_pro_ven').val()) / 100)).toFixed(2);
                             var importe = (parseFloat(venta) + parseFloat(igv)).toFixed(2);
@@ -201,8 +205,14 @@ $(document).ready(function() {
                         }
                         if (ButtonPressed === "Añadir") {
 
-                            var fila = $("#detalle_productos_ven tbody tr td:contains('" + codigo + "')").parent();
-
+                            var fila;
+                            $("#detalle_productos_ven tbody tr").each(function (){
+                                if ($(this).find('td').eq(0).html() == codigo){
+                                    fila = $(this);
+                                    return false;
+                                }
+                            });
+                            
                             var cant_act = parseInt(cantidad) + parseInt(fila.find("td").eq(2).html());
                             var venta = (parseFloat(precio.substring(4)) * parseInt(cant_act)).toFixed(2);
                             var igv = (parseFloat(venta) * (parseFloat($('#igv_pro_ven').val()) / 100)).toFixed(2);
@@ -321,12 +331,10 @@ $(document).ready(function() {
 
             if (input.attr('checked') == "checked") {
                 input.removeAttr('checked');
-                $('#igv_pro_ven').prop('disabled', true);
                 $('#igv_pro_ven').val("0");
             } else {
                 input.attr('checked', 'true');
-                $('#igv_pro_ven').prop('disabled', false);
-                $('#igv_pro_ven').val("18");
+                $('#igv_pro_ven').val($('#igv_pro_ven_neg').val());
             }
 
         });

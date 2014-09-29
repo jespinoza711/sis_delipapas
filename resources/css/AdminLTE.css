@@ -3914,6 +3914,38 @@ tr.group:hover {
     text-align: center;
 }
 
+#table_reporte_6 tbody tr td:nth-child(1),
+#table_reporte_6 tbody tr td:nth-child(2),
+#table_reporte_6 tbody tr td:nth-child(3){
+    text-align: center;
+}
+#table_reporte_7 tbody tr td:nth-child(1),
+#table_reporte_7 tbody tr td:nth-child(3),
+#table_reporte_7 tbody tr td:nth-child(4),
+#table_reporte_7 tbody tr td:nth-child(5){
+    text-align: center;
+}
+#table_reporte_8 tbody tr td:nth-child(1),
+#table_reporte_8 tbody tr td:nth-child(3),
+#table_reporte_8 tbody tr td:nth-child(5),
+#table_reporte_8 tbody tr td:nth-child(6){
+    text-align: center;
+}
+#table_reporte_8 tbody tr td:nth-child(4),
+#table_reporte_8 tbody tr td:nth-child(7){
+    text-align: right;
+}
+#table_reporte_9 tbody tr td:nth-child(1),
+#table_reporte_9 tbody tr td:nth-child(3),
+#table_reporte_9 tbody tr td:nth-child(5),
+#table_reporte_9 tbody tr td:nth-child(6){
+    text-align: center;
+}
+#table_reporte_9 tbody tr td:nth-child(4),
+#table_reporte_9 tbody tr td:nth-child(7){
+    text-align: right;
+}
+
 #table_caja tbody tr td{
     text-align: center;
     vertical-align: middle;

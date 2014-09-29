@@ -338,5 +338,33 @@ class empleado extends CI_Controller {
         }
         echo json_encode($data);
     }
+    
+    public function paginate_report() {
+
+        $empleados = $this->mod_empleado->get_vempleado_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], "", array('empleado.esta_emp' => 'A'));
+
+        $nTotal = count($empleados);
+        
+        $aaData = array();
+
+        foreach ($empleados as $row) {
+
+            $aaData[] = array(
+                $row->dni_emp,
+                $row->apel_emp . ', ' . $row->nomb_emp,
+                $row->nomb_tem,
+                $row->telf_emp,
+                'S/. ' . $row->suel_pla
+            );
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
+    }
 
 }

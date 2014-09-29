@@ -190,5 +190,21 @@ class mod_caja extends CI_Model {
         $this->db->where('codi_gas', $codi_gas);
         return $this->db->update('gastos', $data);
     }
+    
+    function get_ventas_interval($interval){
+        $this->db->where($interval);
+        $query = $this->db->get('v_venta');
+        return $query->result();
+    }
+    function get_compras_interval($interval){
+        $this->db->where($interval);
+        $query = $this->db->get('v_compra');
+        return $query->result();
+    }
+    function get_caja_interval($interval){
+        $this->db->where($interval);
+        $query = $this->db->get('v_caja_dia');
+        return $query->result();
+    }
 
 }

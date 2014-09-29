@@ -184,4 +184,33 @@ class usuario extends CI_Controller {
         }
     }
 
+    public function paginate_report() {
+
+        $usuarios = $this->mod_usuario->get_vusuario_paginate_report($_POST['iDisplayLength'], $_POST['iDisplayStart']);
+
+        $nTotal = count($usuarios);
+
+        $aaData = array();
+
+        foreach ($usuarios as $row) {
+
+            $time = strtotime($row->ses_usu);
+            $fecha = date("d/m/Y g:i:s A", $time);
+
+            $aaData[] = array(
+                $row->nomb_usu,
+                $row->nomb_rol,
+                $fecha
+            );
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
+    }
+
 }

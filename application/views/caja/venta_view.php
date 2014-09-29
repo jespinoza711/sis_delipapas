@@ -77,7 +77,8 @@
                             <div class="form-group">
                                 <label>I.G.V.: </label>
                                 <div class="input-group" style="width: 20%;">
-                                    <input id="igv_pro_ven" min="0" max="100" value="18" type="number" class="form-control">
+                                    <input id="igv_pro_ven" value="<?= $igv ?>" type="number" class="form-control" readonly="true">
+                                    <input id="igv_pro_ven_neg" value="<?= $igv ?>" type="hidden">
                                     <span class="input-group-addon">%</span>
                                 </div>
                             </div>

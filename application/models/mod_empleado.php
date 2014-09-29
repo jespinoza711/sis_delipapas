@@ -20,7 +20,7 @@ class mod_empleado extends CI_Model {
         return $query->result();
     }
 
-    function get_vempleado_paginate($limit, $start, $string = "") {
+    function get_vempleado_paginate($limit, $start, $string = "", $where = array()) {
         $this->db->select('empleado.codi_emp, empleado.nomb_emp,empleado.apel_emp,empleado.dire_emp,'
                 . 'empleado.dni_emp,empleado.telf_emp,empleado.sexo_emp,empleado.afp_emp,'
                 . 'empleado.civi_emp,empleado.esta_emp, empleado.codi_pla, empleado.codi_tem,'
@@ -45,6 +45,7 @@ class mod_empleado extends CI_Model {
         $this->db->or_like('planilla.suel_pla', $string);
         $this->db->or_like('planilla.obsv_pla', $string);
         $this->db->or_like("CONCAT(empleado.nomb_emp,' ',empleado.apel_emp)", $string);
+        $this->db->where($where);
         $query = $this->db->get();
         $empleados = $query->result();
         $i = 0;

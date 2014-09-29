@@ -104,6 +104,9 @@ class caja extends CI_Controller {
                 $venta["caja"] = $cajas;
                 $venta["cliente"] = $clientes;
                 $venta["comprobante"] = $comprobantes;
+
+                $negocio = $this->mod_view->view('negocio');
+                $venta["igv"] = $negocio[0]->igv_pla;
             }
 
             if (count($error) > 0) {
@@ -142,17 +145,74 @@ class caja extends CI_Controller {
 
         $codi_ven = $this->mod_view->insert('venta', $venta);
 
-        // GENERAR NUMERO DE FACTURA
-        $cont = $this->mod_view->count('factura') + 1;
-        $longitud = strlen($cont);
-        $numero = 'F000000000000';
-        $num_fac = substr($numero, 0, 13 - $longitud) . $cont;
+        // GENERAR NUMERO DE FACTURA Y ORDEN DE DESPACHO
+        // 
+        // NUMERO DE FACTURA
+        $negocio = $this->mod_view->view('negocio');
+        $facturas = $this->mod_view->view('factura');
+
+        $num_ini_fac = $negocio[0]->num_ini_factura;
+        $num_ini_des = $negocio[0]->num_ini_orden;
+
+        $tamaño = strlen($num_ini_fac);
+        $numero = (int) $num_ini_fac;
+
+        $sw = false;
+
+        while (!$sw) {
+
+            $exists = false;
+
+            foreach ($facturas as $row) {
+                if ($numero == $row->num_fac) {
+                    $exists = true;
+                }
+            }
+
+            if ($exists) {
+                $numero++;
+            } else {
+                $sw = true;
+            }
+        }
+
+        while ($tamaño != strlen($numero)) {
+            $numero = '0' . $numero;
+        }
+
+        // ORDEN DE DESPACHO
+        $tamaño_b = strlen($num_ini_des);
+        $numero_b = (int) $num_ini_des;
+
+        $sw_2 = false;
+
+        while (!$sw_2) {
+
+            $exists_2 = false;
+
+            foreach ($facturas as $row) {
+                if ($numero_b == $row->desp_fac) {
+                    $exists_2 = true;
+                }
+            }
+
+            if ($exists_2) {
+                $numero_b++;
+            } else {
+                $sw_2 = true;
+            }
+        }
+
+        while ($tamaño_b != strlen($numero_b)) {
+            $numero_b = '0' . $numero_b;
+        }
 
         // REGISTRO DE FACTURA
         $factura = array(
-            'num_fac' => $num_fac,
-            'ruc_fac' => "-", // FALTA EL RUC DE LA EMPRESA
+            'num_fac' => $numero,
+            'ruc_fac' => $negocio[0]->ruc_neg,
             'fech_fac' => date("Y-m-d H:i:s"),
+            'desp_fac' => $numero_b,
             'esta_fac' => 'A'
         );
 
@@ -185,7 +245,8 @@ class caja extends CI_Controller {
             );
             $this->mod_view->insert_only('detalle_factura', $detalle_factura);
         }
-        $this->session->set_userdata('info_ven', 'La venta ha sido registrada con éxito');
+        $this->session->set_userdata('reg_ventas', $codi_fac);
+        $this->session->set_userdata('info_ven', 'La venta ha sido registrada con éxito. <strong><a href="'.base_url('reporte/reg_venta').'" target="_blank">Ver documento en PDF</a></strong>');
         header('location: ' . base_url('venta'));
     }
 
@@ -880,15 +941,45 @@ class caja extends CI_Controller {
         }
         echo json_encode($autocomplete);
     }
-
+    
     public function get_vcompras_paginate() {
-        $nTotal = $this->mod_view->count('compra', 0, false, array('esta_com' => 'A'));
-        $compras = $this->mod_view->view('v_compra');
+
+        $tipo = $this->session->userdata('type_1');
+
         $aaData = array();
 
-        foreach ($compras as $row) {
-            $fech_reg = substr($row->fech_com, 0, 7);
-            if ($this->session->userdata('input_reporte_1') == $fech_reg) {
+        if ($tipo == "0") {
+            $nTotal = $this->mod_view->count('compra', 0, false, array('esta_com' => 'A'));
+            $compras = $this->mod_view->view('v_compra');
+
+            foreach ($compras as $row) {
+                $fech_reg = substr($row->fech_com, 0, 7);
+                if ($this->session->userdata('input_reporte_1') == $fech_reg) {
+                    $time = strtotime($row->fech_com);
+                    $fecha = date("d/m/Y g:i A", $time);
+                    $aaData[] = array(
+                        $fecha,
+                        $row->nomb_usu,
+                        $row->num_com,
+                        'S/. ' . $row->tota_com
+                    );
+                }
+            }
+        } else if ($tipo == "1") {
+            $dates = str_replace('/', '-', $this->session->userdata('input_reporte_1'));
+            $fecha_a = date('Y-m-d', strtotime(substr($dates, 0, 10)));
+            $fecha_b = date('Y-m-d', strtotime(substr($dates, 13)) + 86400);
+
+            if (substr($this->session->userdata('input_reporte_1'), 0, 10) == substr($this->session->userdata('input_reporte_1'), 13)) {
+                $compras = $this->mod_caja->get_compras_interval("DATE(fech_com) = '$fecha_a'");
+            } else {
+                $compras = $this->mod_caja->get_compras_interval("fech_com BETWEEN '$fecha_a'  AND '$fecha_b'");
+            }
+
+
+            $nTotal = count($compras);
+
+            foreach ($compras as $row) {
                 $time = strtotime($row->fech_com);
                 $fecha = date("d/m/Y g:i A", $time);
                 $aaData[] = array(
@@ -910,13 +1001,44 @@ class caja extends CI_Controller {
     }
 
     public function get_v_ventas_paginate() {
-        $nTotal = $this->mod_view->count('venta', 0, false, array('esta_ven' => 'A'));
-        $ventas = $this->mod_view->view('v_venta');
+        $tipo = $this->session->userdata('type_2');
+
         $aaData = array();
 
-        foreach ($ventas as $row) {
-            $fech_reg = substr($row->fech_ven, 0, 7);
-            if ($this->session->userdata('input_reporte_2') == $fech_reg) {
+        if ($tipo == "0") {
+            $nTotal = $this->mod_view->count('venta', 0, false, array('esta_ven' => 'A'));
+            $ventas = $this->mod_view->view('v_venta');
+
+            foreach ($ventas as $row) {
+                $fech_reg = substr($row->fech_ven, 0, 7);
+                if ($this->session->userdata('input_reporte_2') == $fech_reg) {
+                    $time = strtotime($row->fech_ven);
+                    $fecha = date("d/m/Y g:i A", $time);
+                    $aaData[] = array(
+                        $fecha,
+                        $row->apel_cli . ', ' . $row->nomb_cli,
+                        $row->num_caj,
+                        $row->nomb_usu,
+                        $row->nomb_com,
+                        'S/. ' . $row->tota_ven
+                    );
+                }
+            }
+        } else if ($tipo == "1") {
+            $dates = str_replace('/', '-', $this->session->userdata('input_reporte_2'));
+            $fecha_a = date('Y-m-d', strtotime(substr($dates, 0, 10)));
+            $fecha_b = date('Y-m-d', strtotime(substr($dates, 13)) + 86400);
+
+            if (substr($this->session->userdata('input_reporte_2'), 0, 10) == substr($this->session->userdata('input_reporte_2'), 13)) {
+                $ventas = $this->mod_caja->get_ventas_interval("DATE(fech_ven) = '$fecha_a'");
+            } else {
+                $ventas = $this->mod_caja->get_ventas_interval("fech_ven BETWEEN '$fecha_a'  AND '$fecha_b'");
+            }
+
+
+            $nTotal = count($ventas);
+
+            foreach ($ventas as $row) {
                 $time = strtotime($row->fech_ven);
                 $fecha = date("d/m/Y g:i A", $time);
                 $aaData[] = array(
@@ -926,6 +1048,134 @@ class caja extends CI_Controller {
                     $row->nomb_usu,
                     $row->nomb_com,
                     'S/. ' . $row->tota_ven
+                );
+            }
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
+    }
+
+    public function paginate_report() {
+        $tipo = $this->session->userdata('type_8');
+
+        $aaData = array();
+
+        if ($tipo == "0") {
+            $nTotal = $this->mod_view->count('caja_dia', 0, false, array('esta_cad' => 'C'));
+            $caja_dia = $this->mod_view->view('v_caja_dia', 0, false, array('esta_cad' => 'C'));
+
+            foreach ($caja_dia as $row) {
+                $time_a = strtotime($row->fein_cad);
+                $fecha_a = date("d/m/Y g:i A", $time_a);
+                $time_b = strtotime($row->fefi_cad);
+                $fecha_b = date("d/m/Y g:i A", $time_b);
+                $aaData[] = array(
+                    $row->num_caj,
+                    $fecha_a,
+                    $row->usu_ini,
+                    'S/. ' . $row->sain_cad,
+                    $fecha_b,
+                    $row->usu_fin,
+                    'S/. ' . $row->safi_cad
+                );
+            }
+        } else if ($tipo == "1") {
+            $dates = str_replace('/', '-', $this->session->userdata('input_reporte_8'));
+            $fecha_a = date('Y-m-d', strtotime(substr($dates, 0, 10)));
+            $fecha_b = date('Y-m-d', strtotime(substr($dates, 13)) + 86400);
+
+            if (substr($this->session->userdata('input_reporte_8'), 0, 10) == substr($this->session->userdata('input_reporte_8'), 13)) {
+                $caja_dia = $this->mod_caja->get_caja_interval("DATE(fein_cad) = '$fecha_a' OR DATE(fefi_cad) = '$fecha_a' AND esta_cad = 'C'");
+            } else {
+                $caja_dia = $this->mod_caja->get_caja_interval("fein_cad BETWEEN '$fecha_a'  AND '$fecha_b' OR fefi_cad BETWEEN '$fecha_a'  AND '$fecha_b' AND esta_cad = 'C'");
+            }
+
+
+            $nTotal = count($caja_dia);
+
+            foreach ($caja_dia as $row) {
+                $time_a = strtotime($row->fein_cad);
+                $fecha_a = date("d/m/Y g:i A", $time_a);
+                $time_b = strtotime($row->fefi_cad);
+                $fecha_b = date("d/m/Y g:i A", $time_b);
+                $aaData[] = array(
+                    $row->num_caj,
+                    $fecha_a,
+                    $row->usu_ini,
+                    'S/. ' . $row->sain_cad,
+                    $fecha_b,
+                    $row->usu_fin,
+                    'S/. ' . $row->safi_cad
+                );
+            }
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
+    }
+
+    public function chica_paginate_report() {
+        $tipo = $this->session->userdata('type_8');
+
+        $aaData = array();
+
+        if ($tipo == "0") {
+            $nTotal = $this->mod_view->count('caja_chica_dia', 0, false, array('esta_ccd' => 'C'));
+            $caja_chica_dia = $this->mod_view->view('v_caja_chica_dia', 0, false, array('esta_ccd' => 'C'));
+
+            foreach ($caja_chica_dia as $row) {
+                $time_a = strtotime($row->fein_ccd);
+                $fecha_a = date("d/m/Y g:i A", $time_a);
+                $time_b = strtotime($row->fefi_ccd);
+                $fecha_b = date("d/m/Y g:i A", $time_b);
+                $aaData[] = array(
+                    $row->codi_cac,
+                    $fecha_a,
+                    $row->usu_ini,
+                    'S/. ' . $row->sain_ccd,
+                    $fecha_b,
+                    $row->usu_fin,
+                    'S/. ' . $row->dife_ccd
+                );
+            }
+        } else if ($tipo == "1") {
+            $dates = str_replace('/', '-', $this->session->userdata('input_reporte_9'));
+            $fecha_a = date('Y-m-d', strtotime(substr($dates, 0, 10)));
+            $fecha_b = date('Y-m-d', strtotime(substr($dates, 13)) + 86400);
+
+            if (substr($this->session->userdata('input_reporte_9'), 0, 10) == substr($this->session->userdata('input_reporte_9'), 13)) {
+                $caja_chica_dia = $this->mod_caja->get_caja_chica_interval("DATE(fein_ccd) = '$fecha_a' OR DATE(fefi_ccd) = '$fecha_a' AND esta_ccd = 'C'");
+            } else {
+                $caja_chica_dia = $this->mod_caja->get_caja_chica_interval("fein_ccd BETWEEN '$fecha_a'  AND '$fecha_b' OR fefi_ccd BETWEEN '$fecha_a'  AND '$fecha_b' AND esta_ccd = 'C'");
+            }
+
+
+            $nTotal = count($caja_chica_dia);
+
+            foreach ($caja_chica_dia as $row) {
+                $time_a = strtotime($row->fein_ccd);
+                $fecha_a = date("d/m/Y g:i A", $time_a);
+                $time_b = strtotime($row->fefi_ccd);
+                $fecha_b = date("d/m/Y g:i A", $time_b);
+                $aaData[] = array(
+                    $row->codi_cac,
+                    $fecha_a,
+                    $row->usu_ini,
+                    'S/. ' . $row->sain_ccd,
+                    $fecha_b,
+                    $row->usu_fin,
+                    'S/. ' . $row->dife_ccd
                 );
             }
         }
