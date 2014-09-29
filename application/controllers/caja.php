@@ -548,17 +548,35 @@ class caja extends CI_Controller {
         if (!$this->mod_config->AVP(2)) {
             header('location: ' . base_url('login'));
         } else {
-            $codi_gas = $this->input->post('codi_gas_e');
-            $codi_cac = $this->input->post('codi_cac_e');
-            $data['codi_con'] = $this->input->post('codi_con_e');
-            $data['nomb_gas'] = $this->input->post('nomb_gas_e');
-            $data['impo_gas'] = $this->input->post('impo_gas_e');
-            $data['obsv_gas'] = $this->input->post('obsv_gas_e');
+            if ($this->input->post('cajachica_edit')) {
+                $codi_gas = $this->input->post('codi_gas_e');
+                $codi_cac = $this->input->post('codi_cac_e');
+                $data['codi_con'] = $this->input->post('codi_con_e');
+                $data['nomb_gas'] = $this->input->post('nomb_gas_e');
+                $data['impo_gas'] = $this->input->post('impo_gas_e');
+                $data['obsv_gas'] = $this->input->post('obsv_gas_e');
 
-            if ($this->mod_caja->edit_gasto_cajachica($codi_gas, $data)) {
-                $this->session->set_userdata('info', 'Se ha actualizado el gasto de la caja chica ' . $codi_cac . ' exitosamente.');
-            } else {
-                $this->session->set_userdata('error', 'No ha sido posible actualizar el gasto de la caja chica ' . $codi_cac . ', verifique los datos proporcionados.');
+                if ($this->mod_caja->edit_gasto_cajachica($codi_gas, $data)) {
+                    $this->session->set_userdata('info', 'Se ha actualizado el gasto de la caja chica ' . $codi_cac . ' exitosamente.');
+                } else {
+                    $this->session->set_userdata('error', 'No ha sido posible actualizar el gasto de la caja chica ' . $codi_cac . ', verifique los datos proporcionados.');
+                }
+            } else if ($this->input->post('activar_gasto')) {
+                $codi_gas = $this->input->post('codi_gas');
+                $data['esta_gas'] = 'A';
+                if ($this->mod_caja->edit_gasto_cajachica($codi_gas, $data)) {
+                    $this->session->set_userdata('info', 'Se ha hablitado el gasto de la caja chica ' . $codi_cac . ' exitosamente.');
+                } else {
+                    $this->session->set_userdata('error', 'No ha sido posible habilitar el gasto de la caja chica ' . $codi_cac . ', verifique los datos proporcionados.');
+                }
+            } else if ($this->input->post('desactivar_gasto')) {
+                $codi_gas = $this->input->post('codi_gas');
+                $data['esta_gas'] = 'D';
+                if ($this->mod_caja->edit_gasto_cajachica($codi_gas, $data)) {
+                    $this->session->set_userdata('info', 'Se ha deshablitado el gasto de la caja chica ' . $codi_cac . ' exitosamente.');
+                } else {
+                    $this->session->set_userdata('error', 'No ha sido posible deshabilitar el gasto de la caja chica ' . $codi_cac . ', verifique los datos proporcionados.');
+                }
             }
             header('Location: ' . base_url('cajachica'));
         }
@@ -568,17 +586,35 @@ class caja extends CI_Controller {
         if (!$this->mod_config->AVP(2)) {
             header('location: ' . base_url('login'));
         } else {
-            $codi_gas = $this->input->post('codi_gas_e');
-            $codi_cac = $this->input->post('codi_cac_e');
-            $data['codi_con'] = $this->input->post('codi_con_e');
-            $data['nomb_gas'] = $this->input->post('nomb_gas_e');
-            $data['impo_gas'] = $this->input->post('impo_gas_e');
-            $data['obsv_gas'] = $this->input->post('obsv_gas_e');
+            if ($this->input->post('cajachica_edit')) {
+                $codi_gas = $this->input->post('codi_gas_e');
+                $codi_cac = $this->input->post('codi_cac_e');
+                $data['codi_con'] = $this->input->post('codi_con_e');
+                $data['nomb_gas'] = $this->input->post('nomb_gas_e');
+                $data['impo_gas'] = $this->input->post('impo_gas_e');
+                $data['obsv_gas'] = $this->input->post('obsv_gas_e');
 
-            if ($this->mod_caja->edit_gasto_cajachica($codi_gas, $data)) {
-                $this->session->set_userdata('info', 'Se ha actualizado el gasto de la caja chica ' . $codi_cac . ' exitosamente.');
-            } else {
-                $this->session->set_userdata('error', 'No ha sido posible actualizar el gasto de la caja chica ' . $codi_cac . ', verifique los datos proporcionados.');
+                if ($this->mod_caja->edit_gasto_cajachica($codi_gas, $data)) {
+                    $this->session->set_userdata('info', 'Se ha actualizado el gasto de la caja chica ' . $codi_cac . ' exitosamente.');
+                } else {
+                    $this->session->set_userdata('error', 'No ha sido posible actualizar el gasto de la caja chica ' . $codi_cac . ', verifique los datos proporcionados.');
+                }
+            } else if ($this->input->post('activar_gasto')) {
+                $codi_gas = $this->input->post('codi_gas');
+                $data['esta_gas'] = 'A';
+                if ($this->mod_caja->edit_gasto_cajachica($codi_gas, $data)) {
+                    $this->session->set_userdata('info', 'Se ha hablitado el gasto de la caja chica ' . $codi_cac . ' exitosamente.');
+                } else {
+                    $this->session->set_userdata('error', 'No ha sido posible habilitar el gasto de la caja chica ' . $codi_cac . ', verifique los datos proporcionados.');
+                }
+            } else if ($this->input->post('desactivar_gasto')) {
+                $codi_gas = $this->input->post('codi_gas');
+                $data['esta_gas'] = 'D';
+                if ($this->mod_caja->edit_gasto_cajachica($codi_gas, $data)) {
+                    $this->session->set_userdata('info', 'Se ha deshablitado el gasto de la caja chica ' . $codi_cac . ' exitosamente.');
+                } else {
+                    $this->session->set_userdata('error', 'No ha sido posible deshabilitar el gasto de la caja chica ' . $codi_cac . ', verifique los datos proporcionados.');
+                }
             }
             header('Location: ' . base_url('hiscajachica'));
         }
@@ -685,23 +721,42 @@ class caja extends CI_Controller {
         date_default_timezone_set('America/Lima');
         $date = date('Y-m-d');
         $aaData = array();
-        
-        if($query == 'one'){
+        $form_url = '';
+
+        if ($query == 'one') {
             $nTotal = $this->mod_view->count('v_gastos', false, false, array('DATE(fech_gas)' => $date));
+            $form_url = 'cajachicaedit';
         } else {
             $nTotal = $this->mod_view->count('v_gastos', false, false, false);
+            $form_url = 'cajachicaeditall';
         }
         $gastos = $this->mod_caja->get_caja_chica_dia_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch'], $query);
-        
+        $form_aregcajachica = array('role' => 'form', "style" => "display: inline-block;");
 
         foreach ($gastos as $row) {
             $estado = $row->esta_gas == 'A' ? 'Realizado' : 'Bloqueado';
             $opciones = '';
             if ($this->session->userdata('user_rol') == 1) {
-                $opciones .= '&nbsp;<button type="button" class="tooltip_regcajachica btn btn-success btn-circle editar_regcajachica" data-toggle="tooltip" data-placement="top" title="Editar gasto">
-                            <i class="fa fa-edit">
-                        </button>';
+                $opciones .= '<button type="button" class="tooltip_regcajachica btn btn-success btn-circle editar_regcajachica" data-toggle="tooltip" data-placement="top" title="Editar gasto">
+                            <i class="fa fa-edit"></i></button>&nbsp;';
+                if ($estado == 'Bloqueado') {
+                    $opciones .= '<span>' . form_open(base_url($form_url), $form_aregcajachica) . ' 
+                                <input type="hidden" name="codi_gas" value="' . $row->codi_gas . '">
+                                <input name="activar_gasto" type="submit" class="tooltip_regcajachica btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Desbloquear gasto">
+                                ' . form_close() . '
+                            </span>';
+                } else {
+                    $opciones .= '<span>' . form_open(base_url($form_url), $form_aregcajachica) . ' 
+                                <input type="hidden" name="codi_gas" value="' . $row->codi_gas . '">
+                                <input name="desactivar_gasto" type="submit" class="tooltip_regcajachica btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Bloquear gasto">
+                                ' . form_close() . '
+                            </span>';
+                }
+            } else {
+                $opciones = '<button type="button" class="btn btn-default btn-circle editar_regcajachica disabled">
+                            <i class="fa fa-edit"></i></button>&nbsp;';
             }
+
             $opciones .= "<script>$('.tooltip_regcajachica').tooltip(); $('.popover-regcajachica').popover();</script>";
 
             $time = strtotime($row->fech_gas);
