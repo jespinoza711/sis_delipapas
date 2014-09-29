@@ -97,3 +97,20 @@ from registro_planilla rp, usuario u, empleado e
 where rp.codi_usu = u.codi_usu
 and rp.codi_emp = e.codi_emp
 order by rp.fech_dpl desc;
+
+create view v_gastos as
+select g.codi_gas,
+g.fech_gas,
+g.codi_cac,
+g.codi_usu,
+u.nomb_usu,
+g.codi_con,
+c.nomb_con,
+g.nomb_gas,
+g.impo_gas,
+g.obsv_gas,
+g.esta_gas
+from gastos g, usuario u, concepto c
+where g.codi_usu = u.codi_usu
+and g.codi_con = c.codi_con
+order by g.fech_gas desc;

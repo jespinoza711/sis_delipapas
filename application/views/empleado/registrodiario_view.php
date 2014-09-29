@@ -52,6 +52,7 @@
                         <div class="form-group"><label> Descuentos Observados (S/ 0.00): </label><?= form_input($desc_dpl, '0') ?></div>
                         <div class="form-group"><label> Total a Pagar (S/ 0.00): *</label><?= form_input($tota_dpl, '0.00') ?></div>
                         <div class="form-group"><label> Observaci&oacute;n: (Max. 500 caracteres)</label><?= form_textarea($obsv_dpl) ?></div>
+                        <p class="text-muted" style="font-style: italic;">(*) Los campos con asterisco son obligatorios.</p>
                     </div>
                     <div class="modal-footer">
                         <div style="float: right;">
@@ -121,7 +122,7 @@
                  background-color: #428bca;
                  border-color: #428bca;
                  ">
-                <h4 class="modal-title" id="myModalLabel">Editar planilla</h4>
+                <h4 class="modal-title" id="myModalLabel">Editar registro diario</h4>
             </div>
             <div class="modal-body">
                 <div class="form-group"><label> Codigo: </label><?= form_input($codi_dpl_e) ?></div>
@@ -133,6 +134,7 @@
                 <div class="form-group"><label> Descuentos Observados (S/ 0.00): </label><?= form_input($desc_dpl_e) ?></div>
                 <div class="form-group"><label> Total a Pagar (S/ 0.00): *</label><?= form_input($tota_dpl_e) ?></div>
                 <div class="form-group"><label> Observaci&oacute;n: (Max. 500 caracteres)</label><?= form_textarea($obsv_dpl_e) ?></div>           
+                <p class="text-muted" style="font-style: italic;">(*) Los campos con asterisco son obligatorios.</p>
             </div>
             <div class="modal-footer">
                 <div style="float: right;">

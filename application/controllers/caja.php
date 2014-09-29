@@ -239,7 +239,7 @@ class caja extends CI_Controller {
             $tbl_compra = json_decode($this->input->post('tbl_compra'));
             $total = $this->input->post('total');
             $obsv = $this->input->post('obsv_com');
-            
+
             // GENERAR NUMERO DE COMPRA
             $cont = $this->mod_view->count('compra') + 1;
             $longitud = strlen($cont);
@@ -251,7 +251,7 @@ class caja extends CI_Controller {
             $compra = array(
                 'fech_com' => date("Y-m-d H:i:s"),
                 'codi_usu' => $this->session->userdata('user_codi'),
-                'num_com' => $num_compra,                
+                'num_com' => $num_compra,
                 'tota_com' => $total,
                 'obsv_com' => $obsv,
                 'esta_com' => 'A'
@@ -399,14 +399,23 @@ class caja extends CI_Controller {
                 if (count($caja['concepto']) <= 0) {
                     $error[] = 'Debe registrar por lo menos un concepto de gasto. <br><strong> Haga click <a href="' . base_url('concepto') . '"> aquí </a> para registrar un concepto de gasto </strong>.';
                 }
-
+                /* INSERT */
                 $caja['form_regcajachica'] = array('role' => 'form', "id" => "form_regcajachica");
                 $caja['codi_cac'] = array('id' => 'codi_cac', 'name' => 'codi_cac', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
-                $caja['codi_usu'] = array('id' => 'codi_usu', 'name' => 'codi_usu', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
+                $caja['nomb_usu'] = array('id' => 'nomb_usu', 'name' => 'nomb_usu', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
                 $caja['nomb_gas'] = array('id' => 'nomb_gas', 'name' => 'nomb_gas', 'class' => "form-control", 'placeholder' => "Descripción", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off');
-                $caja['impo_gas'] = array('id' => 'impo_gas', 'name' => 'impo_gas', 'class' => "form-control", 'placeholder' => "Importe", "maxlength" => "10", 'required' => 'true', 'autocomplete' => 'off', 'type' => 'number', 'step' => 'any' , 'min' => '0');
+                $caja['impo_gas'] = array('id' => 'impo_gas', 'name' => 'impo_gas', 'class' => "form-control", 'placeholder' => "Importe", "maxlength" => "10", 'required' => 'true', 'autocomplete' => 'off', 'type' => 'number', 'step' => 'any', 'min' => '0');
                 $caja['obsv_gas'] = array('id' => 'obsv_gas', 'name' => 'obsv_gas', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
-                $caja['registrar'] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Registrar gasto");
+                $caja['cajachica_insert'] = array('id' => 'cajachica_insert', 'name' => 'cajachica_insert', 'class' => "btn btn-primary", 'value' => "Registrar gasto");
+                /* UPDATE */
+                $caja['form_regcajachica_edit'] = array('role' => 'form', "id" => "form_regcajachica_edit");
+                $caja['codi_cac_e'] = array('id' => 'codi_cac_e', 'name' => 'codi_cac_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
+                $caja['codi_gas_e'] = array('id' => 'codi_gas_e', 'name' => 'codi_gas_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
+                $caja['nomb_usu_e'] = array('id' => 'nomb_usu_e', 'name' => 'nomb_usu_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
+                $caja['nomb_gas_e'] = array('id' => 'nomb_gas_e', 'name' => 'nomb_gas_e', 'class' => "form-control", 'placeholder' => "Descripción", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off');
+                $caja['impo_gas_e'] = array('id' => 'impo_gas_e', 'name' => 'impo_gas_e', 'class' => "form-control", 'placeholder' => "Importe", "maxlength" => "10", 'required' => 'true', 'autocomplete' => 'off', 'type' => 'number', 'step' => 'any', 'min' => '0');
+                $caja['obsv_gas_e'] = array('id' => 'obsv_gas_e', 'name' => 'obsv_gas_e', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
+                $caja['cajachica_edit'] = array('id' => 'cajachica_edit', 'name' => 'cajachica_edit', 'class' => "btn btn-primary", 'value' => "Actualizar gasto");
             }
 
             if (count($error) > 0) {
@@ -535,6 +544,26 @@ class caja extends CI_Controller {
         }
     }
 
+    public function edit_gasto_caja_chica() {
+        if (!$this->mod_config->AVP(2)) {
+            header('location: ' . base_url('login'));
+        } else {
+            $codi_gas = $this->input->post('codi_gas_e');
+            $codi_cac = $this->input->post('codi_cac_e');
+            $data['codi_con'] = $this->input->post('codi_con_e');
+            $data['nomb_gas'] = $this->input->post('nomb_gas_e');
+            $data['impo_gas'] = $this->input->post('impo_gas_e');
+            $data['obsv_gas'] = $this->input->post('obsv_gas_e');
+
+            if ($this->mod_caja->edit_gasto_cajachica($codi_gas, $data)) {
+                $this->session->set_userdata('info', 'Se ha actualizado el gasto de la caja chica ' . $codi_cac . ' exitosamente.');
+            } else {
+                $this->session->set_userdata('error', 'No ha sido posible actualizar el gasto de la caja chica ' . $codi_cac . ', verifique los datos proporcionados.');
+            }
+            header('Location: ' . base_url('cajachica'));
+        }
+    }
+
     /* GET DATA PHP */
 
     public function get_caja_dia_lasttime() {
@@ -587,6 +616,54 @@ class caja extends CI_Controller {
     }
 
     /* GET DATA JSON */
+
+    public function paginate_caja_chica_dia() {
+        date_default_timezone_set('America/Lima');
+        $date = date('Y-m-d');
+        $nTotal = $this->mod_view->count('v_gastos', false, false, array('DATE(fech_gas)' => $date));
+        $gastos = $this->mod_caja->get_caja_chica_dia_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch']);
+        $aaData = array();
+
+        foreach ($gastos as $row) {
+            $estado = $row->esta_gas == 'A' ? 'Realizado' : 'Bloqueado';
+            $opciones = '';
+            if ($this->session->userdata('user_rol') == 1) {
+                $opciones .= '&nbsp;<button type="button" class="tooltip_regcajachica btn btn-success btn-circle editar_regcajachica" data-toggle="tooltip" data-placement="top" title="Editar gasto">
+                            <i class="fa fa-edit">
+                        </button>';
+            }
+            $opciones .= "<script>$('.tooltip_regcajachica').tooltip(); $('.popover-regcajachica').popover();</script>";
+
+            $time = strtotime($row->fech_gas);
+            $fecha = date("d/m/Y g:i A", $time);
+
+            $observa = "-";
+            if ($row->obsv_gas != "") {
+                $observa = '<button type="button" class="popover-regcajachica btn btn-default" data-toggle="popover" data-content="' . $row->obsv_gas . '" data-original-title="Observación" data-placement="top"><i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;Ver</button>'
+                        . '<input type="hidden" value="' . $row->obsv_gas . '">';
+            }
+
+            $aaData[] = array(
+                $row->codi_gas,
+                $fecha,
+                $row->nomb_usu,
+                $row->nomb_con,
+                $row->nomb_gas,
+                $row->impo_gas,
+                $observa,
+                $estado,
+                $opciones
+            );
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
+    }
 
     public function paginate() {
         $nTotal = $this->mod_view->count('caja');
