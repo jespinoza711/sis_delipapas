@@ -102,17 +102,12 @@ class producto extends CI_Controller {
     }
 
     public function paginate() {
-
         $nTotal = $this->mod_view->count('producto');
-
         $productos = $this->mod_producto->get_vproducto_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch']);
-
         $form_a = array('role' => 'form', "style" => "display: inline-block;");
-
         $aaData = array();
 
         foreach ($productos as $row) {
-
             $opciones = '<button type="button" class="tooltip-prod btn btn-default btn-circle editar_prod" data-toggle="tooltip" data-placement="top" title="Editar">
                                                 <i class="fa fa-edit"></i>
                                             </button>';
@@ -160,11 +155,8 @@ class producto extends CI_Controller {
     }
 
     public function paginate_report() {
-
         $nTotal = $this->mod_view->count('producto', 0, false, array('stoc_prod >' => '0'));
-
         $productos = $this->mod_view->view('producto', 0, false, array('stoc_prod >' => '0'));
-
         $aaData = array();
 
         foreach ($productos as $row) {
@@ -248,10 +240,6 @@ class producto extends CI_Controller {
             );
         }
         echo json_encode($data);
-    }
-
-    public function producto() {
-        
     }
 
     public function inventario() {
