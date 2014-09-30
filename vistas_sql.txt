@@ -145,3 +145,32 @@ SELECT f.codi_fac, f.desp_fac, c.apel_cli, c.nomb_cli, c.dire_cli, c.ruc_cli, f.
 v.cantidad, p.nomb_prod, p.prec_prod ,v.impo_dve, e.tota_ven
 FROM factura f, detalle_factura d, detalle_venta v, producto p, venta e, cliente c
 WHERE f.codi_fac = d.codi_fac AND d.codi_dve = v.codi_dve AND v.codi_prod = p.codi_prod AND v.codi_ven = e.codi_ven AND c.codi_cli = e.codi_cli;
+
+create view v_compra as
+select c.codi_com,
+c.fech_com,
+c.codi_usu,
+u.nomb_usu,
+c.num_com,
+c.tota_com,
+c.obsv_com,
+c.esta_com
+from compra c, usuario u
+where c.codi_usu = u.codi_usu
+order by c.fech_com desc;
+
+create view v_compra_detalle as
+select cd.codi_com,
+cd.codi_prod,
+tp.nomb_tipo,
+p.nomb_prod,
+cd.codi_prov,
+pv.nomb_pro,
+cd.prec_prod,
+cd.cant_prod,
+cd.suto_com
+from detalle_compra cd, producto p, proveedor pv, tipo_producto tp
+where cd.codi_prod = p.codi_prod
+and p.codi_tpro = tp.codi_tpro
+and cd.codi_prov = pv.codi_pro
+order by tp.nomb_tipo desc;
