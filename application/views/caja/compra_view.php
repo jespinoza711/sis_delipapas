@@ -22,7 +22,10 @@
                 <div class="panel-heading">
                     Nueva Compra
                 </div>
-                
+                <div class="panel-body">
+                    <a href="<?= base_url('hiscompra') ?>"><button type="button" class="btn btn-info"><i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;Ver todas las compras</button></a>
+                    <br>
+                </div>
                 <div class="panel-body">
                     <div class="form-group">
                         <label> Buscar producto en inventario: </label>
@@ -55,9 +58,9 @@
                                     <tr style="background-color: #428bca; color: white;">
                                         <th style="text-align: center;"><span class="tooltip_ven" data-toggle="tooltip" data-placement="top" title="Código">Código</span></th>
                                         <th style="text-align: center;"><span class="tooltip_ven" data-toggle="tooltip" data-placement="top" title="Producto">Producto</span></th>
+                                        <th style="text-align: center;"><span class="tooltip_ven" data-toggle="tooltip" data-placement="top" title="Proveedor">Proveedor</span></th>
                                         <th style="text-align: center;"><span class="tooltip_ven" data-toggle="tooltip" data-placement="top" title="Cantidad">Cantidad</span></th>
                                         <th style="text-align: center;"><span class="tooltip_ven" data-toggle="tooltip" data-placement="top" title="Valor unitario">Valor unitario</span></th>
-                                        <th style="text-align: center;"><span class="tooltip_ven" data-toggle="tooltip" data-placement="top" title="Proveedor">Proveedor</span></th>
                                         <th style="text-align: center;"><span class="tooltip_ven" data-toggle="tooltip" data-placement="top" title="Importe">Importe</span></th>
                                         <th style="text-align: center;"><span class="tooltip_ven" data-toggle="tooltip" data-placement="top" title="Opciones">Opciones</span></th>
                                         <th></th>
@@ -65,8 +68,9 @@
                                 </thead>                                    
                                 <tfoot>
                                     <tr>
-                                        <td colspan="6" style="text-align: right;"><strong>Total:</strong></td>
+                                        <td colspan="5" style="text-align: right;"><strong>Total:</strong></td>
                                         <td id="total_compra"></td>
+                                        <td></td>
                                         <td></td>
                                     </tr>
                                 </tfoot>

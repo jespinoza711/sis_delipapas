@@ -158,7 +158,7 @@ $(document).ready(function() {
                                     '<td>S/. ' + venta + '</td>' +
                                     '<td>S/. ' + igv + '</td>' +
                                     '<td>S/. ' + importe + '</td>' +
-                                    '<td><input type="button" class="tooltip_ven btn btn-danger btn-circle fa quitar_prod_ven" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="" data-original-title="Quitar" style="width: 22px; height: 22px; line-height: 18px;"></td>' +
+                                    '<td><input type="button" class="tooltip_ven btn btn-danger btn-circle fa quitar_prod_ven" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="" data-original-title="Quitar"></td>' +
                                     '</tr>');
 
                             if ($('#total_ven').html() == "") {

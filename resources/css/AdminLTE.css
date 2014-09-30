@@ -3848,7 +3848,7 @@ tr.group:hover {
     text-align: center;
     vertical-align: middle;
 }
-
+/* VENTA DETALLE */
 #detalle_productos_ven tbody tr td:nth-child(2){
     vertical-align: middle;
 }
@@ -3866,6 +3866,24 @@ tr.group:hover {
 #detalle_productos_ven tbody tr td:nth-child(7){
     text-align: right;
     vertical-align: middle;
+}
+/* COMPRA DETALLE */
+#detalle_productos_compra thead tr th,
+#detalle_productos_compra tbody tr td,
+#detalle_productos_compra tfood tr td{
+    vertical-align: middle;
+}
+#detalle_productos_compra tbody tr td:nth-child(1),
+#detalle_productos_compra tbody tr td:nth-child(2),
+#detalle_productos_compra tbody tr td:nth-child(3),
+#detalle_productos_compra tbody tr td:nth-child(4),
+#detalle_productos_compra tbody tr td:nth-child(7){
+    text-align: center;
+}
+#detalle_productos_compra tfoot tr td:nth-child(2),
+#detalle_productos_compra tbody tr td:nth-child(5),
+#detalle_productos_compra tbody tr td:nth-child(6){
+    text-align: right;
 }
 
 #table_cliente tbody tr[role='row'] td:nth-child(3){

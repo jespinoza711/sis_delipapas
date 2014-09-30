@@ -7,11 +7,11 @@ $(document).ready(function() {
         $("#detalle_productos_compra tbody tr").each(function() {
             var codigo = $(this).find("td").eq(0).html();
             var producto = $(this).find("td").eq(1).html();
-            var cantidad = $(this).find("td").eq(2).html();
-            var valor = $(this).find("td").eq(3).html().substring(4);
-            var proveedor = $(this).find("td").eq(4).html();
+            var proveedor = $(this).find("td").eq(2).html();
+            var cantidad = $(this).find("td").eq(3).html();
+            var valor = $(this).find("td").eq(4).html().substring(4);            
             var importe = $(this).find("td").eq(5).html().substring(4);
-            var row = [codigo, producto, cantidad, valor, proveedor, importe];
+            var row = [codigo, producto, proveedor, cantidad, valor, importe];
             data.push(row);
         });
         $('#tbl_compra_reg').val(JSON.stringify(data));
@@ -91,9 +91,7 @@ $(document).ready(function() {
 
                             if (ButtonPressed === "Actualizar") {
 
-                                var cant_ant = $("#detalle_productos_compra tbody tr td:contains('" + codigo + "')").parent().find("td").eq(2).html();
-
-//                            $("#detalle_productos_compra tbody tr td:contains('" + codigo + "')").parent().remove();
+                                var cant_ant = $("#detalle_productos_compra tbody tr td:contains('" + codigo + "')").parent().find("td").eq(3).html();
 
                                 $("#detalle_productos_compra tbody tr").each(function() {
                                     if ($(this).find('td').eq(0).html() == codigo) {
@@ -108,11 +106,12 @@ $(document).ready(function() {
                                 $('#detalle_productos_compra tbody').append('<tr>' +
                                         '<td>' + codigo + '</td>' +
                                         '<td>' + producto + '</td>' +
-                                        '<td>' + cantidad + '</td>' +
-                                        '<td>S/. ' + precio + '</td>' +
                                         '<td>' + proveedor + '</td>' +
+                                        '<td>' + cantidad + '</td>' +
+                                        '<td>S/. ' + precio + '</td>' +                                        
                                         '<td>S/. ' + importe + '</td>' +
                                         '<td><input type="button" class="tooltip_ven btn btn-danger btn-circle fa quitar_prod_compra" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="" data-original-title="Quitar"></td>' +
+                                        '<td></td>' +
                                         '</tr>');
 
                                 if ($('#total_compra').html() == "") {
@@ -160,8 +159,8 @@ $(document).ready(function() {
                                 var venta = (parseFloat(precio) * parseInt(cant_act)).toFixed(2);
                                 var importe = (parseFloat(venta) + 0).toFixed(2);
 
-                                fila.find("td").eq(2).html(cant_act);
-                                fila.find("td").eq(4).html(proveedor);
+                                fila.find("td").eq(2).html(proveedor);
+                                fila.find("td").eq(3).html(cant_act);                                
                                 fila.find("td").eq(5).html("S/. " + importe);
 
                                 if ($('#total_compra').html() == "") {
@@ -212,11 +211,12 @@ $(document).ready(function() {
                     $('#detalle_productos_compra tbody').append('<tr>' +
                             '<td>' + codigo + '</td>' +
                             '<td>' + producto + '</td>' +
-                            '<td>' + cantidad + '</td>' +
-                            '<td>S/. ' + precio + '</td>' +
                             '<td>' + proveedor + '</td>' +
+                            '<td>' + cantidad + '</td>' +
+                            '<td>S/. ' + precio + '</td>' +                            
                             '<td>S/. ' + importe + '</td>' +
                             '<td><input type="button" class="tooltip_ven btn btn-danger btn-circle fa quitar_prod_compra" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="" data-original-title="Quitar"></td>' +
+                            '<td></td>' +
                             '</tr>');
 
                     if ($('#total_compra').html() == "") {
