@@ -17,6 +17,7 @@ class cliente extends CI_Controller {
         } else {
 
             if ($this->input->post('registrar')) {
+                $data['empr_cli'] = $this->input->post('empresa');
                 $data['nomb_cli'] = $this->input->post('nombre');
                 $data['apel_cli'] = $this->input->post('apellido');
                 $data['dire_cli'] = $this->input->post('direccion');
@@ -30,6 +31,7 @@ class cliente extends CI_Controller {
                 header('Location: ' . base_url('cliente'));
             } else if ($this->input->post('editar')) {
                 $codigo = $this->input->post('codigo');
+                $data['empr_cli'] = $this->input->post('empresa');
                 $data['nomb_cli'] = $this->input->post('nombre');
                 $data['apel_cli'] = $this->input->post('apellido');
                 $data['dire_cli'] = $this->input->post('direccion');
@@ -54,9 +56,10 @@ class cliente extends CI_Controller {
                 header('Location: ' . base_url('cliente'));
             } else {
 
-                // Nuevo proveedor
+                // Nuevo cliente
                 $cliente["form"] = array('role' => 'form', "id" => "form_cli");
                 $cliente["nombre"] = array('id' => 'nomb_cli', 'name' => 'nombre', 'class' => "form-control", 'placeholder' => "Nombre", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off');
+                $cliente["empresa"] = array('id' => 'empr_cli', 'name' => 'empresa', 'class' => "form-control", 'placeholder' => "Empresa", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off');
                 $cliente["apellido"] = array('id' => 'apel_cli', 'name' => 'apellido', 'class' => "form-control", 'placeholder' => "Apellido", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off');
                 $cliente["direccion"] = array('id' => 'direccion_cli', 'name' => 'direccion', 'class' => "form-control", 'placeholder' => "Dirección", "maxlength" => "50", 'required' => 'true', "autocomplete" => "off");
                 $cliente["telefono"] = array('id' => 'telefono_cli', 'name' => 'telefono', 'class' => "form-control", 'placeholder' => "Teléfono", 'required' => 'true', 'autocomplete' => 'off');
@@ -65,10 +68,11 @@ class cliente extends CI_Controller {
                 $cliente["masculino"] = array('id' => 'masculino_cli', 'name' => 'sexo', "value" => "M", 'required' => "true");
                 $cliente["femenino"] = array('id' => 'femenino_cli', 'name' => 'sexo', "value" => "F", 'required' => "true");
 
-                // Editar proveedor
+                // Editar cliente
                 $cliente["form_e"] = array('role' => 'form', "id" => "form_cli_e");
                 $cliente["codigo_e"] = array('id' => 'codigo_cli_e', 'name' => 'codigo', 'class' => "form-control", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true');
                 $cliente["nombre_e"] = array('id' => 'nomb_cli_e', 'name' => 'nombre', 'class' => "form-control", 'placeholder' => "Nombre", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off');
+                $cliente["empresa_e"] = array('id' => 'empr_cli_e', 'name' => 'empresa', 'class' => "form-control", 'placeholder' => "Empresa", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off');
                 $cliente["apellido_e"] = array('id' => 'apel_cli_e', 'name' => 'apellido', 'class' => "form-control", 'placeholder' => "Apellido", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off');
                 $cliente["direccion_e"] = array('id' => 'direccion_cli_e', 'name' => 'direccion', 'class' => "form-control", 'placeholder' => "Dirección", "maxlength" => "50", 'required' => 'true', "autocomplete" => "off");
                 $cliente["telefono_e"] = array('id' => 'telefono_cli_e', 'name' => 'telefono', 'class' => "form-control", 'placeholder' => "Teléfono", 'required' => 'true', 'autocomplete' => 'off');
@@ -126,6 +130,7 @@ class cliente extends CI_Controller {
                     <i class="fa fa-chevron-down info_i"></i>
                  </button>',
                 $row->codi_cli,
+                $row->empr_cli,
                 $row->nomb_cli . ' ' . $row->apel_cli,
                 $row->telf_cli,
                 $estado,
@@ -153,7 +158,7 @@ class cliente extends CI_Controller {
         foreach ($clientes as $row) {
 
             $aaData[] = array(
-                $row->nomb_cli . ' ' . $row->apel_cli,
+                $row->empr_cli,
                 $row->telf_cli,
                 $row->ruc_cli,
                 $row->dire_cli
@@ -183,7 +188,8 @@ class cliente extends CI_Controller {
                 $row->sexo_cli,
                 $row->fena_cli,
                 $row->ruc_cli,
-                $row->esta_cli
+                $row->esta_cli,
+                $row->empr_cli
             );
         }
         echo json_encode($data);

@@ -140,10 +140,10 @@ class reporte extends CI_Controller {
         $this->fpdf->Ln(10);
         $this->fpdf->SetFont('Times', 'B', 12);
         $this->fpdf->Cell(35, 10, utf8_decode("Fecha"), 1, 0, 'C');
-        $this->fpdf->Cell(55, 10, utf8_decode("Cliente"), 1, 0, 'C');
+        $this->fpdf->Cell(45, 10, utf8_decode("Empresa"), 1, 0, 'C');
         $this->fpdf->Cell(18, 10, utf8_decode("N° Caja"), 1, 0, 'C');
         $this->fpdf->Cell(35, 10, utf8_decode("Usuario vendedor"), 1, 0, 'C');
-        $this->fpdf->Cell(18, 10, utf8_decode("Com."), 1, 0, 'C');
+        $this->fpdf->Cell(28, 10, utf8_decode("Com."), 1, 0, 'C');
         $this->fpdf->Cell(30, 10, utf8_decode("Total de venta"), 1, 0, 'C');
 
         $this->fpdf->Ln(10);
@@ -162,10 +162,10 @@ class reporte extends CI_Controller {
                     $time = strtotime($row->fech_ven);
                     $fecha = date("d/m/Y g:i A", $time);
                     $this->fpdf->Cell(35, 8, utf8_decode($fecha), 1, 0, 'C');
-                    $this->fpdf->Cell(55, 8, utf8_decode($row->apel_cli . ', ' . $row->nomb_cli), 1, 0, 'L');
+                    $this->fpdf->Cell(45, 8, utf8_decode($row->empr_cli), 1, 0, 'L');
                     $this->fpdf->Cell(18, 8, utf8_decode($row->num_caj), 1, 0, 'C');
                     $this->fpdf->Cell(35, 8, utf8_decode($row->nomb_usu), 1, 0, 'C');
-                    $this->fpdf->Cell(18, 8, utf8_decode($row->nomb_com), 1, 0, 'C');
+                    $this->fpdf->Cell(28, 8, utf8_decode($row->nomb_com), 1, 0, 'C');
                     $this->fpdf->Cell(30, 8, utf8_decode('S/. ' . $row->tota_ven), 1, 0, 'R');
 
                     $this->fpdf->Ln(8);
@@ -183,10 +183,10 @@ class reporte extends CI_Controller {
                 $time = strtotime($row->fech_ven);
                 $fecha = date("d/m/Y g:i A", $time);
                 $this->fpdf->Cell(35, 8, utf8_decode($fecha), 1, 0, 'C');
-                $this->fpdf->Cell(55, 8, utf8_decode($row->apel_cli . ', ' . $row->nomb_cli), 1, 0, 'L');
+                $this->fpdf->Cell(45, 8, utf8_decode($row->apel_cli . ', ' . $row->nomb_cli), 1, 0, 'L');
                 $this->fpdf->Cell(18, 8, utf8_decode($row->num_caj), 1, 0, 'C');
                 $this->fpdf->Cell(35, 8, utf8_decode($row->nomb_usu), 1, 0, 'C');
-                $this->fpdf->Cell(18, 8, utf8_decode($row->nomb_com), 1, 0, 'C');
+                $this->fpdf->Cell(28, 8, utf8_decode($row->nomb_com), 1, 0, 'C');
                 $this->fpdf->Cell(30, 8, utf8_decode('S/. ' . $row->tota_ven), 1, 0, 'R');
 
                 $this->fpdf->Ln(8);
@@ -270,7 +270,7 @@ class reporte extends CI_Controller {
 
         $this->fpdf->Ln(10);
         $this->fpdf->SetFont('Times', 'B', 12);
-        $this->fpdf->Cell(60, 10, utf8_decode("Nombres y apellidos"), 1, 0, 'C');
+        $this->fpdf->Cell(60, 10, utf8_decode("Empresa"), 1, 0, 'C');
         $this->fpdf->Cell(40, 10, utf8_decode("Teléfono"), 1, 0, 'C');
         $this->fpdf->Cell(40, 10, utf8_decode("R.U.C."), 1, 0, 'C');
         $this->fpdf->Cell(50, 10, utf8_decode("Dirección"), 1, 0, 'C');
@@ -283,7 +283,7 @@ class reporte extends CI_Controller {
 
         foreach ($clientes as $row) {
 
-            $this->fpdf->Cell(60, 8, utf8_decode('  ' . $row->nomb_cli . ' ' . $row->apel_cli), 1, 0, 'L');
+            $this->fpdf->Cell(60, 8, utf8_decode('  ' . $row->empr_cli), 1, 0, 'L');
             $this->fpdf->Cell(40, 8, utf8_decode($row->telf_cli), 1, 0, 'C');
             $this->fpdf->Cell(40, 8, utf8_decode($row->ruc_cli), 1, 0, 'C');
             $this->fpdf->Cell(50, 8, utf8_decode($row->dire_cli), 1, 0, 'C');

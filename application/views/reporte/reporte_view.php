@@ -43,7 +43,7 @@
                                             <thead>
                                                 <tr>
                                                     <th style="text-align: center;">Fecha</th>
-                                                    <th style="text-align: center;">Cliente</th>
+                                                    <th style="text-align: center;">Empresa</th>
                                                     <th style="text-align: center;"><span  class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="N° de caja">N°</span></th>
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Usuario vendedor">U.V.</span></th>
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Tipo de comprobante">Com.</span></th>
@@ -276,7 +276,7 @@
                                         <table id="table_reporte_4" class="table table-bordered">
                                             <thead>
                                                 <tr>
-                                                    <th style="text-align: center;">Nombres y apellidos</th>
+                                                    <th style="text-align: center;">Empresa</th>
                                                     <th style="text-align: center;">Teléfono</th>
                                                     <th style="text-align: center;">R.U.C.</th>
                                                     <th style="text-align: center;">Dirección</th>

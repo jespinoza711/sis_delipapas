@@ -1199,7 +1199,7 @@ class caja extends CI_Controller {
                     $fecha = date("d/m/Y g:i A", $time);
                     $aaData[] = array(
                         $fecha,
-                        $row->apel_cli . ', ' . $row->nomb_cli,
+                        $row->empr_cli,
                         $row->num_caj,
                         $row->nomb_usu,
                         $row->nomb_com,

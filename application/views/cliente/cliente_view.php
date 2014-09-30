@@ -36,6 +36,7 @@
                             <tr>
                                 <th></th>
                                 <th style="text-align: center;">C&oacute;digo</th>
+                                <th style="text-align: center;">Empresa</th>
                                 <th style="text-align: center;">Nombres y apellidos</th>
                                 <th style="text-align: center;">Teléfono</th>
                                 <th style="text-align: center;">Estado</th>
@@ -67,6 +68,7 @@
                 <h4 class="modal-title" id="myModalLabel">Nuevo cliente</h4>
             </div>
             <div class="modal-body">
+                <div class="form-group"><label>Empresa: *</label><?= form_input($empresa) ?></div>
                 <div class="form-group"><label>Nombre: *</label><?= form_input($nombre) ?></div>
                 <div class="form-group"><label>Apellido: *</label><?= form_input($apellido) ?></div>
                 <div class="form-group">
@@ -131,6 +133,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group"><label>Código: *</label><?= form_input($codigo_e) ?></div>
+                <div class="form-group"><label>Empresa: *</label><?= form_input($empresa_e) ?></div>
                 <div class="form-group"><label>Nombre: *</label><?= form_input($nombre_e) ?></div>
                 <div class="form-group"><label>Apellido: *</label><?= form_input($apellido_e) ?></div>
                 <div class="form-group">
@@ -170,6 +173,7 @@
                     <?= form_submit($editar) ?>
                 </div>
             </div>
+            <input type="hidden" id="nomb_cli_h" name="empr_h">
             <input type="hidden" id="nomb_cli_h" name="nomb_h">
             <input type="hidden" id="apel_cli_h" name="apel_h">
             <input type="hidden" id="dire_cli_h" name="dire_h">

@@ -437,6 +437,7 @@ $(document).ready(function() {
         var codigo = tr.find("td").eq(1).html();
 
         $("#codigo_cli_e").val(codigo);
+        $("#empr_cli_e").val(clientes[codigo][9]);
         $("#nomb_cli_e").val(clientes[codigo][1]);
         $("#apel_cli_e").val(clientes[codigo][2]);
         $("#direccion_cli_e").val(clientes[codigo][3]);
@@ -491,6 +492,7 @@ $(document).ready(function() {
         $('#editar_cli').prop('disabled', false);
 
         // REGISTRO ACTUAL
+        $("#empr_cli_h").val(clientes[codigo][1]);
         $("#nomb_cli_h").val(clientes[codigo][1]);
         $("#apel_cli_h").val(clientes[codigo][2]);
         $("#dire_cli_h").val(clientes[codigo][3]);

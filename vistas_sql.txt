@@ -174,3 +174,14 @@ where cd.codi_prod = p.codi_prod
 and p.codi_tpro = tp.codi_tpro
 and cd.codi_prov = pv.codi_pro
 order by tp.nomb_tipo desc;
+
+CREATE VIEW v_venta AS select v.codi_ven
+AS codi_ven,v.codi_caj AS codi_caj,v.codi_com AS codi_com,v.codi_usu AS codi_usu,
+v.codi_cli AS codi_cli,v.fech_ven AS fech_ven,v.tota_ven AS tota_ven,
+c.num_caj AS num_caj,t.nomb_com AS nomb_com,u.nomb_usu AS nomb_usu,
+e.nomb_cli AS nomb_cli,e.apel_cli AS apel_cli, e.empr_cli AS empr_cli
+from ((((bd_delipapas.venta v join bd_delipapas.caja c) join bd_delipapas.cliente e) join bd_delipapas.comprobante t) 
+join bd_delipapas.usuario u) 
+where ((v.codi_caj = c.codi_caj) and (v.codi_cli = e.codi_cli) and (v.codi_com = t.codi_com) 
+and (v.codi_usu = u.codi_usu) and (v.esta_ven = 'A')) 
+order by v.fech_ven desc;
