@@ -319,7 +319,7 @@ class caja extends CI_Controller {
                 } else {
                     if ($this->mod_config->numeric($id) && $id > 0) {
                         $compra_det['compra'] = $this->mod_view->one('v_compra', false, false, array('codi_com' => $id));
-                        $data['page'] = 'Historial de compras / detalle de la compra #' . $compra_det['compra']->num_com;
+                        $data['page'] = 'Historial de compras / ' . $compra_det['compra']->num_com;
                         $data['container'] = $this->load->view('caja/compra_all_det_view', $compra_det, true);                        
                         $this->load->view('home/body', $data);
                     } else {

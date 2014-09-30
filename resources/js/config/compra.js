@@ -155,7 +155,7 @@ $(document).ready(function() {
                             if (ButtonPressed === "Añadir") {
 
                                 var fila = $("#detalle_productos_compra tbody tr td:contains('" + codigo + "')").parent();
-                                var cant_act = parseInt(cantidad) + parseInt(fila.find("td").eq(2).html());
+                                var cant_act = parseInt(cantidad) + parseInt(fila.find("td").eq(3).html());
                                 var venta = (parseFloat(precio) * parseInt(cant_act)).toFixed(2);
                                 var importe = (parseFloat(venta) + 0).toFixed(2);
 
