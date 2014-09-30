@@ -1,6 +1,6 @@
 <div class="row" id="cpo_compra">
     <div class="col-lg-12 col-xs-12">
-        <div class="col-md-11" style="margin-left: 4%">
+        <div class="col-md-12">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     Nueva Compra

@@ -2,7 +2,7 @@
 
 <div class="row">
     <div class="col-lg-12 col-xs-12">
-        <div class="col-md-11" style="margin-left: 4%">
+        <div class="col-md-8" style="margin-left: 16%">
             <div id="panel-cie" class="panel panel-primary">
                 
                 <div class="panel-heading">
@@ -73,7 +73,7 @@
 
 <div class="row" id="cpo_registrodiario">
     <div class="col-lg-12 col-xs-12">
-        <div class="col-md-11" style="margin-left: 4%">
+        <div class="col-md-12">
             <div id="panel-cie" class="panel panel-primary">
                 
                 <div class="panel-heading">
