@@ -90,7 +90,7 @@ class caja extends CI_Controller {
                     $cajas[$row->codi_caj] = $row->num_caj;
                 }
                 foreach ($this->mod_view->view('cliente', 0, false, array('esta_cli' => 'A')) as $row) {
-                    $clientes[$row->codi_cli] = $row->apel_cli . ', ' . $row->nomb_cli;
+                    $clientes[$row->codi_cli] = $row->empr_cli . ' - ' . $row->apel_cli . ', ' . $row->nomb_cli;
                 }
                 foreach ($this->mod_view->view('comprobante', 0, false, array('esta_com' => 'A')) as $row) {
                     $comprobantes[$row->codi_com] = $row->nomb_com;
@@ -138,12 +138,12 @@ class caja extends CI_Controller {
             } else {
                 if ($this->input->post('activar')) {
                     $codi_ven = $this->input->post('codi_ven');
-                    $this->mod_caja->update_compra($codi_ven, array('esta_ven' => 'A'));
+                    $this->mod_caja->update_venta($codi_ven, array('esta_ven' => 'A'));
                     $this->session->set_userdata('info', 'La venta ha sido habilitada existosamente.');
                     header('Location: ' . base_url('hisventa'));
                 } else if ($this->input->post('desactivar')) {
                     $codi_ven = $this->input->post('codi_ven');
-                    $this->mod_caja->update_compra($codi_ven, array('esta_ven' => 'D'));
+                    $this->mod_caja->update_venta($codi_ven, array('esta_ven' => 'D'));
                     $this->session->set_userdata('info', 'La venta ha sido deshabilitada existosamente.');
                     header('Location: ' . base_url('hisventa'));
                 } else {
@@ -1208,9 +1208,9 @@ class caja extends CI_Controller {
 
         foreach ($cajas as $row) {
             $estado = "";
-            $opciones = '<button type="button" class="tooltip_caj btn btn-default btn-circle editar_caj" data-toggle="tooltip" data-placement="top" title="Editar">
+            $opciones = '<button type="button" class="tooltip_caj btn btn-success btn-circle editar_caj" data-toggle="tooltip" data-placement="top" title="Editar">
     <i class="fa fa-edit"></i>
-</button>';
+</button>&nbsp;';
             if ($row->esta_caj == "D") {
                 $estado = "Deshabilitado";
                 $opciones .= '<span>' . form_open(base_url() . 'caja', $form_a) . ' 

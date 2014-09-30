@@ -22,8 +22,8 @@
                 
                 <?php $this->session->set_userdata('error', ''); } ?>
                 
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevaCaja">Nuevo</button>
-                <br><br>
+<!--                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevaCaja"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Nueva Caja</button>
+                <br><br>-->
                 <div class="table-responsive">
                     <table id="table_caja" class="table table-bordered">
                         <thead>

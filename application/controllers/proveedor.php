@@ -95,9 +95,9 @@ class proveedor extends CI_Controller {
 
         foreach ($proveedor as $row) {
             $estado = "";
-            $opciones = '<button type="button" class="tooltip-pro btn btn-default btn-circle editar_prov" data-toggle="tooltip" data-placement="top" title="Editar">
+            $opciones = '<button type="button" class="tooltip-pro btn btn-success btn-circle editar_prov" data-toggle="tooltip" data-placement="top" title="Editar">
                                                 <i class="fa fa-edit"></i>
-                                            </button>';
+                                            </button>&nbsp;';
             if ($row->esta_pro == "D") {
                 $estado = "Deshabilitado";
                 $opciones .= '<span>' . form_open(base_url() . 'proveedor', $form_a) . ' 

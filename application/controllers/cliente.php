@@ -103,9 +103,9 @@ class cliente extends CI_Controller {
 
         foreach ($clientes as $row) {
             $estado = "";
-            $opciones = '<button type="button" class="tooltip-cli btn btn-default btn-circle editar_cli" data-toggle="tooltip" data-placement="top" title="Editar">
+            $opciones = '<button type="button" class="tooltip-cli btn btn-success btn-circle editar_cli" data-toggle="tooltip" data-placement="top" title="Editar">
                                                 <i class="fa fa-edit"></i>
-                                            </button>';
+                                            </button>&nbsp;';
             if ($row->esta_cli == "D") {
                 $estado = "Deshabilitado";
                 $opciones .= '<span>' . form_open(base_url() . 'cliente', $form_a) . ' 

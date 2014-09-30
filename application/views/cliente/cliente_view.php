@@ -28,7 +28,7 @@
                 }
                 ?>
 
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevoCliente">Nuevo</button>
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevoCliente"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Nuevo Cliente</button>
                 <br><br>
                 <div class="table-responsive">
                     <table id="table_cliente" class="table table-bordered">

@@ -111,10 +111,12 @@ class usuario extends CI_Controller {
         $aaData = array();
 
         foreach ($usuarios as $row) {
+            
+            $estado = $row->esta_usu == 'A' ? 'Activo' : 'Oculto';
 
-            $opciones = '<button type="button" class="tooltip-usu btn btn-default btn-circle editar_usu" data-toggle="tooltip" data-placement="top" title="Editar">
+            $opciones = '<button type="button" class="tooltip-usu btn btn-success btn-circle editar_usu" data-toggle="tooltip" data-placement="top" title="Editar">
                                                 <i class="fa fa-edit"></i>
-                                            </button>';
+                                            </button>&nbsp;';
             if ($row->esta_usu == "D") {
                 $opciones .= '<span>' . form_open(base_url() . 'usuario', $form_a) . ' 
                          <input type="hidden" name="codi_usu" value="' . $row->codi_usu . '">
@@ -137,7 +139,7 @@ class usuario extends CI_Controller {
                 $row->nomb_usu,
                 $row->nomb_rol,
                 $row->ses_usu,
-                $row->esta_usu,
+                $estado,
                 $opciones
             );
         }

@@ -22,9 +22,9 @@
                 
                 <?php $this->session->set_userdata('error', ''); } ?>
                 
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevoUsuario">Nuevo</button>
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevoUsuario"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Nuevo Usuario</button>
                 <br><br>
-                <div class="form-group">
+<!--                <div class="form-group">
                     <label>Tipo de búsqueda: </label>
                     <label class="radio-inline sw_search_usu">
                         <input type="radio" class="default" name="tipo_busqueda_usuario" value="0" id="default_search_usu" required="true" checked> Predeterminado
@@ -32,7 +32,7 @@
                     <label class="radio-inline sw_search_usu">
                         <input type="radio" class="buy" name="tipo_busqueda_usuario" value="0" id="buy_search_usu" required="true"> Fecha de compra
                     </label>
-                </div>
+                </div>-->
                 <div class="table-responsive">
                     <table id="table-usuario" class="table table-bordered">
                         <thead>

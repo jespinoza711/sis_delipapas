@@ -246,9 +246,9 @@ class empleado extends CI_Controller {
 
         foreach ($empleados as $row) {
 
-            $opciones = '<button type="button" class="tooltip-emp btn btn-default btn-circle editar_emp" data-toggle="tooltip" data-placement="top" title="Editar">
+            $opciones = '<button type="button" class="tooltip-emp btn btn-success btn-circle editar_emp" data-toggle="tooltip" data-placement="top" title="Editar">
                                                 <i class="fa fa-edit"></i>
-                                            </button>';
+                                            </button>&nbsp;';
             if ($row->esta_emp == "D") {
                 $opciones .= '<span>' . form_open(base_url() . 'empleado', $form_a) . ' 
                          <input type="hidden" name="codigo" value="' . $row->codi_emp . '">

@@ -211,6 +211,12 @@ class mod_caja extends CI_Model {
         return $query->result();
     }
 
+    function get_caja_chica_interval($interval) {
+        $this->db->where($interval);
+        $query = $this->db->get('v_caja_chica_dia');
+        return $query->result();
+    }
+
     function gastos_cajachica_dia($date) {
         $this->db->select('SUM(impo_gas) AS suma');
         $this->db->from('gastos');

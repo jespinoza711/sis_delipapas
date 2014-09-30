@@ -22,7 +22,7 @@
                 
                 <?php $this->session->set_userdata('error_pro', ''); } ?>
                 
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevoProveedor">Nuevo</button>
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevoProveedor"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Nuevo Proveedor</button>
                 <br><br>
                 <div class="table-responsive">
                     <table id="table_proveedor" class="table table-bordered">

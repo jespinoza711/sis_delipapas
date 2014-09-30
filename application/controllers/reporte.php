@@ -36,7 +36,7 @@ class reporte extends CI_Controller {
         $this->fpdf->SetFont('Times', 'B', 12);
         if ($tipo == "0") {
             $mes = array('01' => "ENERO", '02' => 'FEBRERO', '03' => "MARZO", '04' => 'ABRIL', '05' => "MAYO", '06' => 'JUNIO', '07' => "JULIO", '08' => 'AGOSTO', '09' => "SEPTIEMBRE", '10' => 'OCTUBRE', '11' => "NOVIEMBRE", '12' => 'DICIEMBRE');
-            $this->fpdf->Cell(0, 0, utf8_decode('LISTADO DE MOVIMIENTOS DE VENTA - ' . $mes[substr($this->session->userdata('input_reporte_1'), 5)] . ' ' . substr($this->session->userdata('input_reporte_1'), 0, 4)), 0, 0, 'C');
+            $this->fpdf->Cell(0, 0, utf8_decode('LISTADO DE MOVIMIENTOS DE COMPRA - ' . $mes[substr($this->session->userdata('input_reporte_1'), 5)] . ' ' . substr($this->session->userdata('input_reporte_1'), 0, 4)), 0, 0, 'C');
         } else if ($tipo == "1") {
             $dates = str_replace('/', '-', $this->session->userdata('input_reporte_1'));
             $fecha_a = date('Y-m-d', strtotime(substr($dates, 0, 10)));
@@ -600,9 +600,9 @@ class reporte extends CI_Controller {
             }
 
             foreach ($caja_chica_dia as $row) {
-                $time_a = strtotime($row->fein_cad);
+                $time_a = strtotime($row->fein_ccd);
                 $fecha_a = date("d/m/Y g:i A", $time_a);
-                $time_b = strtotime($row->fefi_cad);
+                $time_b = strtotime($row->fefi_ccd);
                 $fecha_b = date("d/m/Y g:i A", $time_b);
 
                 $this->fpdf->Cell(10, 7, utf8_decode($row->codi_cac), 1, 0, 'C');

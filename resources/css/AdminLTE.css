@@ -3921,7 +3921,8 @@ tr.group:hover {
 #table_cliente tbody tr[role='row'] td:nth-child(2),
 #table_cliente tbody tr[role='row'] td:nth-child(4),
 #table_cliente tbody tr[role='row'] td:nth-child(5),
-#table_cliente tbody tr[role='row'] td:nth-child(6){
+#table_cliente tbody tr[role='row'] td:nth-child(6),
+#table_cliente tbody tr[role='row'] td:nth-child(7){
     text-align: center;
     vertical-align: middle;
 }

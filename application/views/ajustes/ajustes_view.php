@@ -138,7 +138,7 @@
                 
                 <?php $this->session->set_userdata('error_planilla', ''); } ?>
                 
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevaPlanilla">Nueva Planilla</button>
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevaPlanilla"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Nueva Planilla</button>
                 <br><br>
                 <div class="table-responsive">
                     <table id="table_planilla" class="table table-bordered">
@@ -257,7 +257,7 @@
                 
                 <?php $this->session->set_userdata('error_concepto', ''); } ?>
                 
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevoConcepto">Nuevo Concepto de Gasto</button>
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevoConcepto"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Nuevo Concepto de Gasto</button>
                 <br><br>
                 <div class="table-responsive">
                     <table id="table_concepto" class="table table-bordered">

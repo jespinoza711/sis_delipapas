@@ -16,7 +16,7 @@
                         $this->session->unset_userdata('ripo_mensaje_emp');
                     }
                     ?>
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevoEmpleado"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Nuevo</button>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevoEmpleado"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Nuevo Empleado</button>
                     <br><br>
                     <div class="table-responsive">
                         <table id="table_empleado" class="table table-bordered">
