@@ -9,7 +9,7 @@ $(document).ready(function() {
             var producto = $(this).find("td").eq(1).html();
             var proveedor = $(this).find("td").eq(2).html();
             var cantidad = $(this).find("td").eq(3).html();
-            var valor = $(this).find("td").eq(4).html().substring(4);            
+            var valor = $(this).find("td").eq(4).html().substring(4);
             var importe = $(this).find("td").eq(5).html().substring(4);
             var row = [codigo, producto, proveedor, cantidad, valor, importe];
             data.push(row);
@@ -108,7 +108,7 @@ $(document).ready(function() {
                                         '<td>' + producto + '</td>' +
                                         '<td>' + proveedor + '</td>' +
                                         '<td>' + cantidad + '</td>' +
-                                        '<td>S/. ' + precio + '</td>' +                                        
+                                        '<td>S/. ' + precio + '</td>' +
                                         '<td>S/. ' + importe + '</td>' +
                                         '<td><input type="button" class="tooltip_ven btn btn-danger btn-circle fa quitar_prod_compra" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="" data-original-title="Quitar"></td>' +
                                         '<td></td>' +
@@ -160,7 +160,7 @@ $(document).ready(function() {
                                 var importe = (parseFloat(venta) + 0).toFixed(2);
 
                                 fila.find("td").eq(2).html(proveedor);
-                                fila.find("td").eq(3).html(cant_act);                                
+                                fila.find("td").eq(3).html(cant_act);
                                 fila.find("td").eq(5).html("S/. " + importe);
 
                                 if ($('#total_compra').html() == "") {
@@ -213,7 +213,7 @@ $(document).ready(function() {
                             '<td>' + producto + '</td>' +
                             '<td>' + proveedor + '</td>' +
                             '<td>' + cantidad + '</td>' +
-                            '<td>S/. ' + precio + '</td>' +                            
+                            '<td>S/. ' + precio + '</td>' +
                             '<td>S/. ' + importe + '</td>' +
                             '<td><input type="button" class="tooltip_ven btn btn-danger btn-circle fa quitar_prod_compra" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="" data-original-title="Quitar"></td>' +
                             '<td></td>' +
@@ -301,6 +301,26 @@ $(document).ready(function() {
                 timeout: 6000
             });
         });
+    }
+    
+    /* HISTORIAL COMPRA */
+    
+    if ($("#cpo_hiscompra").is(':visible')) {                
+
+        $('#table_hiscompra').DataTable({
+            "iDisplayLength": 30,
+            "aLengthMenu": [30, 50, 100],
+            "sPaginationType": "full_numbers",
+            "bProcessing": true,
+            "bServerSide": true,
+            "sAjaxSource": base_url + "caja/paginate_historial_compra",
+            "sServerMethod": "POST",
+            "bPaginate": true,
+            "bFilter": true,
+            "bSort": false,
+            "displayLength": 10
+        });
+        
     }
 
 });

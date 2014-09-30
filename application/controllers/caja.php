@@ -293,6 +293,53 @@ class caja extends CI_Controller {
         }
     }
 
+    public function historial_compra() {
+        if (!$this->mod_config->AVP(1)) {
+            header('location: ' . base_url('login'));
+        } else {
+            date_default_timezone_set('America/Lima');
+            $datetime = $this->mod_config->datetime_es();
+            $status = $this->mod_caja->status_caja();
+
+            if ($status == 3) {
+                $error[] = "La caja de hoy " . $datetime . ' esta cerrada. <br><strong> Para ver el estado de hoy haga click <a href="' . base_url('home') . '"> aquí </a></strong>.';
+            } else if ($status == 1) {
+                $error[] = "No se ha aperturado por lo menos una caja el día de hoy " . $datetime . '. <br><strong> Haga click <a href="' . base_url('abrircaja') . '"> aquí </a> para aperturar una caja </strong>.';
+            } else {
+                if ($this->input->post('activar')) {
+                    $codi_com = $this->input->post('codi_com');
+                    $this->mod_caja->update_compra($codi_com, array('esta_com' => 'A'));
+                    $this->session->set_userdata('info', 'La compra ha sido habilitada existosamente.');
+                    header('Location: ' . base_url('hiscompra'));
+                } else if ($this->input->post('desactivar')) {
+                    $codi_com = $this->input->post('codi_com');
+                    $this->mod_caja->update_compra($codi_com, array('esta_com' => 'D'));
+                    $this->session->set_userdata('info', 'La compra ha sido deshabilitada existosamente.');
+                    header('Location: ' . base_url('hiscompra'));
+                } else {
+                    $error = array();
+                    $compra['compra'] = $this->mod_view->view('v_compra', false, false, false);
+
+                    if (count($compra['compra']) <= 0) {
+                        $error[] = 'Debe registrar por lo menos una compra. <br><strong> Haga click <a href="' . base_url('compra') . '"> aquí </a> para registrar una compra </strong>.';
+                    }
+                    
+                    if (count($error) > 0) {
+                        $info["encabezado"] = "<i class='fa fa-warning'></i>&nbsp;&nbsp;&nbsp;¡Advertencia!";
+                        $info["panel"] = 'yellow';
+                        $info["cuerpo"] = $error;
+                        $data['container'] = $this->load->view('error', $info, true);
+                    } else {
+                        $data['container'] = $this->load->view('caja/compra_all_view', $compra, true);
+                    }
+
+                    $data['page'] = 'Historial de compras';
+                    $this->load->view('home/body', $data);
+                }
+            }
+        }
+    }
+
     public function paginate_inv_compra() {
         $nTotal = $this->mod_view->count('v_producto_compra');
         $productos = $this->mod_producto->get_vproducto_operacion_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch']);
@@ -323,6 +370,62 @@ class caja extends CI_Controller {
                 $row->stoc_prod,
                 $cantidad,
                 $prov,
+                $opciones
+            );
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
+    }
+
+    public function paginate_historial_compra() {
+        $nTotal = $this->mod_view->count('v_compra');
+        $compras = $this->mod_producto->get_historial_compra_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch']);
+        $form_hiscompra = array('role' => 'form', "style" => "display: inline-block;");
+        $aaData = array();
+
+        foreach ($compras as $row) {
+
+            $time = strtotime($row->fech_com);
+            $fecha = date("d/m/Y g:i A", $time);
+
+            $observa = "-";
+            if ($row->obsv_com != "") {
+                $observa = '<button type="button" class="popover-hiscompra btn btn-default" data-toggle="popover" data-content="' . $row->obsv_com . '" data-original-title="Observación" data-placement="top"><i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;Ver</button>
+                            <input type="hidden" value="' . $row->obsv_com . '">';
+            }
+
+            $estado = $row->esta_com == 'A' ? 'Activo' : 'Oculto';
+            $opciones = '<a href="' . base_url('hiscompra/' . $row->codi_com) . '"><button type="button" class="tooltip-hiscompra btn btn-success btn-circle detalle_compra" data-toggle="tooltip" data-placement="top" title="Ver detalle de esta compra"><i class="fa fa-eye"></i></button></a>&nbsp;';
+
+            if ($estado == 'Oculto') {
+                $opciones .= '<span>' . form_open(base_url('hiscompra'), $form_hiscompra) . ' 
+                            <input type="hidden" name="codi_com" value="' . $row->codi_com . '">
+                            <input name="activar" type="submit" class="tooltip-hiscompra btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar">
+                            ' . form_close() . '
+                            </span>';
+            } else {
+                $opciones .= '<span>' . form_open(base_url('hiscompra'), $form_hiscompra) . ' 
+                            <input type="hidden" name="codi_com" value="' . $row->codi_com . '">
+                            <input name="desactivar" type="submit" class="tooltip-hiscompra btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
+                            ' . form_close() . '
+                            </span>';
+            }
+            $opciones .= '<script>$(".tooltip-hiscompra").tooltip(); $(".popover-hiscompra").popover();</script>';
+
+            $aaData[] = array(
+                $row->codi_com,
+                $fecha,
+                $row->num_com,
+                $row->nomb_usu,
+                $row->tota_com,
+                $observa,
+                $estado,
                 $opciones
             );
         }

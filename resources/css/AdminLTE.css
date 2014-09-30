@@ -3797,6 +3797,34 @@ fieldset[disabled] .btn-vk.active {
 #table_compra_inv_filter {
     display: inline-table;
 }
+/* VENTA HISTORIAL */
+#table_hisventa_wrapper > .row > .col-xs-8 > #table_hisventa_filter {
+    float: right;
+}
+#table_hisventa_filter {
+    display: inline-table;
+}
+/* VENTA HISTORIAL DETALLE*/
+#table_hisventadet_wrapper > .row > .col-xs-8 > #table_hisventadet_filter {
+    float: right;
+}
+#table_hisventadet_filter {
+    display: inline-table;
+}
+/* COMPRA HISTORIAL */
+#table_hiscompra_wrapper > .row > .col-xs-8 > #table_hiscompra_filter {
+    float: right;
+}
+#table_hiscompra_filter {
+    display: inline-table;
+}
+/* COMPRA HISTORIAL DETALLE*/
+#table_hiscompradet_wrapper > .row > .col-xs-8 > #table_hiscompradet_filter {
+    float: right;
+}
+#table_hiscompradet_filter {
+    display: inline-table;
+}
 
 .selected {
     color: #8a6d3b;
@@ -3994,7 +4022,8 @@ tr.group:hover {
 #num_ini_factura{
     height: 3.5em
 }
-
+/* CONCEPTO */
+#table_concepto thead tr th,
 #table_concepto tbody tr td{
     text-align: center;
     vertical-align: middle;
@@ -4058,6 +4087,30 @@ tr.group:hover {
 #table_compra_inv tbody tr td:nth-child(2),
 #table_compra_inv tbody tr td:nth-child(3),
 #table_compra_inv tbody tr td:nth-child(4){
+    vertical-align: middle;
+}
+/* VENTA HISTORIAL */
+#table_hisventa thead tr th,
+#table_hisventa tbody tr td{
+    text-align: center;
+    vertical-align: middle;
+}
+/* VENTA HISTORIAL DETALLE */
+#table_hisventadet thead tr th,
+#table_hisventadet tbody tr td{
+    text-align: center;
+    vertical-align: middle;
+}
+/* COMPRA HISTORIAL */
+#table_hiscompra thead tr th,
+#table_hiscompra tbody tr td{
+    text-align: center;
+    vertical-align: middle;
+}
+/* COMPRA HISTORIAL DETALLE */
+#table_hiscompradet thead tr th,
+#table_hiscompradet tbody tr td{
+    text-align: center;
     vertical-align: middle;
 }
 

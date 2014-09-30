@@ -62,14 +62,6 @@ class mod_caja extends CI_Model {
         }
     }
 
-//    public function get_vcaja($fecha) {
-//        $this->db->select('*');
-//        $this->db->from('caja');
-//        $this->db->where(array('(SELECT DATE(`caja_dia`.`fein_cad`) FROM `caja_dia` WHERE `caja`.`codi_caj` = `caja_dia`.`codi_caj`) =' => $fecha));
-//        $query = $this->db->get();
-//        return $query->result();
-//    }
-
     public function get_vcaja($fecha) {
         $this->db->where(array('DATE(fein_cad)' => $fecha));
         $query = $this->db->get('v_caja_dia');
@@ -159,6 +151,11 @@ class mod_caja extends CI_Model {
         return $this->db->update('caja', $data);
     }
 
+    function update_compra($id, $data) {
+        $this->db->where('codi_com', $id);
+        return $this->db->update('compra', $data);
+    }
+
     function open_caja($data) {
         $this->db->set('fein_cad', 'sysdate()', false);
         $this->db->set('fefi_cad', 'sysdate()', false);
@@ -190,18 +187,20 @@ class mod_caja extends CI_Model {
         $this->db->where('codi_gas', $codi_gas);
         return $this->db->update('gastos', $data);
     }
-    
-    function get_ventas_interval($interval){
+
+    function get_ventas_interval($interval) {
         $this->db->where($interval);
         $query = $this->db->get('v_venta');
         return $query->result();
     }
-    function get_compras_interval($interval){
+
+    function get_compras_interval($interval) {
         $this->db->where($interval);
         $query = $this->db->get('v_compra');
         return $query->result();
     }
-    function get_caja_interval($interval){
+
+    function get_caja_interval($interval) {
         $this->db->where($interval);
         $query = $this->db->get('v_caja_dia');
         return $query->result();

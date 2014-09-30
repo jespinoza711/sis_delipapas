@@ -78,4 +78,27 @@ class mod_producto extends CI_Model {
         return $result;
     }
 
+    function get_historial_compra_paginate($limit, $start, $string = "") {
+        $this->db->like('codi_com', $string);
+        $this->db->or_like('fech_com', $string);
+        $this->db->or_like('nomb_usu', $string);
+        $query = $this->db->get('v_compra');
+        $productos = $query->result();
+        $i = 0;
+        $c = 0;
+        $result = array();
+        foreach ($productos as $row) {
+            if ($i >= $start) {
+                if ($c < $limit) {
+                    $result[$c] = $row;
+                    $c++;
+                } else {
+                    break;
+                }
+            }
+            $i++;
+        }
+        return $result;
+    }
+
 }
