@@ -35,6 +35,9 @@
                                 <td style="vertical-align: middle;"><strong>Observación:</strong></td>
                                 <td colspan="3" style="vertical-align: middle;"><?= $compra->obsv_com ?></td>
                             </tr>
+                            <tr>
+                                <td colspan=4" style="vertical-align: middle;"></td>
+                            </tr>
                         </tbody>
                     </table>
                     <br>

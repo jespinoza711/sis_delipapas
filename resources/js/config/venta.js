@@ -383,5 +383,45 @@ $(document).ready(function() {
             });
         });
     }
+    
+    /* HISTORIAL VENTA */
+    
+    if ($("#cpo_hisventa").is(':visible')) {
+
+        $('#table_hisventa').DataTable({
+            "iDisplayLength": 30,
+            "aLengthMenu": [30, 50, 100],
+            "sPaginationType": "full_numbers",
+            "bProcessing": true,
+            "bServerSide": true,
+            "sAjaxSource": base_url + "caja/paginate_historial_venta",
+            "sServerMethod": "POST",
+            "bPaginate": true,
+            "bFilter": true,
+            "bSort": false,
+            "displayLength": 10
+        });        
+    }
+    
+    /* HISTORIAL VENTA DETALLE */
+    
+    if ($("#cpo_hisventadet").is(':visible')) {
+        
+        var codi_ven = $('#codi_ven_d').val();
+
+        $('#table_hisventadet').DataTable({
+            "iDisplayLength": 30,
+            "aLengthMenu": [30, 50, 100],
+            "sPaginationType": "full_numbers",
+            "bProcessing": true,
+            "bServerSide": true,
+            "sAjaxSource": base_url + "caja/paginate_historial_venta_det/" + codi_ven,
+            "sServerMethod": "POST",
+            "bPaginate": true,
+            "bFilter": true,
+            "bSort": false,
+            "displayLength": 10
+        });        
+    }
 
 });

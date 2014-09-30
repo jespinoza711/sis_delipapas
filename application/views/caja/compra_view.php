@@ -7,22 +7,22 @@
                 </div>
                 <div class="panel-body">
                     
-                <?php if ($this->session->userdata('info') != '') { ?>
+                    <?php if ($this->session->userdata('info') != '') { ?>
 
-                    <div class="alert alert-success alert-dismissable">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                        <?= $this->session->userdata('info') ?>
-                    </div>
+                        <div class="alert alert-success alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                            <?= $this->session->userdata('info') ?>
+                        </div>
 
-                <?php $this->session->set_userdata('info', ''); } if ($this->session->userdata('error') != '') { ?>
+                    <?php $this->session->set_userdata('info', ''); } if ($this->session->userdata('error') != '') { ?>
 
-                    <div class="alert alert-danger">
-                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                        <?= $this->session->userdata('error') ?>
-                    </div>
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                            <?= $this->session->userdata('error') ?>
+                        </div>
 
-                <?php $this->session->set_userdata('error', ''); } ?>
-                    
+                    <?php $this->session->set_userdata('error', ''); } ?>
+
                     <a href="<?= base_url('hiscompra') ?>"><button type="button" class="btn btn-info"><i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;Ver todas las compras</button></a>
                     <br>
                 </div>

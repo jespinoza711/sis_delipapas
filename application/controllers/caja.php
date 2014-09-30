@@ -123,6 +123,140 @@ class caja extends CI_Controller {
         }
     }
 
+    public function historial_venta($id) {
+        if (!$this->mod_config->AVP(1)) {
+            header('location: ' . base_url('login'));
+        } else {
+            date_default_timezone_set('America/Lima');
+            $datetime = $this->mod_config->datetime_es();
+            $status = $this->mod_caja->status_caja();
+
+            if ($status == 3) {
+                $error[] = "La caja de hoy " . $datetime . ' esta cerrada. <br><strong> Para ver el estado de hoy haga click <a href="' . base_url('home') . '"> aquí </a></strong>.';
+            } else if ($status == 1) {
+                $error[] = "No se ha aperturado por lo menos una caja el día de hoy " . $datetime . '. <br><strong> Haga click <a href="' . base_url('abrircaja') . '"> aquí </a> para aperturar una caja </strong>.';
+            } else {
+                if ($this->input->post('activar')) {
+                    $codi_ven = $this->input->post('codi_ven');
+                    $this->mod_caja->update_compra($codi_ven, array('esta_ven' => 'A'));
+                    $this->session->set_userdata('info', 'La venta ha sido habilitada existosamente.');
+                    header('Location: ' . base_url('hisventa'));
+                } else if ($this->input->post('desactivar')) {
+                    $codi_ven = $this->input->post('codi_ven');
+                    $this->mod_caja->update_compra($codi_ven, array('esta_ven' => 'D'));
+                    $this->session->set_userdata('info', 'La venta ha sido deshabilitada existosamente.');
+                    header('Location: ' . base_url('hisventa'));
+                } else {
+                    if ($this->mod_config->numeric($id) && $id > 0) {
+                        $venta_det['venta'] = $this->mod_view->one('v_venta_historial', false, false, array('codi_ven' => $id));
+                        $data['page'] = 'Historial de ventas / ' . $venta_det['venta']->num_fac;
+                        $data['container'] = $this->load->view('caja/venta_all_det_view', $venta_det, true);
+                        $this->load->view('home/body', $data);
+                    } else {
+                        $error = array();
+                        $venta['venta'] = $this->mod_view->view('v_venta_historial', false, false, false);
+
+                        if (count($venta['venta']) <= 0) {
+                            $error[] = 'Debe registrar por lo menos una venta. <br><strong> Haga click <a href="' . base_url('venta') . '"> aquí </a> para registrar una venta </strong>.';
+                        }
+
+                        if (count($error) > 0) {
+                            $info["encabezado"] = "<i class='fa fa-warning'></i>&nbsp;&nbsp;&nbsp;¡Advertencia!";
+                            $info["panel"] = 'yellow';
+                            $info["cuerpo"] = $error;
+                            $data['container'] = $this->load->view('error', $info, true);
+                        } else {
+                            $data['container'] = $this->load->view('caja/venta_all_view', $venta, true);
+                        }
+
+                        $data['page'] = 'Historial de ventas';
+                        $this->load->view('home/body', $data);
+                    }
+                }
+            }
+        }
+    }
+
+    public function paginate_historial_venta() {
+        $nTotal = $this->mod_view->count('v_venta_historial', false, false, array('esta_ven' => 'A'));
+        $compras = $this->mod_producto->get_historial_venta_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch']);
+        $form_hisventa = array('role' => 'form', "style" => "display: inline-block;");
+        $aaData = array();
+
+        foreach ($compras as $row) {
+
+            $time = strtotime($row->fech_ven);
+            $fecha = date("d/m/Y g:i A", $time);
+
+            $estado = $row->esta_ven == 'A' ? 'Activo' : 'Oculto';
+            $opciones = '<a href="' . base_url('caja/historial_venta/' . $row->codi_ven) . '"><button type="button" class="tooltip-hiscompra btn btn-success btn-circle detalle_compra" data-toggle="tooltip" data-placement="top" title="Ver detalle de esta venta"><i class="fa fa-eye"></i></button></a>&nbsp;';
+
+            if ($estado == 'Oculto') {
+                $opciones .= '<span>' . form_open(base_url('hisventa'), $form_hisventa) . ' 
+                            <input type="hidden" name="codi_ven" value="' . $row->codi_ven . '">
+                            <input name="activar" type="submit" class="tooltip-hisventa btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar">
+                            ' . form_close() . '
+                            </span>';
+            } else {
+                $opciones .= '<span>' . form_open(base_url('hisventa'), $form_hisventa) . ' 
+                            <input type="hidden" name="codi_ven" value="' . $row->codi_ven . '">
+                            <input name="desactivar" type="submit" class="tooltip-hisventa btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Deshabilitar">
+                            ' . form_close() . '
+                            </span>';
+            }
+            $opciones .= '<script>$(".tooltip-hisventa").tooltip(); $(".popover-hiscompra").popover();</script>';
+
+            $aaData[] = array(
+                $row->codi_ven,
+                $fecha,
+                $row->nomb_com,
+                $row->num_fac,
+                $row->nomb_usu,
+                $row->nomb_cli,
+                $row->tota_ven,
+                $estado,
+                $opciones
+            );
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
+    }
+
+    public function paginate_historial_venta_det($id) {
+        $nTotal = $this->mod_view->count('v_venta_detalle', false, false, array('codi_ven' => $id));
+        $compras = $this->mod_producto->get_historial_venta_det_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch'], $id);
+        $aaData = array();
+        $i = 1;
+
+        foreach ($compras as $row) {
+
+            $aaData[] = array(
+                $i,
+                $row->nomb_tipo,
+                $row->nomb_prod,
+                $row->cantidad,
+                $row->igv_dve,
+                $row->suto_dve,
+                $row->impo_dve
+            );
+            $i++;
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
+    }
+
     public function registrar_venta() {
         $caja = $this->input->post('caja');
         $cliente = $this->input->post('cliente');
@@ -320,7 +454,7 @@ class caja extends CI_Controller {
                     if ($this->mod_config->numeric($id) && $id > 0) {
                         $compra_det['compra'] = $this->mod_view->one('v_compra', false, false, array('codi_com' => $id));
                         $data['page'] = 'Historial de compras / ' . $compra_det['compra']->num_com;
-                        $data['container'] = $this->load->view('caja/compra_all_det_view', $compra_det, true);                        
+                        $data['container'] = $this->load->view('caja/compra_all_det_view', $compra_det, true);
                         $this->load->view('home/body', $data);
                     } else {
                         $error = array();
@@ -502,12 +636,12 @@ class caja extends CI_Controller {
             $codi_compra = $this->mod_view->insert('compra', $compra);
 
             foreach ($tbl_compra as $row) {
-            // ACTUALIZAR STOCK Y FECHA DE INGRESO DE PRODUCTO
+                // ACTUALIZAR STOCK Y FECHA DE INGRESO DE PRODUCTO
                 $stock_anterior = $this->mod_view->dato('producto', 0, false, array('codi_prod' => $row[0]), 'stoc_prod');
                 $stock_actual = (int) $stock_anterior + (int) $row[3];
                 $this->mod_view->update('producto', array('codi_prod' => $row[0]), array('stoc_prod' => $stock_actual, 'fein_prod' => date("Y-m-d H:i:s")));
 
-            // REGISTRO DE DETALLE DE COMPRA
+                // REGISTRO DE DETALLE DE COMPRA
                 $detalle_compra = array(
                     'codi_com' => $codi_compra,
                     'codi_prod' => $row[0],
@@ -518,7 +652,7 @@ class caja extends CI_Controller {
                 );
                 $this->mod_view->insert_only('detalle_compra', $detalle_compra);
             }
-            $this->session->set_userdata('info', 'La compra ha sido registrada con éxito. <a href="'.base_url('caja/historial_compra/'. $codi_compra).'"><strong>Ver detalle de la compra</strong><a/>.');
+            $this->session->set_userdata('info', 'La compra ha sido registrada con éxito. <a href="' . base_url('caja/historial_compra/' . $codi_compra) . '"><strong>Ver detalle de la compra</strong><a/>.');
             header('location: ' . base_url('compra'));
         }
     }

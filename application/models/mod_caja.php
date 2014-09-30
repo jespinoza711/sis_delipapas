@@ -156,6 +156,11 @@ class mod_caja extends CI_Model {
         return $this->db->update('compra', $data);
     }
 
+    function update_venta($id, $data) {
+        $this->db->where('codi_ven', $id);
+        return $this->db->update('venta', $data);
+    }
+
     function open_caja($data) {
         $this->db->set('fein_cad', 'sysdate()', false);
         $this->db->set('fefi_cad', 'sysdate()', false);

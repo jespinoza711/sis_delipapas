@@ -4,6 +4,7 @@
 $route['login'] = "usuario/login";
 $route['close'] = "usuario/close";
 $route['venta'] = "caja/venta";
+$route['hisventa'] = "caja/historial_venta/0";
 
 $route['compra'] = "caja/compra";
 $route['hiscompra'] = "caja/historial_compra/0";

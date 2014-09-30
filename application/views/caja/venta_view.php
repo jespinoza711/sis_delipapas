@@ -1,26 +1,32 @@
 <div class="row" id="cpo_ventas">
     <div class="col-lg-12 col-xs-12">
-        <?php if ($this->session->userdata('info_ven') != '') { ?>
-            <div class="alert alert-success alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                <?= $this->session->userdata('info_ven') ?>
-            </div>
-            <?php
-            $this->session->set_userdata('info_ven', '');
-        } if ($this->session->userdata('error_ven') != '') {
-            ?>
-            <div class="alert alert-danger">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                <?= $this->session->userdata('error_ven') ?>
-            </div>
-            <?php
-            $this->session->set_userdata('error_ven', '');
-        }
-        ?>
         <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     Nueva Venta
+                </div>
+                <div class="panel-body">
+                    
+                    <?php if ($this->session->userdata('info_ven') != '') { ?>
+                        <div class="alert alert-success alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                            <?= $this->session->userdata('info_ven') ?>
+                        </div>
+                        <?php
+                        $this->session->set_userdata('info_ven', '');
+                    } if ($this->session->userdata('error_ven') != '') {
+                        ?>
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                            <?= $this->session->userdata('error_ven') ?>
+                        </div>
+                        <?php
+                        $this->session->set_userdata('error_ven', '');
+                    }
+                    ?>
+
+                    <a href="<?= base_url('hisventa') ?>"><button type="button" class="btn btn-info"><i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;Ver todas las ventas</button></a>
+                    <br>
                 </div>
                 <div class="panel-body">
                     <div class="form-group">

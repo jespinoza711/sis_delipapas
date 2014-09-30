@@ -104,7 +104,7 @@ class mod_producto extends CI_Model {
     function get_historial_compra_det_paginate($limit, $start, $string = "", $id = 1) {
         $this->db->or_like('nomb_tipo', $string);
         $this->db->or_like('nomb_prod', $string);
-        $this->db->where('codi_com', $id);
+//        $this->db->where('codi_com', $id);
         $query = $this->db->get('v_compra_detalle');
         $compra_det = $query->result();
         $i = 0;
@@ -114,6 +114,55 @@ class mod_producto extends CI_Model {
             if ($i >= $start) {
                 if ($c < $limit) {
                     if ($row->codi_com == $id) {
+                        $result[$c] = $row;
+                        $c++;
+                    }
+                } else {
+                    break;
+                }
+            }
+            $i++;
+        }
+        return $result;
+    }
+
+    function get_historial_venta_paginate($limit, $start, $string = "") {
+        $this->db->like('codi_ven', $string);
+        $this->db->or_like('fech_ven', $string);
+        $this->db->or_like('nomb_com', $string);
+        $this->db->or_like('nomb_usu', $string);
+        $this->db->or_like('nomb_cli', $string);
+        $query = $this->db->get('v_venta_historial');
+        $productos = $query->result();
+        $i = 0;
+        $c = 0;
+        $result = array();
+        foreach ($productos as $row) {
+            if ($i >= $start) {
+                if ($c < $limit) {
+                    $result[$c] = $row;
+                    $c++;
+                } else {
+                    break;
+                }
+            }
+            $i++;
+        }
+        return $result;
+    }
+
+    function get_historial_venta_det_paginate($limit, $start, $string = "", $id = 1) {
+        $this->db->or_like('nomb_tipo', $string);
+        $this->db->or_like('nomb_prod', $string);
+        $query = $this->db->get('v_venta_detalle');
+        $compra_det = $query->result();
+        $i = 0;
+        $c = 0;
+        $result = array();
+        foreach ($compra_det as $row) {
+            if ($i >= $start) {
+                if ($c < $limit) {
+                    if ($row->codi_ven == $id) {
                         $result[$c] = $row;
                         $c++;
                     }
