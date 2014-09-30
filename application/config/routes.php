@@ -13,6 +13,7 @@ $route['abrircaja'] = "caja/abrir_caja";
 $route['opencaja'] = "caja/open_caja";
 $route['cerrarcaja'] = "caja/cerrar_caja";
 $route['closecaja'] = "caja/close_caja";
+
 $route['cajachica'] = "caja/caja_chica";
 $route['abrircajachica'] = "caja/abrir_caja_chica";
 $route['opencajachica'] = "caja/open_caja_chica";

@@ -127,16 +127,16 @@ class ajustes extends CI_Controller {
                 // PLANILLA INSERT
                 $ajustes["form_planilla"] = array('role' => 'form', "id" => "form_planilla");
                 $ajustes["fech_pla"] = array('id' => 'fech_pla', 'name' => 'fech_pla', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
-                $ajustes["suel_pla"] = array('id' => 'suel_pla', 'name' => 'suel_pla', 'class' => "form-control input-lg", "min" => "1", 'required' => 'true', 'autocomplete' => 'off', 'value' => "1", "type" => "number", "step" => "any");
+                $ajustes["suel_pla"] = array('id' => 'suel_pla', 'name' => 'suel_pla', 'class' => "form-control input-lg", "min" => "0", 'required' => 'true', 'autocomplete' => 'off', 'value' => "0", "type" => "number", "step" => "any");
                 $ajustes["obsv_pla"] = array('id' => 'obsv_pla', 'name' => 'obsv_pla', 'class' => "form-control input-lg", 'placeholder' => "Escriba la observación...", "maxlength" => "100", "rows" => "5", "autocomplete" => "off");
-                $ajustes["registrar_planilla"] = array('name' => 'registrar_planilla', 'class' => "btn btn-primary", 'value' => "Registrar planilla");
+                $ajustes["registrar_planilla"] = array('id' => 'registrar_planilla', 'name' => 'registrar_planilla', 'class' => "btn btn-primary", 'value' => "Registrar planilla");
                 // PLANILLA EDIT
                 $ajustes["form_planilla_edit"] = array('role' => 'form', "id" => "form_planilla_edit");
                 $ajustes["fech_pla_e"] = array('id' => 'fech_pla_e', 'name' => 'fech_pla_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
                 $ajustes["codi_pla_e"] = array('id' => 'codi_pla_e', 'name' => 'codi_pla_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
                 $ajustes["suel_pla_e"] = array('id' => 'suel_pla_e', 'name' => 'suel_pla_e', 'class' => "form-control input-lg", "min" => "1", 'required' => 'true', 'autocomplete' => 'off', 'value' => "1", "type" => "number", "step" => "any");
                 $ajustes["obsv_pla_e"] = array('id' => 'obsv_pla_e', 'name' => 'obsv_pla_e', 'class' => "form-control input-lg", 'placeholder' => "Escriba la observación...", "maxlength" => "100", "rows" => "5", "autocomplete" => "off");
-                $ajustes["editar_planilla"] = array('name' => 'editar_planilla', 'class' => "btn btn-primary", 'value' => "Editar planilla");
+                $ajustes["editar_planilla"] = array('id' => 'editar_planilla', 'name' => 'editar_planilla', 'class' => "btn btn-primary", 'value' => "Editar planilla");
                 
                 // CONCEPTO-GASTO INSERT
                 $ajustes["form_concepto"] = array('role' => 'form', "id" => "form_concepto");

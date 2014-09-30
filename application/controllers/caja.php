@@ -677,11 +677,11 @@ class caja extends CI_Controller {
                 $caja['cajas'] = $this->get_caja_dia_lasttime();
 
                 $caja['form_opencaja'] = array('role' => 'form', "id" => "form_opencaja");
+                $caja['nomb_usu'] = array('id' => 'nomb_usu', 'name' => 'nomb_usu', 'class' => "form-control", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true');
                 $caja['sain_cad'] = array('id' => 'sain_cad', 'name' => 'sain_cad', 'class' => "form-control", 'placeholder' => "Saldo inicial", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off');
                 $caja['obsv_cad'] = array('id' => 'obsv_cad', 'name' => 'obsv_cad', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
                 $caja['registrar'] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Abrir caja");
 
-                $caja['usuarios'] = $this->mod_view->view('v_usuario', false, false, array('esta_usu' => 'A'));
                 $data['container'] = $this->load->view('caja/open_caja_view', $caja, true);
                 $this->load->view('home/body', $data);
             }
@@ -694,17 +694,19 @@ class caja extends CI_Controller {
         } else {
             $num_caja = $this->input->post('num_caj');
             $data['codi_caj'] = $this->input->post('codi_caj');
-            $data['usin_cad'] = $this->input->post('usin_cad');
+            $data['usin_cad'] = $this->session->userdata('user_codi');
             $data['sain_cad'] = $this->input->post('sain_cad');
-            $data['usfi_cad'] = $this->input->post('usin_cad');
+            $data['usfi_cad'] = $this->session->userdata('user_codi');
             $data['safi_cad'] = $this->input->post('sain_cad');
+            $data['dife_cad'] = '0';
+            $data['dife_reg'] = '0';
             $data['obsv_cad'] = $this->input->post('obsv_cad');
             $data['esta_cad'] = 'A';
 
             if (!$this->mod_caja->open_caja($data)) {
                 $this->session->set_userdata('error', 'No ha sido posible la operaci&oacute;n de apertura de la caja ' . $num_caja . ', verifique la fecha actual.');
             }
-            header('Location: ' . base_url('abrircaja'));
+            header('Location: ' . base_url('venta'));
         }
     }
 
@@ -726,10 +728,24 @@ class caja extends CI_Controller {
                 $caja['cajas'] = $this->get_caja_dia_lasttime();
 
                 $caja['form_closecaja'] = array('role' => 'form', "id" => "form_closecaja");
+                $caja['nomb_usu'] = array('id' => 'nomb_usu', 'name' => 'nomb_usu', 'class' => "form-control", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true');
+                $caja['sum_ven'] = array('id' => 'sum_ven', 'name' => 'sum_ven', 'class' => "form-control", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true', 'type' => 'number', 'step' => 'any', 'min' => '0');
+                $caja['suto_ven'] = array('id' => 'suto_ven', 'name' => 'suto_ven', 'class' => "form-control", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true', 'type' => 'number', 'step' => 'any', 'min' => '0');
+                $caja['sum_com'] = array('id' => 'sum_com', 'name' => 'sum_com', 'class' => "form-control", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true', 'type' => 'number', 'step' => 'any', 'min' => '0');
+                $caja['suto_com'] = array('id' => 'suto_com', 'name' => 'suto_com', 'class' => "form-control", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true', 'type' => 'number', 'step' => 'any', 'min' => '0');
                 $caja['safi_cad'] = array('id' => 'safi_cad', 'name' => 'safi_cad', 'class' => "form-control", 'placeholder' => "Saldo final", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off');
                 $caja['obsv_cad'] = array('id' => 'obsv_cad', 'name' => 'obsv_cad', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
                 $caja['registrar'] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Cerar caja");
 
+                $caja['_sum_ven'] = $this->mod_caja->ventas_caja_dia($date);
+                $caja['_sum_com'] = $this->mod_caja->compras_caja_dia($date);
+                if($caja['_sum_ven'] == ""){
+                    $caja['_sum_ven'] = '0.00';
+                }
+                if($caja['_sum_com'] == ""){
+                    $caja['_sum_com'] = '0.00';
+                }
+                
                 $caja['usuarios'] = $this->mod_view->view('v_usuario', false, false, array('esta_usu' => 'A'));
                 $data['container'] = $this->load->view('caja/close_caja_view', $caja, true);
                 $this->load->view('home/body', $data);
@@ -743,8 +759,12 @@ class caja extends CI_Controller {
         } else {
             $codi_cad = $this->input->post('codi_cad');
             $num_caja = $this->input->post('num_caj');
-            $data['usfi_cad'] = $this->input->post('usfi_cad');
+            $sain_cad = $this->input->post('sain_cad');
+            $safi_cal = $this->input->post('suto_com');
+            $data['usfi_cad'] = $this->session->userdata('user_codi');
             $data['safi_cad'] = $this->input->post('safi_cad');
+            $data['dife_cad'] = abs($sain_cad - $data['safi_cad']);
+            $data['dife_reg'] = abs($safi_cal - $data['safi_cad']);
             $data['obsv_cad'] = $this->input->post('obsv_cad');
             $data['esta_cad'] = 'C';
 
@@ -774,7 +794,7 @@ class caja extends CI_Controller {
                 $caja['concepto'] = $this->mod_view->view('concepto', false, false, array('esta_con' => 'A'));
 
                 if (count($caja['concepto']) <= 0) {
-                    $error[] = 'Debe registrar por lo menos un concepto de gasto. <br><strong> Haga click <a href="' . base_url('concepto') . '"> aquí </a> para registrar un concepto de gasto </strong>.';
+                    $error[] = 'Debe registrar por lo menos un concepto de gasto. <br><strong> Haga click <a href="' . base_url('ajustes') . '"> aquí </a> para registrar un concepto de gasto </strong>.';
                 }
                 /* INSERT */
                 $caja['form_regcajachica'] = array('role' => 'form', "id" => "form_regcajachica");
@@ -824,11 +844,11 @@ class caja extends CI_Controller {
                 $cajachica['cajas'] = $this->get_cajachica_dia_lasttime();
 
                 $cajachica['form_opencajachica'] = array('role' => 'form', "id" => "form_opencajachica");
-                $cajachica['sain_ccd'] = array('id' => 'sain_ccd', 'name' => 'sain_ccd', 'class' => "form-control", 'placeholder' => "Saldo inicial", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off');
+                $cajachica['nomb_usu'] = array('id' => 'nomb_usu', 'name' => 'nomb_usu', 'class' => "form-control", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true');
+                $cajachica['sain_ccd'] = array('id' => 'sain_ccd', 'name' => 'sain_ccd', 'class' => "form-control", 'placeholder' => "Saldo inicial", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off', 'type' => 'number', 'step' => 'any', 'min' => '0');
                 $cajachica['obsv_ccd'] = array('id' => 'obsv_ccd', 'name' => 'obsv_ccd', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
                 $cajachica['registrar'] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Abrir caja chica");
 
-                $cajachica['usuarios'] = $this->mod_view->view('v_usuario', false, false, array('esta_usu' => 'A'));
                 $data['container'] = $this->load->view('caja/open_cajachica_view', $cajachica, true);
                 $this->load->view('home/body', $data);
             }
@@ -841,17 +861,19 @@ class caja extends CI_Controller {
         } else {
             $codi_caja = $this->input->post('codi_cac');
             $data['codi_cac'] = $this->input->post('codi_cac');
-            $data['usin_ccd'] = $this->input->post('usin_ccd');
+            $data['usin_ccd'] = $this->session->userdata('user_codi');
             $data['sain_ccd'] = $this->input->post('sain_ccd');
-            $data['usfi_ccd'] = $this->input->post('usin_ccd');
+            $data['usfi_ccd'] = $this->session->userdata('user_codi');
             $data['safi_ccd'] = $this->input->post('sain_ccd');
+            $data['dife_ccd'] = '0';
+            $data['dife_reg'] = '0';
             $data['obsv_ccd'] = $this->input->post('obsv_ccd');
             $data['esta_ccd'] = 'A';
 
             if (!$this->mod_caja->open_cajachica($data)) {
                 $this->session->set_userdata('error', 'No ha sido posible la operaci&oacute;n de apertura de la caja chica ' . $codi_caja . ', verifique la fecha actual.');
             }
-            header('Location: ' . base_url('abrircajachica'));
+            header('Location: ' . base_url('cajachica'));
         }
     }
 
@@ -859,7 +881,9 @@ class caja extends CI_Controller {
         if (!$this->mod_config->AVP(1)) {
             header('location: ' . base_url('login'));
         } else {
+            date_default_timezone_set('America/Lima');            
             $status = $this->mod_caja->status_cajachica();
+            $date = date("Y-m-d");
             if ($status == 1) {
                 redirect(base_url('abrircajachica'), 'refresh');
             } else if ($status == 3) {
@@ -870,11 +894,17 @@ class caja extends CI_Controller {
                 $cajachica['cajas'] = $this->get_cajachica_dia_lasttime();
 
                 $cajachica['form_closecajachica'] = array('role' => 'form', "id" => "form_closecajachica");
-                $cajachica['safi_ccd'] = array('id' => 'safi_ccd', 'name' => 'safi_ccd', 'class' => "form-control", 'placeholder' => "Saldo final", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off');
+                $cajachica['nomb_usu'] = array('id' => 'nomb_usu', 'name' => 'nomb_usu', 'class' => "form-control", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true');
+                $cajachica['sum_gas'] = array('id' => 'sum_gas', 'name' => 'sum_gas', 'class' => "form-control", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true', 'type' => 'number', 'step' => 'any', 'min' => '0');
+                $cajachica['safi_cal'] = array('id' => 'safi_cal', 'name' => 'safi_cal', 'class' => "form-control", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true', 'type' => 'number', 'step' => 'any', 'min' => '0');
+                $cajachica['safi_ccd'] = array('id' => 'safi_ccd', 'name' => 'safi_ccd', 'class' => "form-control", 'placeholder' => "Saldo final", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off', 'type' => 'number', 'step' => 'any', 'min' => '0');
                 $cajachica['obsv_ccd'] = array('id' => 'obsv_ccd', 'name' => 'obsv_ccd', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
                 $cajachica['registrar'] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Cerrar caja chica");
 
-                $cajachica['usuarios'] = $this->mod_view->view('v_usuario', false, false, array('esta_usu' => 'A'));
+                $cajachica['_sum_gas'] = $this->mod_caja->gastos_cajachica_dia($date);
+                if($cajachica['_sum_gas'] == ""){
+                    $cajachica['_sum_gas'] = '0.00';
+                }
                 $data['container'] = $this->load->view('caja/close_cajachica_view', $cajachica, true);
                 $this->load->view('home/body', $data);
             }
@@ -887,9 +917,11 @@ class caja extends CI_Controller {
         } else {
             $codi_ccd = $this->input->post('codi_ccd');
             $sain_ccd = $this->input->post('sain_ccd');
-            $data['usfi_ccd'] = $this->input->post('usfi_ccd');
+            $safi_cal= $this->input->post('safi_cal');
+            $data['usfi_ccd'] = $this->session->userdata('user_codi');
             $data['safi_ccd'] = $this->input->post('safi_ccd');
-            $data['dife_ccd'] = $data['safi_ccd'] - $sain_ccd;
+            $data['dife_ccd'] = abs($sain_ccd - $data['safi_ccd']);
+            $data['dife_reg'] = abs($safi_cal - $data['safi_ccd']);
             $data['obsv_ccd'] = $this->input->post('obsv_ccd');
             $data['esta_ccd'] = 'C';
 

@@ -1,5 +1,28 @@
 $(document).ready(function() {
 
+    $('#registrar_planilla').prop('disabled', true);
+
+
+    $("#suel_pla").keyup(function(event) {
+        var sueldo = $(this).val();
+        if (parseFloat(sueldo) > 0) {
+            $('#registrar_planilla').prop('disabled', false);
+        } else {
+            $('#registrar_planilla').prop('disabled', true);
+        }
+    });
+
+    $('#editar_planilla').prop('disabled', true);
+
+    $("#suel_pla_e").keyup(function(event) {
+        var sueldo = $(this).val();
+        if (parseFloat(sueldo) > 0) {
+            $('#editar_planilla').prop('disabled', false);
+        } else {
+            $('#editar_planilla').prop('disabled', true);
+        }
+    });
+
     if ($("#cpo_planilla").is(':visible')) {
 
         var planillas;
@@ -32,7 +55,7 @@ $(document).ready(function() {
             var tr = $(this).parent().parent();
 
             $("#codi_pla_e").val(tr.find("td").eq(0).html());
-            $("#fech_pla_e").val(tr.find("td").eq(1).html());            
+            $("#fech_pla_e").val(tr.find("td").eq(1).html());
             $("#suel_pla_e").val(tr.find("td").eq(2).html());
             var observa = tr.find("td").eq(3).html();
             if (observa == "-") {

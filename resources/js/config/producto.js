@@ -168,6 +168,11 @@ $(document).ready(function() {
 
     var modal_tpro;
 
+    // nuevo tipo de producto 2
+    $("#btnAddTPro2").click(function() {
+        $('#ModalNuevoTipoProd2').modal('show');
+    });
+
     $("#btnAddTPro").click(function() {
         $('#ModalNuevoProducto').modal('hide');
         $('#ModalNuevoTipoProd').modal('show');

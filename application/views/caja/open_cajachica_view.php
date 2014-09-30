@@ -20,40 +20,50 @@
                 </div>
 
             <?php $this->session->set_userdata('error', ''); } ?>
+            
+            <p style="text-align:center">Hoy es: <br><h3 style="text-align:center"> <?= $datetime ?></h3></p>
 
-            <p style="text-align:center">
-                Hoy es: <br><h3 style="text-align:center"> <?= $datetime ?></h3><br> Porfavor verifique que la fecha y hora indicada sea la correcta 
+            <div class="alert alert-success alert-dismissable">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                Porfavor verifique que la fecha y hora indicada sea la correcta 
                 para poder aperturar la caja chica, si no es la correcta, actualize su terminal a la fecha 
                 y hora actual.
-            </p>
+            </div>            
 
             <?php foreach ($cajas as $row) { ?>
 
                 <div class="modal-body">
-                    <table>
+                    <table class="table table-condensed">
                         <tr>
                             <td><label> # Caja: </label></td>
-                            <td><label> &nbsp;&nbsp; <?= $row['codi_cac'] ?> </label></td>
+                            <td><label> <?= $row['codi_cac'] ?> </label></td>
                         </tr>
                         <tr>
                             <td><label> &Uacute;ltimo cierre: </label></td>
-                            <td><label> &nbsp;&nbsp; <?= $row['fein_ccd'] ?> </label></td>
+                            <td><label> <?= date('d/m/Y g:i A', strtotime($row['fein_ccd'])) ?> </label></td>
                         </tr>
                         <tr>
                             <td><label> Usuario (Apertura): </label></td>
-                            <td><label> &nbsp;&nbsp; <?= $row['usin_ccd'] ?> </label></td>
+                            <td><label> <?= $row['usin_ccd'] ?> </label></td>
                         </tr>
                         <tr>
                             <td><label> Saldo inicial (S/.): </label></td>
-                            <td><label> &nbsp;&nbsp; <?= $row['sain_ccd'] ?> </label></td>
+                            <td><label> <?= $row['sain_ccd'] ?> </label></td>
                         </tr>
                         <tr>
                             <td><label> Usuario (Cierre): </label></td>
-                            <td><label> &nbsp;&nbsp; <?= $row['usfi_ccd'] ?> </label></td>
+                            <td><label> <?= $row['usfi_ccd'] ?> </label></td>
                         </tr>
                         <tr>
                             <td><label> Saldo final (S/.): </label></td>
-                            <td><label> &nbsp;&nbsp; <?= $row['safi_ccd'] ?> </label></td>
+                            <td><label> <?= $row['safi_ccd'] ?> </label></td>
+                        </tr>
+                        <tr>
+                            <td><label> Observaci&oacute;n: </label></td>
+                            <td><label> <?= $row['obsv_ccd'] ?> </label></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
                         </tr>
                     </table>
                 </div>
@@ -61,12 +71,9 @@
                 <?= form_open(base_url('opencajachica'), $form_opencajachica) ?>
 
                 <div class="modal-body">
-                    <div class="form-group">
-                        <label>Usuario: *</label>
-                        <select id="codi_rol" class="form-control" name="usin_ccd"><?php foreach ($usuarios as $r) { ?> <option value="<?= $r->codi_usu ?>"><?= $r->nomb_usu ?></option> <?php } ?></select>
-                    </div>
+                    <div class="form-group"><label>Usuario: </label><?= form_input($nomb_usu, $this->session->userdata('user_name')) ?></div>
                     <div class="form-group"><label>Saldo inicial (S/.): *</label> <?= form_input($sain_ccd, $row['safi_ccd']) ?> </div>
-                    <div class="form-group"><label>Observaci&oacute;n: *</label><?= form_textarea($obsv_ccd) ?></div>
+                    <div class="form-group"><label>Observaci&oacute;n: (Max. 200 caracteres)</label><?= form_textarea($obsv_ccd) ?></div>
                 </div>
                 <div class="modal-footer">
                     <div style="float: right;">

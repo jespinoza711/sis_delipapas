@@ -156,7 +156,7 @@ class empleado extends CI_Controller {
                 $empleado["editar"] = array('id' => 'editar_emp', 'name' => 'editar', 'class' => "btn btn-primary", 'value' => "Editar");
 
 
-                $planilla = $this->mod_view->view('planilla');
+                $planilla = $this->mod_view->view('planilla', false, false, array('esta_pla' => 'A'));
                 $tipo_empleado = $this->mod_view->view('tipo_empleado');
                 $empleado['empleados'] = $this->mod_empleado->get_vempleado();
                 $empleado['tipo'] = array();

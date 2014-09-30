@@ -65,11 +65,9 @@ class producto extends CI_Controller {
                 $cont_tipo_producto = $this->mod_view->count('tipo_producto', 0, false, array('esta_tipo' => 'A'));
                 $tipo_producto = $this->mod_view->view('tipo_producto', 0, false, array('esta_tipo' => 'A'));
 
-                if ($cont_tipo_producto > 0) {
-                    
-                } else {
+                if ($cont_tipo_producto == 0) {
                     $producto['disabled'] = ' disabled = "true" ';
-                    $this->session->set_userdata('error_prod', 'Debe por lo menos registrar un tipo de producto');
+                    $this->session->set_userdata('error_prod', 'Debe por lo menos registrar un tipo de producto. <button id="btnAddTPro2" type="button" class="btn btn-sm btn-primary" style="padding: 0px 10px; margin-left: 4px;"  data-toggle="tooltip" data-placement="top" title="Añadir un tipo de producto"><i class="fa fa-plus"></i>&nbsp;&nbsp;Agregar un tipo de producto</button>');
                 }
 
                 $tipo = array();

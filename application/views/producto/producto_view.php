@@ -65,7 +65,7 @@
                 <h4 class="modal-title" id="myModalLabel">Nuevo producto</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group"><label>Tipo: * <button id="btnAddTPro" type="button" class="btn btn-sm btn-primary" style="padding: 0px 10px; margin-left: 4px;"  data-toggle="tooltip" data-placement="top" title="Añadir tipo de producto"><i class="fa fa-plus"></i></button></label>
+                <div class="form-group"><label>Tipo de Producto: * <button id="btnAddTPro" type="button" class="btn btn-sm btn-primary" style="padding: 0px 10px; margin-left: 4px;"  data-toggle="tooltip" data-placement="top" title="Añadir tipo de producto"><i class="fa fa-plus"></i></button></label>
                     <?= form_dropdown('tipo', $tipo, array(), 'id="tipo_prod" class="form-control input-lg"') ?>
                 </div>
                 <div class="form-group"><label>Nombre: *</label><?= form_input($nombre) ?></div>
@@ -148,6 +148,37 @@
             <div class="modal-footer">
                 <div style="float: right;">
                     <button id="btnCancelarNTProd" type="button" class="btn btn-default btn-lg" data-dismiss="modal">Cancelar</button>
+                    <?= form_submit($registrar_tpro) ?>
+                </div>
+            </div>
+            <?= form_close() ?>
+        </div>
+    </div>
+</div>
+
+<!--TIPO PRODUCTO DOS-->
+
+<div class="modal fade" id="ModalNuevoTipoProd2" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog" style="width: 30%; margin-top: 15%;">
+        <div class="modal-content" style="border-color: #ddd; border-style: inset;">
+            <?= form_open(base_url() . 'producto', $form_tpro) ?>
+            <div class="modal-header" style="
+                 padding: 10px 15px;
+                 border-bottom: 1px solid transparent;
+                 border-top-left-radius: 3px;
+                 border-top-right-radius: 3px;
+                 color: #000;
+                 background-color: #ddd;
+                 border-color: #ddd;
+                 ">
+                <h4 class="modal-title" id="myModalLabel">Añadir tipo de producto</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group"><label>Tipo de Producto: *</label><?= form_input($nombre_tpro) ?></div>
+            </div>
+            <div class="modal-footer">
+                <div style="float: right;">
+                    <button type="button" class="btn btn-default btn-lg" data-dismiss="modal">Cancelar</button>
                     <?= form_submit($registrar_tpro) ?>
                 </div>
             </div>

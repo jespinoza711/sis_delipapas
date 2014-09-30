@@ -117,7 +117,8 @@
                     <?= form_dropdown('tipo_emp', $tipo, array(), 'id="tipo_emp" class="form-control" ' . $disabled) ?>
                 </div>
                 <div class="form-group">
-                    <label>Planilla: * <button id="btnPlaEmp" type="button" class="btn btn-sm btn-primary" style="padding: 0px 10px; margin-left: 4px;"  data-toggle="tooltip" data-placement="top" title="Añadir planilla"><i class="fa fa-plus"></i></button></label>
+                    <label>Planilla: * <a href="<?= base_url('ajustes')?>"><button type="button" class="btn btn-sm btn-primary" style="padding: 0px 10px; margin-left: 4px;"  data-toggle="tooltip" data-placement="top" title="Añadir planilla"><i class="fa fa-plus"></i></button></a></label>
+                    <!--<label>Planilla: * <button id="btnPlaEmp" type="button" class="btn btn-sm btn-primary" style="padding: 0px 10px; margin-left: 4px;"  data-toggle="tooltip" data-placement="top" title="Añadir planilla"><i class="fa fa-plus"></i></button></label>-->
                     <?= form_dropdown('plan_emp', $planilla, array(), 'id="plan_emp" class="form-control" ' . $disabled) ?>
                 </div>
                 <div class="form-group input-group" style="width: 160px;">
@@ -220,7 +221,8 @@
                     <?= form_dropdown('tipo_emp', $tipo, array(), 'id="tipo_emp_e" class="form-control" ' . $disabled) ?>
                 </div>
                 <div class="form-group">
-                    <label>Planilla: * <button id="btnPlaEmp_e" type="button" class="btn btn-sm btn-primary" style="padding: 0px 10px; margin-left: 4px;"  data-toggle="tooltip" data-placement="top" title="Añadir planilla"><i class="fa fa-plus"></i></button></label>
+                    <label>Planilla: * <a href="<?= base_url('ajustes')?>"><button type="button" class="btn btn-sm btn-primary" style="padding: 0px 10px; margin-left: 4px;"  data-toggle="tooltip" data-placement="top" title="Añadir planilla"><i class="fa fa-plus"></i></button></a></label>
+                    <!--<label>Planilla: * <button id="btnPlaEmp_e" type="button" class="btn btn-sm btn-primary" style="padding: 0px 10px; margin-left: 4px;"  data-toggle="tooltip" data-placement="top" title="Añadir planilla"><i class="fa fa-plus"></i></button></label>-->
                     <?= form_dropdown('plan_emp', $planilla, array(), 'id="plan_emp_e" class="form-control" ' . $disabled) ?>
                 </div>
                 <div class="form-group input-group" style="width: 160px;">

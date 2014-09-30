@@ -211,4 +211,31 @@ class mod_caja extends CI_Model {
         return $query->result();
     }
 
+    function gastos_cajachica_dia($date) {
+        $this->db->select('SUM(impo_gas) AS suma');
+        $this->db->from('gastos');
+        $this->db->where(array('DATE(fech_gas)' => $date, 'esta_gas' => 'A'));
+        $query = $this->db->get();
+        $result = $query->row();
+        return $result->suma;
+    }
+
+    function ventas_caja_dia($date) {
+        $this->db->select('SUM(tota_ven) AS suma');
+        $this->db->from('venta');
+        $this->db->where(array('DATE(fech_ven)' => $date, 'esta_ven' => 'A'));
+        $query = $this->db->get();
+        $result = $query->row();
+        return $result->suma;
+    }
+
+    function compras_caja_dia($date) {
+        $this->db->select('SUM(tota_com) AS suma');
+        $this->db->from('compra');
+        $this->db->where(array('DATE(fech_com)' => $date, 'esta_com' => 'A'));
+        $query = $this->db->get();
+        $result = $query->row();
+        return $result->suma;
+    }
+
 }

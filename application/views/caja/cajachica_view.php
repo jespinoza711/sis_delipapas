@@ -30,6 +30,9 @@
                              <h3><?= $datetime ?></h3>
                         </div>
                     </div>
+                    <div class="modal-body">
+                        <a href="<?= base_url('cerrarcajachica') ?>"><button type="button" class="btn btn-info"><i class="glyphicon glyphicon-off"></i>&nbsp;&nbsp;&nbsp;Cerrar caja chica</button></a>       
+                    </div>
 
                     <?= form_open(base_url('cajachicainsert'), $form_regcajachica) ?>
 
