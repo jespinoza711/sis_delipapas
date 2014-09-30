@@ -1,7 +1,5 @@
-AQUÍ SE PUBLICARÁ LAS CREACIONES DE VISTAS Y/O PROCEDIMIENTOS DE LA BASE DE DATOS
-
-create view v_usuario as
-select u.codi_usu,
+CREATE VIEW v_usuario AS
+SELECT u.codi_usu,
 u.codi_rol,
 u.reg_usu,
 r.nomb_rol,
@@ -10,9 +8,9 @@ u.pass_usu,
 u.acce_usu,
 u.ses_usu,
 u.esta_usu
-from usuario u, rol r
-where u.codi_rol = r.codi_rol 
-order by u.codi_usu asc;
+FROM usuario u, rol r
+WHERE u.codi_rol = r.codi_rol 
+ORDER BY u.codi_usu ASC;
 
 CREATE VIEW v_producto AS
 SELECT p.codi_prod,
@@ -26,7 +24,7 @@ p.stoc_prod,
 p.obsv_prod,
 p.esta_prod
 FROM producto p, tipo_producto tp 
-where p.codi_tpro = tp.codi_tpro
+WHERE p.codi_tpro = tp.codi_tpro
 ORDER BY tp.nomb_tipo ASC;
 
 CREATE VIEW v_producto_compra AS
@@ -41,13 +39,13 @@ p.stoc_prod,
 p.obsv_prod,
 p.esta_prod
 FROM producto p, tipo_producto tp 
-where p.codi_tpro = tp.codi_tpro
-and p.prec_prod > 0
-and p.esta_prod = 'A'
+WHERE p.codi_tpro = tp.codi_tpro
+AND p.prec_prod > 0
+AND p.esta_prod = 'A'
 ORDER BY tp.nomb_tipo ASC;
 
-create view v_caja_dia as
-select cd.codi_cad,
+CREATE VIEW v_caja_dia AS
+SELECT cd.codi_cad,
 cd.codi_caj,
 c.num_caj,
 cd.fein_cad,
@@ -58,16 +56,18 @@ cd.fefi_cad,
 cd.usfi_cad,
 uf.nomb_usu AS usu_fin,
 cd.safi_cad,
+cd.dife_cad,
+cd.dife_reg,
 cd.obsv_cad,
 cd.esta_cad
-from caja c, caja_dia cd, usuario ui, usuario uf
-where cd.codi_caj = c.codi_caj
-and cd.usin_cad = ui.codi_usu
-and cd.usfi_cad = uf.codi_usu
-order by cd.fein_cad desc;
+FROM caja c, caja_dia cd, usuario ui, usuario uf
+WHERE cd.codi_caj = c.codi_caj
+AND cd.usin_cad = ui.codi_usu
+AND cd.usfi_cad = uf.codi_usu
+ORDER BY cd.fein_cad DESC;
 
-create view v_caja_chica_dia as
-select cc.codi_ccd,
+CREATE VIEW v_caja_chica_dia AS
+SELECT cc.codi_ccd,
 cc.codi_cac,
 cc.fein_ccd,
 cc.usin_ccd,
@@ -78,26 +78,27 @@ cc.usfi_ccd,
 uf.nomb_usu AS usu_fin,
 cc.safi_ccd,
 cc.dife_ccd,
+cc.dife_reg,
 cc.obsv_ccd,
 cc.esta_ccd
-from caja_chica_dia cc, usuario ui, usuario uf
-where cc.usin_ccd = ui.codi_usu
-and cc.usfi_ccd = uf.codi_usu
-order by cc.fein_ccd desc;
+FROM caja_chica_dia cc, usuario ui, usuario uf
+WHERE cc.usin_ccd = ui.codi_usu
+AND cc.usfi_ccd = uf.codi_usu
+ORDER BY cc.fein_ccd DESC;
 
-create view v_concepto as
-select c.codi_con,
+CREATE VIEW v_concepto AS
+SELECT c.codi_con,
 c.fech_con,
 c.codi_usu,
 u.nomb_usu,
 c.nomb_con,
 c.esta_con
-from concepto c, usuario u
-where c.codi_usu = u.codi_usu
-order by c.codi_con asc
+FROM concepto c, usuario u
+WHERE c.codi_usu = u.codi_usu
+ORDER BY c.codi_con ASC;
 
-create view v_registro_planilla as
-select rp.codi_dpl,
+CREATE VIEW v_registro_planilla AS
+SELECT rp.codi_dpl,
 rp.codi_usu,
 rp.fech_dpl,
 u.nomb_usu,
@@ -111,13 +112,13 @@ rp.desc_dpl,
 rp.tota_dpl,
 rp.obsv_dpl,
 rp.esta_dpl
-from registro_planilla rp, usuario u, empleado e
-where rp.codi_usu = u.codi_usu
-and rp.codi_emp = e.codi_emp
-order by rp.fech_dpl desc;
+FROM registro_planilla rp, usuario u, empleado e
+WHERE rp.codi_usu = u.codi_usu
+AND rp.codi_emp = e.codi_emp
+ORDER BY rp.fech_dpl DESC;
 
-create view v_gastos as
-select g.codi_gas,
+CREATE VIEW v_gastos AS
+SELECT g.codi_gas,
 g.fech_gas,
 g.codi_cac,
 g.codi_usu,
@@ -128,26 +129,49 @@ g.nomb_gas,
 g.impo_gas,
 g.obsv_gas,
 g.esta_gas
-from gastos g, usuario u, concepto c
-where g.codi_usu = u.codi_usu
-and g.codi_con = c.codi_con
-order by g.fech_gas desc;
+FROM gastos g, usuario u, concepto c
+WHERE g.codi_usu = u.codi_usu
+AND g.codi_con = c.codi_con
+ORDER BY g.fech_gas DESC;
 
-CREATE VIEW v_registro
-AS
-SELECT u.nomb_usu, e.apel_emp, e.nomb_emp, r.fech_dpl, r.suel_pla, r.cant_dpl, r.suto_dpl, r.desc_dpl, r.tota_dpl, r.obsv_dpl, r.esta_dpl
-FROM registro_planilla as r, usuario as u, empleado as e
-WHERE r.codi_usu = u.codi_usu AND e.codi_emp = r.codi_emp;
+CREATE VIEW v_registro AS
+SELECT u.nomb_usu, 
+e.apel_emp, 
+e.nomb_emp, 
+r.fech_dpl, 
+r.suel_pla, 
+r.cant_dpl, 
+r.suto_dpl, 
+r.desc_dpl, 
+r.tota_dpl, 
+r.obsv_dpl, 
+r.esta_dpl
+FROM registro_planilla AS r, usuario AS u, empleado AS e
+WHERE r.codi_usu = u.codi_usu 
+AND e.codi_emp = r.codi_emp;
 
-CREATE VIEW v_factura
-AS
-SELECT f.codi_fac, f.desp_fac, c.apel_cli, c.nomb_cli, c.dire_cli, c.ruc_cli, f.fech_fac,
-v.cantidad, p.nomb_prod, p.prec_prod ,v.impo_dve, e.tota_ven
+CREATE VIEW v_factura AS
+SELECT f.codi_fac, 
+f.desp_fac, 
+c.apel_cli, 
+c.nomb_cli, 
+c.dire_cli, 
+c.ruc_cli, 
+f.fech_fac,
+v.cantidad, 
+p.nomb_prod, 
+p.prec_prod,
+v.impo_dve, 
+e.tota_ven
 FROM factura f, detalle_factura d, detalle_venta v, producto p, venta e, cliente c
-WHERE f.codi_fac = d.codi_fac AND d.codi_dve = v.codi_dve AND v.codi_prod = p.codi_prod AND v.codi_ven = e.codi_ven AND c.codi_cli = e.codi_cli;
+WHERE f.codi_fac = d.codi_fac 
+AND d.codi_dve = v.codi_dve 
+AND v.codi_prod = p.codi_prod 
+AND v.codi_ven = e.codi_ven 
+AND c.codi_cli = e.codi_cli;
 
-create view v_compra as
-select c.codi_com,
+CREATE VIEW v_compra AS
+SELECT c.codi_com,
 c.fech_com,
 c.codi_usu,
 u.nomb_usu,
@@ -155,12 +179,12 @@ c.num_com,
 c.tota_com,
 c.obsv_com,
 c.esta_com
-from compra c, usuario u
-where c.codi_usu = u.codi_usu
-order by c.fech_com desc;
+FROM compra c, usuario u
+WHERE c.codi_usu = u.codi_usu
+ORDER BY c.fech_com DESC;
 
-create view v_compra_detalle as
-select cd.codi_com,
+CREATE VIEW v_compra_detalle AS
+SELECT cd.codi_com,
 cd.codi_prod,
 tp.nomb_tipo,
 p.nomb_prod,
@@ -169,23 +193,69 @@ pv.nomb_pro,
 cd.prec_prod,
 cd.cant_prod,
 cd.suto_com
-from detalle_compra cd, producto p, proveedor pv, tipo_producto tp
-where cd.codi_prod = p.codi_prod
-and p.codi_tpro = tp.codi_tpro
-and cd.codi_prov = pv.codi_pro
-order by tp.nomb_tipo desc;
+FROM detalle_compra cd, producto p, proveedor pv, tipo_producto tp
+WHERE cd.codi_prod = p.codi_prod
+AND p.codi_tpro = tp.codi_tpro
+AND cd.codi_prov = pv.codi_pro
+ORDER BY tp.nomb_tipo DESC;
 
-CREATE VIEW v_venta AS select v.codi_ven
-AS codi_ven,v.codi_caj AS codi_caj,v.codi_com AS codi_com,v.codi_usu AS codi_usu,
-v.codi_cli AS codi_cli,v.fech_ven AS fech_ven,v.tota_ven AS tota_ven,
-c.num_caj AS num_caj,t.nomb_com AS nomb_com,u.nomb_usu AS nomb_usu,
-e.nomb_cli AS nomb_cli,e.apel_cli AS apel_cli, e.empr_cli AS empr_cli
-from ((((bd_delipapas.venta v join bd_delipapas.caja c) join bd_delipapas.cliente e) join bd_delipapas.comprobante t) 
-join bd_delipapas.usuario u) 
-where ((v.codi_caj = c.codi_caj) and (v.codi_cli = e.codi_cli) and (v.codi_com = t.codi_com) 
-and (v.codi_usu = u.codi_usu) and (v.esta_ven = 'A')) 
-order by v.fech_ven desc;
+CREATE VIEW v_venta AS 
+SELECT v.codi_ven AS codi_ven,
+v.codi_caj AS codi_caj,
+v.codi_com AS codi_com,
+v.codi_usu AS codi_usu,
+v.codi_cli AS codi_cli,
+v.fech_ven AS fech_ven,
+v.tota_ven AS tota_ven,
+c.num_caj AS num_caj,
+t.nomb_com AS nomb_com,
+u.nomb_usu AS nomb_usu,
+e.nomb_cli AS nomb_cli,
+e.apel_cli AS apel_cli, 
+e.empr_cli AS empr_cli
+FROM ((((bd_delipapas.venta v join bd_delipapas.caja c) join bd_delipapas.cliente e) join bd_delipapas.comprobante t) join bd_delipapas.usuario u) 
+WHERE ((v.codi_caj = c.codi_caj) 
+AND (v.codi_cli = e.codi_cli) 
+AND (v.codi_com = t.codi_com) 
+AND (v.codi_usu = u.codi_usu) 
+AND (v.esta_ven = 'A')) 
+ORDER BY v.fech_ven DESC;
 
-CREATE VIEW `v_venta_detalle` AS select `dv`.`codi_dve` AS `codi_dve`,`dv`.`codi_ven` AS `codi_ven`,`dv`.`codi_prod` AS `codi_prod`,`tp`.`nomb_tipo` AS `nomb_tipo`,`p`.`nomb_prod` AS `nomb_prod`,`dv`.`cantidad` AS `cantidad`,`dv`.`igv_dve` AS `igv_dve`,`dv`.`suto_dve` AS `suto_dve`,`dv`.`impo_dve` AS `impo_dve` from ((`detalle_venta` `dv` join `producto` `p`) join `tipo_producto` `tp`) where ((`dv`.`codi_prod` = `p`.`codi_prod`) and (`p`.`codi_tpro` = `tp`.`codi_tpro`)) order by `tp`.`nomb_tipo`;
+CREATE VIEW `v_venta_detalle` AS 
+SELECT `dv`.`codi_dve` AS `codi_dve`,
+`dv`.`codi_ven` AS `codi_ven`,
+`dv`.`codi_prod` AS `codi_prod`,
+`tp`.`nomb_tipo` AS `nomb_tipo`,
+`p`.`nomb_prod` AS `nomb_prod`,
+`dv`.`cantidad` AS `cantidad`,
+`dv`.`igv_dve` AS `igv_dve`,
+`dv`.`suto_dve` AS `suto_dve`,
+`dv`.`impo_dve` AS `impo_dve` 
+FROM ((`detalle_venta` `dv` join `producto` `p`) join `tipo_producto` `tp`) 
+WHERE ((`dv`.`codi_prod` = `p`.`codi_prod`) 
+AND (`p`.`codi_tpro` = `tp`.`codi_tpro`)) 
+ORDER BY `tp`.`nomb_tipo`;
 
-CREATE VIEW `v_venta_historial` AS select `v`.`codi_ven` AS `codi_ven`,`v`.`fech_ven` AS `fech_ven`,`v`.`codi_caj` AS `codi_caj`,`v`.`codi_com` AS `codi_com`,`cp`.`nomb_com` AS `nomb_com`,`v`.`codi_usu` AS `codi_usu`,`u`.`nomb_usu` AS `nomb_usu`,`v`.`codi_cli` AS `codi_cli`,`c`.`nomb_cli` AS `nomb_cli`,`v`.`tota_ven` AS `tota_ven`,`df`.`codi_fac` AS `codi_fac`,`f`.`num_fac` AS `num_fac`,`v`.`esta_ven` AS `esta_ven` from ((((((`venta` `v` join `comprobante` `cp`) join `usuario` `u`) join `cliente` `c`) join `detalle_venta` `dv`) join `detalle_factura` `df`) join `factura` `f`) where ((`v`.`codi_com` = `cp`.`codi_com`) and (`v`.`codi_usu` = `u`.`codi_usu`) and (`v`.`codi_cli` = `c`.`codi_cli`) and (`v`.`codi_ven` = `dv`.`codi_ven`) and (`dv`.`codi_dve` = `df`.`codi_dve`) and (`df`.`codi_fac` = `f`.`codi_fac`)) group by `f`.`num_fac` order by `v`.`fech_ven` desc;
+CREATE VIEW `v_venta_historial` AS 
+SELECT `v`.`codi_ven` AS `codi_ven`,
+`v`.`fech_ven` AS `fech_ven`,
+`v`.`codi_caj` AS `codi_caj`,
+`v`.`codi_com` AS `codi_com`,
+`cp`.`nomb_com` AS `nomb_com`,
+`v`.`codi_usu` AS `codi_usu`,
+`u`.`nomb_usu` AS `nomb_usu`,
+`v`.`codi_cli` AS `codi_cli`,
+`c`.`nomb_cli` AS `nomb_cli`,
+`v`.`tota_ven` AS `tota_ven`,
+`df`.`codi_fac` AS `codi_fac`,
+`f`.`num_fac` AS `num_fac`,
+`v`.`esta_ven` AS `esta_ven` 
+FROM ((((((`venta` `v` join `comprobante` `cp`) join `usuario` `u`) join `cliente` `c`) join `detalle_venta` `dv`) join `detalle_factura` `df`) join `factura` `f`) 
+WHERE ((`v`.`codi_com` = `cp`.`codi_com`) 
+AND (`v`.`codi_usu` = `u`.`codi_usu`) 
+AND (`v`.`codi_cli` = `c`.`codi_cli`) 
+AND (`v`.`codi_ven` = `dv`.`codi_ven`) 
+AND (`dv`.`codi_dve` = `df`.`codi_dve`) 
+AND (`df`.`codi_fac` = `f`.`codi_fac`)) 
+GROUP BY `f`.`num_fac` 
+ORDER BY `v`.`fech_ven` DESC;
