@@ -267,7 +267,7 @@ class caja extends CI_Controller {
             } else {
                 $error = array();
                 $compra['form_compra'] = array('role' => 'form', "id" => "form_compra");
-                $compra['obsv_com'] = array('id' => 'obsv_com', 'name' => 'obsv_com', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
+                $compra['obsv_com'] = array('id' => 'obsv_com', 'name' => 'obsv_com', 'class' => "form-control", "maxlength" => "500", "autocomplete" => "off", "rows" => "3");
                 $compra['producto'] = $this->mod_view->view('v_producto_compra', false, false, false);
                 $compra['proveedor'] = $this->mod_view->view('proveedor', false, false, array('esta_pro' => 'A'));
 
@@ -293,7 +293,7 @@ class caja extends CI_Controller {
         }
     }
 
-    public function historial_compra() {
+    public function historial_compra($id) {
         if (!$this->mod_config->AVP(1)) {
             header('location: ' . base_url('login'));
         } else {
@@ -317,24 +317,31 @@ class caja extends CI_Controller {
                     $this->session->set_userdata('info', 'La compra ha sido deshabilitada existosamente.');
                     header('Location: ' . base_url('hiscompra'));
                 } else {
-                    $error = array();
-                    $compra['compra'] = $this->mod_view->view('v_compra', false, false, false);
-
-                    if (count($compra['compra']) <= 0) {
-                        $error[] = 'Debe registrar por lo menos una compra. <br><strong> Haga click <a href="' . base_url('compra') . '"> aquí </a> para registrar una compra </strong>.';
-                    }
-                    
-                    if (count($error) > 0) {
-                        $info["encabezado"] = "<i class='fa fa-warning'></i>&nbsp;&nbsp;&nbsp;¡Advertencia!";
-                        $info["panel"] = 'yellow';
-                        $info["cuerpo"] = $error;
-                        $data['container'] = $this->load->view('error', $info, true);
+                    if ($this->mod_config->numeric($id) && $id > 0) {
+                        $compra_det['compra'] = $this->mod_view->one('v_compra', false, false, array('codi_com' => $id));
+                        $data['page'] = 'Historial de compras / detalle de la compra #' . $compra_det['compra']->num_com;
+                        $data['container'] = $this->load->view('caja/compra_all_det_view', $compra_det, true);                        
+                        $this->load->view('home/body', $data);
                     } else {
-                        $data['container'] = $this->load->view('caja/compra_all_view', $compra, true);
-                    }
+                        $error = array();
+                        $compra['compra'] = $this->mod_view->view('v_compra', false, false, false);
 
-                    $data['page'] = 'Historial de compras';
-                    $this->load->view('home/body', $data);
+                        if (count($compra['compra']) <= 0) {
+                            $error[] = 'Debe registrar por lo menos una compra. <br><strong> Haga click <a href="' . base_url('compra') . '"> aquí </a> para registrar una compra </strong>.';
+                        }
+
+                        if (count($error) > 0) {
+                            $info["encabezado"] = "<i class='fa fa-warning'></i>&nbsp;&nbsp;&nbsp;¡Advertencia!";
+                            $info["panel"] = 'yellow';
+                            $info["cuerpo"] = $error;
+                            $data['container'] = $this->load->view('error', $info, true);
+                        } else {
+                            $data['container'] = $this->load->view('caja/compra_all_view', $compra, true);
+                        }
+
+                        $data['page'] = 'Historial de compras';
+                        $this->load->view('home/body', $data);
+                    }
                 }
             }
         }
@@ -401,7 +408,7 @@ class caja extends CI_Controller {
             }
 
             $estado = $row->esta_com == 'A' ? 'Activo' : 'Oculto';
-            $opciones = '<a href="' . base_url('hiscompra/' . $row->codi_com) . '"><button type="button" class="tooltip-hiscompra btn btn-success btn-circle detalle_compra" data-toggle="tooltip" data-placement="top" title="Ver detalle de esta compra"><i class="fa fa-eye"></i></button></a>&nbsp;';
+            $opciones = '<a href="' . base_url('caja/historial_compra/' . $row->codi_com) . '"><button type="button" class="tooltip-hiscompra btn btn-success btn-circle detalle_compra" data-toggle="tooltip" data-placement="top" title="Ver detalle de esta compra"><i class="fa fa-eye"></i></button></a>&nbsp;';
 
             if ($estado == 'Oculto') {
                 $opciones .= '<span>' . form_open(base_url('hiscompra'), $form_hiscompra) . ' 
@@ -439,6 +446,35 @@ class caja extends CI_Controller {
         print_r(json_encode($aa));
     }
 
+    public function paginate_historial_compra_det($id) {
+        $nTotal = $this->mod_view->count('v_compra_detalle', false, false, array('codi_com' => $id));
+        $compras = $this->mod_producto->get_historial_compra_det_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch'], $id);
+        $aaData = array();
+        $i = 1;
+
+        foreach ($compras as $row) {
+
+            $aaData[] = array(
+                $i,
+                $row->nomb_tipo,
+                $row->nomb_prod,
+                $row->nomb_pro,
+                $row->prec_prod,
+                $row->cant_prod,
+                $row->suto_com
+            );
+            $i++;
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
+    }
+
     public function registrar_compra() {
         if (!$this->mod_config->AVP(1)) {
             header('location: ' . base_url('login'));
@@ -447,13 +483,13 @@ class caja extends CI_Controller {
             $total = $this->input->post('total');
             $obsv = $this->input->post('obsv_com');
 
-// GENERAR NUMERO DE COMPRA
+            // GENERAR NUMERO DE COMPRA
             $cont = $this->mod_view->count('compra') + 1;
             $longitud = strlen($cont);
             $numero = 'C000000000000';
             $num_compra = substr($numero, 0, 13 - $longitud) . $cont;
 
-// REGISTRO DE COMPRA
+            // REGISTRO DE COMPRA
             date_default_timezone_set('America/Lima');
             $compra = array(
                 'fech_com' => date("Y-m-d H:i:s"),
@@ -466,23 +502,23 @@ class caja extends CI_Controller {
             $codi_compra = $this->mod_view->insert('compra', $compra);
 
             foreach ($tbl_compra as $row) {
-// ACTUALIZAR STOCK Y FECHA DE INGRESO DE PRODUCTO
+            // ACTUALIZAR STOCK Y FECHA DE INGRESO DE PRODUCTO
                 $stock_anterior = $this->mod_view->dato('producto', 0, false, array('codi_prod' => $row[0]), 'stoc_prod');
-                $stock_actual = (int) $stock_anterior + (int) $row[2];
+                $stock_actual = (int) $stock_anterior + (int) $row[3];
                 $this->mod_view->update('producto', array('codi_prod' => $row[0]), array('stoc_prod' => $stock_actual, 'fein_prod' => date("Y-m-d H:i:s")));
 
-// REGISTRO DE DETALLE DE COMPRA
+            // REGISTRO DE DETALLE DE COMPRA
                 $detalle_compra = array(
                     'codi_com' => $codi_compra,
                     'codi_prod' => $row[0],
-                    'codi_prov' => $this->mod_view->dato('proveedor', 0, false, array('nomb_pro' => $row[4]), 'codi_pro'),
-                    'prec_prod' => $row[3],
-                    'cant_prod' => $row[2],
+                    'codi_prov' => $this->mod_view->dato('proveedor', 0, false, array('nomb_pro' => $row[2]), 'codi_pro'),
+                    'prec_prod' => $row[4],
+                    'cant_prod' => $row[3],
                     'suto_com' => $row[5]
                 );
                 $this->mod_view->insert_only('detalle_compra', $detalle_compra);
             }
-            $this->session->set_userdata('info', 'La compra ha sido registrada con éxito');
+            $this->session->set_userdata('info', 'La compra ha sido registrada con éxito. <a href="'.base_url('caja/historial_compra/'. $codi_compra).'"><strong>Ver detalle de la compra</strong><a/>.');
             header('location: ' . base_url('compra'));
         }
     }

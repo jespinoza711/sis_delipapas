@@ -59,4 +59,8 @@ class mod_config extends CI_Model {
         return $dias[date('w')] . ", " . date('d') . " de " . $meses[date('n') - 1] . " de " . date('Y') . " y " . date('g:i A');
     }
 
+    public function numeric($str) {
+        return (bool) preg_match('/^[0-9]+$/', $str);
+    }
+
 }

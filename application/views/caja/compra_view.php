@@ -1,28 +1,28 @@
 <div class="row" id="cpo_compra">
     <div class="col-lg-12 col-xs-12">
-        
-        <?php if ($this->session->userdata('info') != '') { ?>
-
-            <div class="alert alert-success alert-dismissable">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                <?= $this->session->userdata('info') ?>
-            </div>
-
-        <?php $this->session->set_userdata('info', ''); } if ($this->session->userdata('error') != '') { ?>
-
-            <div class="alert alert-danger">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
-                <?= $this->session->userdata('error') ?>
-            </div>
-
-        <?php $this->session->set_userdata('error', ''); } ?>
-        
         <div class="col-md-11" style="margin-left: 4%">
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     Nueva Compra
                 </div>
                 <div class="panel-body">
+                    
+                <?php if ($this->session->userdata('info') != '') { ?>
+
+                    <div class="alert alert-success alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                        <?= $this->session->userdata('info') ?>
+                    </div>
+
+                <?php $this->session->set_userdata('info', ''); } if ($this->session->userdata('error') != '') { ?>
+
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                        <?= $this->session->userdata('error') ?>
+                    </div>
+
+                <?php $this->session->set_userdata('error', ''); } ?>
+                    
                     <a href="<?= base_url('hiscompra') ?>"><button type="button" class="btn btn-info"><i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;Ver todas las compras</button></a>
                     <br>
                 </div>
@@ -86,7 +86,7 @@
                             </table>
                         </div>
                     </section>
-                    <div class="form-group"><label> Observaci&oacute;n de la compra: </label> <?= form_textarea($obsv_com) ?> </div>
+                    <div class="form-group"><label> Observaci&oacute;n de la compra: (Max. 500 caracteres) </label> <?= form_textarea($obsv_com) ?> </div>
                     <input id="tbl_compra_reg" name="tbl_compra" type="hidden">
                     <input id="total_compra_reg" name="total" type="hidden">
                     <input type="submit" value="Registrar compra" id="register_compra" name="registrar" class="btn btn-block btn-lg btn-primary" disabled>

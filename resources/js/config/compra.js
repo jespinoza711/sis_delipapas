@@ -305,7 +305,7 @@ $(document).ready(function() {
     
     /* HISTORIAL COMPRA */
     
-    if ($("#cpo_hiscompra").is(':visible')) {                
+    if ($("#cpo_hiscompra").is(':visible')) {
 
         $('#table_hiscompra').DataTable({
             "iDisplayLength": 30,
@@ -319,8 +319,28 @@ $(document).ready(function() {
             "bFilter": true,
             "bSort": false,
             "displayLength": 10
-        });
+        });        
+    }
+    
+    /* HISTORIAL COMPRA DETALLE */
+    
+    if ($("#cpo_hiscompradet").is(':visible')) {
         
+        var codi_com = $('#codi_com_d').val();
+
+        $('#table_hiscompradet').DataTable({
+            "iDisplayLength": 30,
+            "aLengthMenu": [30, 50, 100],
+            "sPaginationType": "full_numbers",
+            "bProcessing": true,
+            "bServerSide": true,
+            "sAjaxSource": base_url + "caja/paginate_historial_compra_det/" + codi_com,
+            "sServerMethod": "POST",
+            "bPaginate": true,
+            "bFilter": true,
+            "bSort": false,
+            "displayLength": 10
+        });        
     }
 
 });

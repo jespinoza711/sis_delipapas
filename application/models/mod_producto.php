@@ -101,4 +101,29 @@ class mod_producto extends CI_Model {
         return $result;
     }
 
+    function get_historial_compra_det_paginate($limit, $start, $string = "", $id = 1) {
+        $this->db->or_like('nomb_tipo', $string);
+        $this->db->or_like('nomb_prod', $string);
+        $this->db->where('codi_com', $id);
+        $query = $this->db->get('v_compra_detalle');
+        $compra_det = $query->result();
+        $i = 0;
+        $c = 0;
+        $result = array();
+        foreach ($compra_det as $row) {
+            if ($i >= $start) {
+                if ($c < $limit) {
+                    if ($row->codi_com == $id) {
+                        $result[$c] = $row;
+                        $c++;
+                    }
+                } else {
+                    break;
+                }
+            }
+            $i++;
+        }
+        return $result;
+    }
+
 }

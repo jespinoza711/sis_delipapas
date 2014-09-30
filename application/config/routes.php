@@ -6,7 +6,7 @@ $route['close'] = "usuario/close";
 $route['venta'] = "caja/venta";
 
 $route['compra'] = "caja/compra";
-$route['hiscompra'] = "caja/historial_compra";
+$route['hiscompra'] = "caja/historial_compra/0";
 
 $route['abrircaja'] = "caja/abrir_caja";
 $route['opencaja'] = "caja/open_caja";
