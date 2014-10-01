@@ -139,23 +139,38 @@ class registro extends CI_Controller {
         echo json_encode($data);
     }
 
-    public function paginate_registro_diario_dia() {
+    public function paginate_registro_diario() {
         date_default_timezone_set('America/Lima');
         $date = date('Y-m-d');
-        $nTotal = $this->mod_view->count('v_registro_planilla', false, false, array('DATE(fech_dpl)' => $date));
-        $control = $this->mod_registro->get_registro_diario_dia_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch']);
+        $nTotal = $this->mod_view->count('v_registro_planilla', false, false, false);
+        $control = $this->mod_registro->get_registro_diario_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch']);
         $aaData = array();
+        $form_rdp = array('role' => 'form', "style" => "display: inline-block;");
 
         foreach ($control as $row) {
 
-            $opciones = '<a href="' . base_url('pagoempleado/' . $row->codi_emp) . '"><button type="button" class="tooltip_registrodiario btn btn-primary btn-circle ver_historial_empleado" data-toggle="tooltip" data-placement="top" title="Ver historial de pago">
-                            <i class="glyphicon glyphicon-time"></i>
-                        </button></a>';
+            $estado = $row->esta_dpl == 'A' ? 'Activo' : 'Oculto';
 
+            $opciones = '';
             if ($this->session->userdata('user_rol') == 1) {
-                $opciones .= '&nbsp;<button type="button" class="tooltip_registrodiario btn btn-success btn-circle editar_registrodiario" data-toggle="tooltip" data-placement="top" title="Editar registro">
-                            <i class="fa fa-edit"></i><input type="hidden" value="' . $row->codi_dpl . '">
-                        </button>';
+                $opciones .= '<button type="button" class="tooltip_registrodiario btn btn-success btn-circle editar_registrodiario" data-toggle="tooltip" data-placement="top" title="Editar registro">
+                                <i class="fa fa-edit"></i><input type="hidden" value="' . $row->codi_dpl . '">
+                            </button>&nbsp;';
+                if ($estado == 'Oculto') {
+                    $opciones .= '<span>' . form_open(base_url('pago'), $form_rdp) . ' 
+                                        <input type="hidden" name="codi_dpl" value="' . $row->codi_dpl . '">
+                                        <input name="activar_pago" type="submit" class="tooltip_registrodiario btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Activar pago">
+                                        ' . form_close() . '
+                                    </span>';
+                } else {
+                    $opciones .= '<span>' . form_open(base_url('pago'), $form_rdp) . ' 
+                                        <input type="hidden" name="codi_dpl" value="' . $row->codi_dpl . '">
+                                        <input name="desactivar_pago" type="submit" class="tooltip_registrodiario btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Ocultar pago">
+                                        ' . form_close() . '
+                                    </span>';
+                }
+            } else {
+                $opciones = '<button type="button" class="btn btn-default btn-circle disabled"><i class="glyphicon glyphicon-ban-circle"></i></button>&nbsp;';
             }
             $opciones .= "<script>$('.tooltip_registrodiario').tooltip(); $('.popover-reg').popover();</script>";
 
@@ -178,6 +193,75 @@ class registro extends CI_Controller {
                 $row->desc_dpl,
                 $row->tota_dpl,
                 $observa,
+                $estado,
+                $opciones
+            );
+        }
+
+        $aa = array(
+            'sEcho' => $_POST['sEcho'],
+            'iTotalRecords' => $nTotal,
+            'iTotalDisplayRecords' => $nTotal,
+            'aaData' => $aaData);
+
+        print_r(json_encode($aa));
+    }
+
+    public function paginate_registro_diario_dia() {
+        date_default_timezone_set('America/Lima');
+        $date = date('Y-m-d');
+        $nTotal = $this->mod_view->count('v_registro_planilla', false, false, array('DATE(fech_dpl)' => $date));
+        $control = $this->mod_registro->get_registro_diario_dia_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch']);
+        $aaData = array();
+        $form_rdp = array('role' => 'form', "style" => "display: inline-block;");
+
+        foreach ($control as $row) {
+
+            $estado = $row->esta_dpl == 'A' ? 'Activo' : 'Oculto';
+
+            $opciones = '';
+            if ($this->session->userdata('user_rol') == 1) {
+                $opciones .= '<button type="button" class="tooltip_registrodiario btn btn-success btn-circle editar_registrodiario" data-toggle="tooltip" data-placement="top" title="Editar registro">
+                                <i class="fa fa-edit"></i><input type="hidden" value="' . $row->codi_dpl . '">
+                            </button>&nbsp;';
+                if ($estado == 'Oculto') {
+                    $opciones .= '<span>' . form_open(base_url('pago/pago_dia'), $form_rdp) . ' 
+                                        <input type="hidden" name="codi_dpl" value="' . $row->codi_dpl . '">
+                                        <input name="activar_pago" type="submit" class="tooltip_registrodiario btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Activar pago">
+                                        ' . form_close() . '
+                                    </span>';
+                } else {
+                    $opciones .= '<span>' . form_open(base_url('pago/pago_dia'), $form_rdp) . ' 
+                                        <input type="hidden" name="codi_dpl" value="' . $row->codi_dpl . '">
+                                        <input name="desactivar_pago" type="submit" class="tooltip_registrodiario btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Ocultar pago">
+                                        ' . form_close() . '
+                                    </span>';
+                }
+            } else {
+                $opciones = '<button type="button" class="btn btn-default btn-circle disabled"><i class="glyphicon glyphicon-ban-circle"></i></button>&nbsp;';
+            }
+            $opciones .= "<script>$('.tooltip_registrodiario').tooltip(); $('.popover-reg').popover();</script>";
+
+            $time = strtotime($row->fech_dpl);
+            $fecha = date("d/m/Y g:i A", $time);
+
+            $observa = "-";
+            if ($row->obsv_dpl != "") {
+                $observa = '<button type="button" class="popover-reg btn btn-default" data-toggle="popover" data-content="' . $row->obsv_dpl . '" data-original-title="Observación" data-placement="top"><i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;Ver</button>'
+                        . '<input type="hidden" value="' . $row->obsv_dpl . '">';
+            }
+
+            $aaData[] = array(
+                $fecha,
+                $row->nomb_usu,
+                $row->nomb_emp . ' ' . $row->apel_emp,
+                $row->suel_pla,
+                $row->cant_dpl,
+                $row->suto_dpl,
+                $row->desc_dpl,
+                $row->tota_dpl,
+                $observa,
+                $estado,
                 $opciones
             );
         }
@@ -200,7 +284,7 @@ class registro extends CI_Controller {
         if ($tipo == "0") {
             $nTotal = $this->mod_view->count('registro_planilla', 0, false, array());
             $registro = $this->mod_view->view('v_registro_planilla', 0, false, array());
-            
+
             $i = 1;
             foreach ($registro as $row) {
                 $time = strtotime($row->fech_dpl);

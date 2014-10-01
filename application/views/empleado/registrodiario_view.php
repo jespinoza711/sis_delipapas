@@ -96,6 +96,7 @@
                                     <th>Descuento</th>
                                     <th>Total</th>
                                     <th>Observaci&oacute;n</th>
+                                    <th>Estado</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
