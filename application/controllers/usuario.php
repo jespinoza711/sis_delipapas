@@ -194,16 +194,19 @@ class usuario extends CI_Controller {
 
         $aaData = array();
 
+        $i = 1;
         foreach ($usuarios as $row) {
 
             $time = strtotime($row->ses_usu);
             $fecha = date("d/m/Y g:i:s A", $time);
 
             $aaData[] = array(
+                $i,
                 $row->nomb_usu,
                 $row->nomb_rol,
                 $fecha
             );
+            $i++;
         }
 
         $aa = array(

@@ -1301,17 +1301,20 @@ class caja extends CI_Controller {
             $nTotal = $this->mod_view->count('compra', 0, false, array('esta_com' => 'A'));
             $compras = $this->mod_view->view('v_compra');
 
+            $i = 1;
             foreach ($compras as $row) {
                 $fech_reg = substr($row->fech_com, 0, 7);
                 if ($this->session->userdata('input_reporte_1') == $fech_reg) {
                     $time = strtotime($row->fech_com);
                     $fecha = date("d/m/Y g:i A", $time);
                     $aaData[] = array(
+                        $i,
                         $fecha,
                         $row->nomb_usu,
                         $row->num_com,
                         'S/. ' . $row->tota_com
                     );
+                    $i++;
                 }
             }
         } else if ($tipo == "1") {
@@ -1328,15 +1331,18 @@ class caja extends CI_Controller {
 
             $nTotal = count($compras);
 
+            $i = 1;
             foreach ($compras as $row) {
                 $time = strtotime($row->fech_com);
                 $fecha = date("d/m/Y g:i A", $time);
                 $aaData[] = array(
+                    $i,
                     $fecha,
                     $row->nomb_usu,
                     $row->num_com,
                     'S/. ' . $row->tota_com
                 );
+                $i++;
             }
         }
 
@@ -1358,19 +1364,21 @@ class caja extends CI_Controller {
             $nTotal = $this->mod_view->count('venta', 0, false, array('esta_ven' => 'A'));
             $ventas = $this->mod_view->view('v_venta');
 
+            $i = 1;
             foreach ($ventas as $row) {
                 $fech_reg = substr($row->fech_ven, 0, 7);
                 if ($this->session->userdata('input_reporte_2') == $fech_reg) {
                     $time = strtotime($row->fech_ven);
                     $fecha = date("d/m/Y g:i A", $time);
                     $aaData[] = array(
+                        $i,
                         $fecha,
                         $row->empr_cli,
-                        $row->num_caj,
                         $row->nomb_usu,
                         $row->nomb_com,
                         'S/. ' . $row->tota_ven
                     );
+                    $i++;
                 }
             }
         } else if ($tipo == "1") {
@@ -1386,7 +1394,8 @@ class caja extends CI_Controller {
 
 
             $nTotal = count($ventas);
-
+            
+            $i = 1;
             foreach ($ventas as $row) {
                 $time = strtotime($row->fech_ven);
                 $fecha = date("d/m/Y g:i A", $time);
@@ -1398,6 +1407,7 @@ class caja extends CI_Controller {
                     $row->nomb_com,
                     'S/. ' . $row->tota_ven
                 );
+                $i++;
             }
         }
 
@@ -1418,21 +1428,26 @@ class caja extends CI_Controller {
         if ($tipo == "0") {
             $nTotal = $this->mod_view->count('caja_dia', 0, false, array('esta_cad' => 'C'));
             $caja_dia = $this->mod_view->view('v_caja_dia', 0, false, array('esta_cad' => 'C'));
-
+            
+            $i = 1;
             foreach ($caja_dia as $row) {
                 $time_a = strtotime($row->fein_cad);
                 $fecha_a = date("d/m/Y g:i A", $time_a);
                 $time_b = strtotime($row->fefi_cad);
                 $fecha_b = date("d/m/Y g:i A", $time_b);
                 $aaData[] = array(
+                    $i,
                     $row->num_caj,
                     $fecha_a,
                     $row->usu_ini,
                     'S/. ' . $row->sain_cad,
                     $fecha_b,
                     $row->usu_fin,
-                    'S/. ' . $row->safi_cad
+                    'S/. ' . $row->safi_cad,
+                    'S/. ' . $row->dife_cad,
+                    'S/. ' . $row->dife_reg
                 );
+                $i++;
             }
         } else if ($tipo == "1") {
             $dates = str_replace('/', '-', $this->session->userdata('input_reporte_8'));
@@ -1448,20 +1463,25 @@ class caja extends CI_Controller {
 
             $nTotal = count($caja_dia);
 
+            $i = 1;
             foreach ($caja_dia as $row) {
                 $time_a = strtotime($row->fein_cad);
                 $fecha_a = date("d/m/Y g:i A", $time_a);
                 $time_b = strtotime($row->fefi_cad);
                 $fecha_b = date("d/m/Y g:i A", $time_b);
                 $aaData[] = array(
+                    $i,
                     $row->num_caj,
                     $fecha_a,
                     $row->usu_ini,
                     'S/. ' . $row->sain_cad,
                     $fecha_b,
                     $row->usu_fin,
-                    'S/. ' . $row->safi_cad
+                    'S/. ' . $row->safi_cad,
+                    'S/. ' . $row->dife_cad,
+                    'S/. ' . $row->dife_reg
                 );
+                $i++;
             }
         }
 
@@ -1475,7 +1495,7 @@ class caja extends CI_Controller {
     }
 
     public function chica_paginate_report() {
-        $tipo = $this->session->userdata('type_8');
+        $tipo = $this->session->userdata('type_9');
 
         $aaData = array();
 
@@ -1483,20 +1503,25 @@ class caja extends CI_Controller {
             $nTotal = $this->mod_view->count('caja_chica_dia', 0, false, array('esta_ccd' => 'C'));
             $caja_chica_dia = $this->mod_view->view('v_caja_chica_dia', 0, false, array('esta_ccd' => 'C'));
 
+            $i = 1;
             foreach ($caja_chica_dia as $row) {
                 $time_a = strtotime($row->fein_ccd);
                 $fecha_a = date("d/m/Y g:i A", $time_a);
                 $time_b = strtotime($row->fefi_ccd);
                 $fecha_b = date("d/m/Y g:i A", $time_b);
                 $aaData[] = array(
+                    $i,
                     $row->codi_cac,
                     $fecha_a,
                     $row->usu_ini,
                     'S/. ' . $row->sain_ccd,
                     $fecha_b,
                     $row->usu_fin,
-                    'S/. ' . $row->dife_ccd
+                    'S/. ' . $row->safi_ccd,
+                    'S/. ' . $row->dife_ccd,
+                    'S/. ' . $row->dife_reg
                 );
+                $i++;
             }
         } else if ($tipo == "1") {
             $dates = str_replace('/', '-', $this->session->userdata('input_reporte_9'));
@@ -1512,20 +1537,25 @@ class caja extends CI_Controller {
 
             $nTotal = count($caja_chica_dia);
 
+            $i = 1;
             foreach ($caja_chica_dia as $row) {
                 $time_a = strtotime($row->fein_ccd);
                 $fecha_a = date("d/m/Y g:i A", $time_a);
                 $time_b = strtotime($row->fefi_ccd);
                 $fecha_b = date("d/m/Y g:i A", $time_b);
                 $aaData[] = array(
+                    $i,
                     $row->codi_cac,
                     $fecha_a,
                     $row->usu_ini,
                     'S/. ' . $row->sain_ccd,
                     $fecha_b,
                     $row->usu_fin,
-                    'S/. ' . $row->dife_ccd
+                    'S/. ' . $row->safi_ccd,
+                    'S/. ' . $row->dife_ccd,
+                    'S/. ' . $row->dife_reg
                 );
+                $i++;
             }
         }
 

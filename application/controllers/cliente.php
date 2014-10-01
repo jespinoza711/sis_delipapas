@@ -155,14 +155,18 @@ class cliente extends CI_Controller {
 
         $aaData = array();
 
+        $i = 1;
         foreach ($clientes as $row) {
 
             $aaData[] = array(
+                $i,
                 $row->empr_cli,
+                $row->nomb_cli . ' ' . $row->apel_cli,
                 $row->telf_cli,
                 $row->ruc_cli,
                 $row->dire_cli
             );
+            $i++;
         }
 
         $aa = array(

@@ -164,6 +164,7 @@ class proveedor extends CI_Controller {
 
         $aaData = array();
 
+        $i = 1;
         foreach ($proveedores as $row) {
 
             if ($row->emai_pro!="") {
@@ -173,12 +174,14 @@ class proveedor extends CI_Controller {
             }
             
             $aaData[] = array(
+                $i,
                 $row->nomb_pro,
                 $row->ruc_pro,
                 $row->telf_pro,
                 $email,
                 $row->dire_pro
             );
+            $i++;
         }
 
         $aa = array(

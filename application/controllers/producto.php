@@ -190,6 +190,7 @@ class producto extends CI_Controller {
         $productos = $this->mod_view->view('producto', 0, false, array('stoc_prod >' => '0'));
         $aaData = array();
 
+        $i = 1;
         foreach ($productos as $row) {
 
             $time_in = strtotime($row->fein_prod);
@@ -202,14 +203,16 @@ class producto extends CI_Controller {
                 $fecha_sa = date("d/m/Y g:i A", $time_sa);
             }
 
-
             $aaData[] = array(
+                $i,
                 $row->nomb_prod,
                 $fecha_in,
                 $fecha_sa,
                 'S/. ' . $row->prec_prod,
-                $row->stoc_prod
+                $row->stoc_prod,
+                'S/. ' . sprintf('%.02F', (double) $row->prec_prod * (double) $row->stoc_prod)
             );
+            $i++;
         }
 
         $aa = array(

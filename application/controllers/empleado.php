@@ -347,15 +347,24 @@ class empleado extends CI_Controller {
         
         $aaData = array();
 
+        $i = 1;
         foreach ($empleados as $row) {
 
+            $time = strtotime($row->fech_pla);
+            $fecha = date("d/m/Y g:i A", $time);
+            
             $aaData[] = array(
+                $i,
                 $row->dni_emp,
                 $row->apel_emp . ', ' . $row->nomb_emp,
                 $row->nomb_tem,
                 $row->telf_emp,
-                'S/. ' . $row->suel_pla
+                'S/. ' . $row->suel_pla,
+                $fecha,
+                $row->afp_emp,
+                $row->dire_emp
             );
+            $i++;
         }
 
         $aa = array(

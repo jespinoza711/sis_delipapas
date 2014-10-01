@@ -1,6 +1,6 @@
 <div class="row" id="cpo_reporte">
     <div class="col-lg-12 col-xs-12">
-        <div class="col-md-10 col-md-offset-1">
+        <div class="col-md-12">
             <div class="panel panel-primary">
                 <div class="panel-heading input-lg">
                     Seleccione un reporte:
@@ -42,9 +42,9 @@
                                         <table id="table_reporte_2" class="table table-bordered">
                                             <thead>
                                                 <tr>
+                                                    <th style="text-align: center;">ID</th>
                                                     <th style="text-align: center;">Fecha</th>
                                                     <th style="text-align: center;">Empresa</th>
-                                                    <th style="text-align: center;"><span  class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="N° de caja">N°</span></th>
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Usuario vendedor">U.V.</span></th>
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Tipo de comprobante">Com.</span></th>
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Total de venta">Total</span></th>
@@ -91,6 +91,7 @@
                                         <table id="table_reporte_1" class="table table-bordered">
                                             <thead>
                                                 <tr>
+                                                    <th style="text-align: center;">ID</th>
                                                     <th style="text-align: center;">Fecha</th>
                                                     <th style="text-align: center;">Usuario</th>
                                                     <th style="text-align: center;">N°</th>
@@ -134,6 +135,7 @@
                                         <table id="table_reporte_8" class="table table-bordered" style="font-size: 12px;">
                                             <thead>
                                                 <tr>
+                                                    <th style="text-align: center;"><span>ID</span></th>
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="N° de caja">N°</span></th>
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Fecha de apertura de caja">Fecha A.</span></th>
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Usuario de apertura de caja">Usuario A.</span></th>
@@ -141,6 +143,8 @@
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Fecha de cierre de caja">Fecha C.</span></th>
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Usuario de cierre de caja">Usuario C.</span></th>
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Saldo final de caja">Saldo F.</span></th>
+                                                    <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Diferencia">Dif.</span></th>
+                                                    <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Margen">Mar.</span></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -180,13 +184,16 @@
                                         <table id="table_reporte_9" class="table table-bordered" style="font-size: 12px;">
                                             <thead>
                                                 <tr>
+                                                    <th style="text-align: center;"><span>ID</span></th>
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Código de caja chica">Código</span></th>
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Fecha de apertura de caja chica">Fecha A.</span></th>
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Usuario de apertura de caja chica">Usuario A.</span></th>
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Saldo inicial de caja chica">Saldo I.</span></th>
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Fecha de cierre de caja chica">Fecha C.</span></th>
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Usuario de cierre de caja chica">Usuario C.</span></th>
-                                                    <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Saldo utilizado de caja chica">Saldo U.</span></th>
+                                                    <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Saldo final de caja chica">Saldo F.</span></th>
+                                                    <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Diferencia">Dif.</span></th>
+                                                    <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Margen">Mar.</span></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -226,10 +233,14 @@
                                         <table id="table_reporte_10" class="table table-bordered" style="font-size: 12px;">
                                             <thead>
                                                 <tr>
+                                                    <th style="text-align: center;"><span>ID</span></th>
                                                     <th style="text-align: center;"><span>Fecha</span></th>
                                                     <th style="text-align: center;"><span>Usuario</span></th>
                                                     <th style="text-align: center;"><span>Empleado</span></th>
                                                     <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Productos procesados (Kls)">P.P.</span></th>
+                                                    <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Pago por kilo">P.K.</span></th>
+                                                    <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Subtotal">S.T.</span></th>
+                                                    <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Descuento">DESC.</span></th>
                                                     <th style="text-align: center;"><span>Total</span></th>
                                                 </tr>
                                             </thead>
@@ -251,11 +262,13 @@
                                         <table id="table_reporte_3" class="table table-bordered">
                                             <thead>
                                                 <tr>
+                                                    <th style="text-align: center;">ID</th>
                                                     <th style="text-align: center;">Producto</th>
                                                     <th style="text-align: center;">Fecha de ingreso</th>
                                                     <th style="text-align: center;">Fecha de salida</th>
-                                                    <th style="text-align: center;">Precio unitario</th>
+                                                    <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Precio unitario">P.U.</span></th>
                                                     <th style="text-align: center;">Stock</th>
+                                                    <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Valor estimado">V.E.</span></th>
                                                 </tr>
                                             </thead>
                                         </table>
@@ -276,7 +289,9 @@
                                         <table id="table_reporte_4" class="table table-bordered">
                                             <thead>
                                                 <tr>
+                                                    <th style="text-align: center;">ID</th>
                                                     <th style="text-align: center;">Empresa</th>
+                                                    <th style="text-align: center;">Nombres y apellidos</th>
                                                     <th style="text-align: center;">Teléfono</th>
                                                     <th style="text-align: center;">R.U.C.</th>
                                                     <th style="text-align: center;">Dirección</th>
@@ -300,6 +315,7 @@
                                         <table id="table_reporte_5" class="table table-bordered">
                                             <thead>
                                                 <tr>
+                                                    <th style="text-align: center;">ID</th>
                                                     <th style="text-align: center;">Proveedor</th>
                                                     <th style="text-align: center;">R.U.C.</th>
                                                     <th style="text-align: center;">Teléfono</th>
@@ -325,6 +341,7 @@
                                         <table id="table_reporte_6" class="table table-bordered">
                                             <thead>
                                                 <tr>
+                                                    <th style="text-align: center;">ID</th>
                                                     <th style="text-align: center;">Nombre de usuario</th>
                                                     <th style="text-align: center;">Rol</th>
                                                     <th style="text-align: center;">Última sesión</th>
@@ -348,11 +365,15 @@
                                         <table id="table_reporte_7" class="table table-bordered">
                                             <thead>
                                                 <tr>
+                                                    <th style="text-align: center;">ID</th>
                                                     <th style="text-align: center;">D.N.I.</th>
                                                     <th style="text-align: center;">Apellidos y nombres</th>
                                                     <th style="text-align: center;">Tipo</th>
                                                     <th style="text-align: center;">Teléfono</th>
                                                     <th style="text-align: center;">Sueldo</th>
+                                                    <th style="text-align: center;"><span class="tooltip_rep" data-toggle="tooltip" data-placement="top" title="" data-original-title="Fecha de planilla">Fecha P.</span></th>
+                                                    <th style="text-align: center;">A.F.P.</th>
+                                                    <th style="text-align: center;">Dirección</th>
                                                 </tr>
                                             </thead>
                                         </table>

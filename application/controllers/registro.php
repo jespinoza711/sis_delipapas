@@ -200,17 +200,23 @@ class registro extends CI_Controller {
         if ($tipo == "0") {
             $nTotal = $this->mod_view->count('registro_planilla', 0, false, array());
             $registro = $this->mod_view->view('v_registro_planilla', 0, false, array());
-
+            
+            $i = 1;
             foreach ($registro as $row) {
                 $time = strtotime($row->fech_dpl);
                 $fecha = date("d/m/Y g:i A", $time);
                 $aaData[] = array(
+                    $i,
                     $fecha,
                     $row->nomb_usu,
                     $row->apel_emp . ', ' . $row->nomb_emp,
                     $row->cant_dpl . ' Kls',
+                    'S/. ' . $row->suel_pla,
+                    'S/. ' . $row->suto_dpl,
+                    'S/. ' . $row->desc_dpl,
                     'S/. ' . $row->tota_dpl
                 );
+                $i++;
             }
         } else if ($tipo == "1") {
             $dates = str_replace('/', '-', $this->session->userdata('input_reporte_10'));
@@ -226,16 +232,22 @@ class registro extends CI_Controller {
 
             $nTotal = count($registro);
 
+            $i = 1;
             foreach ($registro as $row) {
                 $time = strtotime($row->fech_dpl);
                 $fecha = date("d/m/Y g:i A", $time);
                 $aaData[] = array(
+                    $i,
                     $fecha,
                     $row->nomb_usu,
                     $row->apel_emp . ', ' . $row->nomb_emp,
                     $row->cant_dpl . ' Kls',
+                    'S/. ' . $row->suel_pla,
+                    'S/. ' . $row->suto_dpl,
+                    'S/. ' . $row->desc_dpl,
                     'S/. ' . $row->tota_dpl
                 );
+                $i++;
             }
         }
 
