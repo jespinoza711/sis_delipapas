@@ -16,36 +16,23 @@ class pago extends CI_Controller {
             header('location: ' . base_url('login'));
         } else {
             date_default_timezone_set('America/Lima');
-            $ajustes['datetime'] = date('Y-m-d H:i:s');
-            $ajustes['negocio'] = $this->mod_view->one('negocio');
+            $pago['datetime'] = date('Y-m-d H:i:s');
 
-            if ($this->input->post('registrar_planilla')) {
-                $data['fech_pla'] = $ajustes['datetime'];
-                $data['suel_pla'] = $this->input->post('suel_pla');
-                $data['obsv_pla'] = $this->input->post('obsv_pla');
-                $data['esta_pla'] = 'A';
-                $this->mod_ajustes->insert_planilla($data);
-                $this->session->set_userdata('info_planilla', 'La planilla con el sueldo S/. ' . $data['suel_pla'] . ' ha sido registrado existosamente. Esta es su planilla actual.');
+            if ($this->input->post('activar_pago')) {
+                $codi_pago = $this->input->post('codi_pla');
+                $this->mod_registro->registro_diario_dia_edit($codi_pago, array('esta_dpl' => 'A'));
+                $this->session->set_userdata('info_planilla', 'El registro de pago ha sido habilitado existosamente. Vuelva a filtrar la busqueda');
                 header('Location: ' . base_url('ajustes'));
-            } else if ($this->input->post('editar_planilla')) {
-                $codi_pla = $this->input->post('codi_pla_e');
-                $data['suel_pla'] = $this->input->post('suel_pla_e');
-                $data['obsv_pla'] = $this->input->post('obsv_pla_e');
-                $data['esta_pla'] = 'A';
-                $this->mod_ajustes->update_planilla($codi_pla, $data);
-                $this->session->set_userdata('info_planilla', 'La planilla con el sueldo S/. ' . $data['suel_pla'] . ' ha sido actualizado existosamente. Esta es su planilla actual.');
-                header('Location: ' . base_url('ajustes'));
-            } else if ($this->input->post('activar_planilla')) {
-                $codi_pla = $this->input->post('codi_pla');
-                $suel_pla = $this->input->post('suel_pla');
-                $this->mod_ajustes->update_planilla($codi_pla, array('esta_pla' => 'A'));
-                $this->session->set_userdata('info_planilla', 'La planilla con el sueldo S/. ' . $suel_pla . ' ha sido habilitado existosamente. Esta es su planilla actual.');
+            } else if ($this->input->post('desactivar_pago')) {
+                $codi_pago = $this->input->post('codi_pla');
+                $this->mod_registro->registro_diario_dia_edit($codi_pago, array('esta_dpl' => 'D'));
+                $this->session->set_userdata('info_planilla', 'El registro de pago ha sido deshabilitado existosamente. Vuelva a filtrar la busqueda');
                 header('Location: ' . base_url('ajustes'));
             } else {
-
                 // VIEW ALL
                 $data['page'] = 'Panel de configuraci&oacute;n';
-                $data['container'] = $this->load->view('empleado/pago_view', $ajustes, true);
+                $pago['empleado'] = $this->mod_view->view('empleado', false, false, array('esta_emp' => 'A'));
+                $data['container'] = $this->load->view('empleado/pago_view', $pago, true);
                 $this->load->view('home/body', $data);
             }
         }
@@ -89,15 +76,25 @@ class pago extends CI_Controller {
         echo json_encode($data);
     }
 
+    public function input_2() {
+        $fecha = $this->input->post('month_2');
+        $tipo = $this->input->post('type_2');
+        $codi_emp = $this->input->post('codi_emp');
+        $this->session->set_userdata('input_reporte_2', $fecha);
+        $this->session->set_userdata('type_2', $tipo);
+        $this->session->set_userdata('codi_emp', $codi_emp);
+    }
+
     public function get_v_empleado_paginate() {
         $tipo = $this->session->userdata('type_2');
         $codi_emp = $this->session->userdata('codi_emp');
         $aaData = array();
+        $form_regdiario = array('role' => 'form', "style" => "display: inline-block;");
 
         if ($tipo == "0") {
-            $registros = $this->mod_view->view('registro_planilla', 0, false, array('codi_emp' => $codi_emp, 'esta_dpl' => 'A'));
+            $registros = $this->mod_view->view('v_registro_planilla', 0, false, array('codi_emp' => $codi_emp, 'esta_dpl' => 'A'));
             $nTotal = count($registros);
-            $form_regdiario = array('role' => 'form', "style" => "display: inline-block;");
+            
 
             foreach ($registros as $row) {
 
@@ -154,11 +151,12 @@ class pago extends CI_Controller {
             $fecha_b = date('Y-m-d', strtotime(substr($dates, 13)) + 86400);
 
             if (substr($this->session->userdata('input_reporte_2'), 0, 10) == substr($this->session->userdata('input_reporte_2'), 13)) {
-                $registros = $this->mod_empleado->get_pago_interval("DATE(fech_dpl) = '$fecha_a'");
+                $registros = $this->mod_empleado->get_pago_interval("codi_emp = '$codi_emp' AND DATE(fech_dpl) = '$fecha_a' AND esta_dpl = 'A'");
             } else {
-                $registros = $this->mod_empleado->get_pago_interval("fech_dpl BETWEEN '$fecha_a'  AND '$fecha_b'");
+                $registros = $this->mod_empleado->get_pago_interval("codi_emp = '$codi_emp' AND fech_dpl BETWEEN '$fecha_a'  AND '$fecha_b' AND esta_dpl = 'A'");
             }
             $nTotal = count($registros);
+
 
             foreach ($registros as $row) {
                 $estado = $row->esta_dpl == 'A' ? 'Activo' : 'Oculto';
@@ -207,6 +205,19 @@ class pago extends CI_Controller {
                     $observa,
                     $opciones
                 );
+
+//                $aaData[] = array(
+//                    '1',
+//                    '2',
+//                    '3',
+//                    '4',
+//                    '5',
+//                    '6',
+//                    '7',
+//                    '8',
+//                    '9',
+//                    '10',
+//                );
             }
         }
 

@@ -29,8 +29,9 @@
                 <div class="panel-body">
                     <div class="form-group">
                         <label>Buscar Empleado: </label>
-                        <input type="text" id="empleado_pago" class="form-control input-lg" placeholder="Escriba el nombre del empleado y seleccione...">
-                        <br>
+                        <div class="form-group">
+                            <select id="codi_emp" class="form-control" name="codi_emp"><?php foreach ($empleado as $r) { ?> <option value="<?= $r->codi_emp ?>"><?= $r->nomb_emp . ' ' . $r->apel_emp ?></option> <?php } ?></select>
+                        </div>
                         <div class="form-group">
                             <label>Filtrar por: </label>
                             <select id="sw_filter_2" class="form-control" style="display: inline; margin-left: 10px; width: auto;">
