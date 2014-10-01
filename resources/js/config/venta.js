@@ -186,7 +186,14 @@ $(document).ready(function() {
                             productos[codigo][7] = cant_row;
 
                             $('#register_ven').prop('disabled', false);
-                            $('#sw_igv_ven').find("input").attr('checked', 'true');
+
+                            var input = $('#sw_igv_ven').find("input");
+                            input.removeAttr('checked');
+                            input.attr('checked', 'true');
+                            input.attr('aria-checked', 'true');
+                            input.parent().removeClass("checked");
+                            input.parent().addClass("checked");
+                            $('#igv_pro_ven').val($('#igv_pro_ven_neg').val());
 
                             $("#detalle_prod_ven").slideUp("fast");
                             $("#producto_ven").val("");
@@ -245,7 +252,14 @@ $(document).ready(function() {
 
                             productos[codigo][7] = parseInt(productos[codigo][7]) - parseInt(cantidad);
                             $('#register_ven').prop('disabled', false);
-                            $('#sw_igv_ven').find("input").attr('checked', 'true');
+
+                            var input = $('#sw_igv_ven').find("input");
+                            input.removeAttr('checked');
+                            input.attr('checked', 'true');
+                            input.attr('aria-checked', 'true');
+                            input.parent().removeClass("checked");
+                            input.parent().addClass("checked");
+                            $('#igv_pro_ven').val($('#igv_pro_ven_neg').val());
 
                             $("#detalle_prod_ven").slideUp("fast");
                             $("#producto_ven").val("");
@@ -309,7 +323,10 @@ $(document).ready(function() {
                 $('#register_ven').prop('disabled', false);
 
                 var input = $('#sw_igv_ven').find("input");
+                input.removeAttr('checked');
                 input.attr('checked', 'true');
+                input.attr('aria-checked', 'true');
+                input.parent().removeClass("checked");
                 input.parent().addClass("checked");
                 $('#igv_pro_ven').val($('#igv_pro_ven_neg').val());
 
@@ -336,9 +353,13 @@ $(document).ready(function() {
 
             if (input.attr('checked') == "checked") {
                 input.removeAttr('checked');
+                input.parent().attr('aria-checked', 'false');
+                input.parent().removeClass("checked");
                 $('#igv_pro_ven').val("0");
             } else {
                 input.attr('checked', 'true');
+                input.parent().attr('aria-checked', 'true');
+                input.parent().addClass("checked");
                 $('#igv_pro_ven').val($('#igv_pro_ven_neg').val());
             }
 
