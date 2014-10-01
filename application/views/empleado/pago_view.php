@@ -32,7 +32,7 @@
                         <input type="text" id="empleado_pago" class="form-control input-lg" placeholder="Escriba el nombre del empleado y seleccione...">
                     </div>
                     
-                    <section id="detalle_empleado_pago" class="content invoice" style="display: none; width: 100%;">
+                    <section id="detalle_emp_pago" class="content invoice" style="display: none; width: 100%;">
                         <div class="row">
                             <div class="col-xs-12">
                                 <h2 class="page-header">
