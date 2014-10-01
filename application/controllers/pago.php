@@ -11,7 +11,7 @@ class pago extends CI_Controller {
         $this->load->library('session');
     }
 
-    public function index() {
+    public function index($id) {
         if (!$this->mod_config->AVP(2)) {
             header('location: ' . base_url('login'));
         } else {
@@ -154,7 +154,7 @@ class pago extends CI_Controller {
 
                 // VIEW ALL
                 $data['page'] = 'Panel de configuraci&oacute;n';
-                $data['container'] = $this->load->view('ajustes/ajustes_view', $ajustes, true);
+                $data['container'] = $this->load->view('empleado/pago_view', $ajustes, true);
                 $this->load->view('home/body', $data);
             }
         }
