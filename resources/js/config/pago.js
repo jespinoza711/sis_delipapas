@@ -2,8 +2,82 @@ $(document).ready(function() {
 
     var empleado;
     var nombre_emp_his;
+    var sw_pago = "0";
 
     if ($("#cpo_pago").is(':visible')) {
+
+        $('#dates_reporte_2').daterangepicker();
+
+        $('#sw_filter_2').change(function() {
+            if ($(this).val() != sw_pago) {
+
+                sw_pago = $(this).val();
+
+                if (sw_pago == "0") {
+                    $("#type_filter2_b").slideUp();
+                } else if (sw_pago == "1") {
+                    $("#type_filter2_b").slideDown();
+                }
+            }
+        });
+
+        $('#reporte_2_prev').click(function() {
+            var input = "";
+
+            if (sw_pago == "0") {
+                input = $('#reporte_2_a').val();
+
+            } else if (sw_pago == "1") {
+                input = $('#dates_reporte_2').val();
+            }
+
+            if (input != "") {
+
+                $('#cpo_reporte_2').css('display', 'inherit');
+                $('#reporte_2_pdf').parent().css('display', 'inherit');
+
+                $.ajax({
+                    data: {'month_2': input, 'type_2': sw_pago},
+                    url: base_url + "reporte/input_2",
+                    type: 'post',
+                    success: function(response) {
+                        tabla_reporte_2 = $('#table_reporte_2').DataTable({
+                            "destroy": true,
+                            "iDisplayLength": 10,
+                            "aLengthMenu": [10, 25, 50],
+                            "sPaginationType": "full_numbers",
+                            "bProcessing": true,
+                            "bServerSide": true,
+                            "sAjaxSource": base_url + "pago/get_v_empleado_paginate",
+                            "sServerMethod": "POST",
+                            "bPaginate": true,
+                            "bFilter": false,
+                            "bSort": false,
+                            "drawCallback": function(settings) {
+                                if ($('#table_reporte_2 tbody tr td').is(":contains('No se encontró')")) {
+                                    $('#reporte_2_pdf').prop('disabled', true);
+                                    $('#reporte_2_pdf').parent().removeAttr('href');
+                                } else {
+                                    $('#reporte_2_pdf').prop('disabled', false);
+                                    $('#reporte_2_pdf').parent().attr('href', base_url + "reporte/venta");
+                                }
+                            }
+                        });
+
+                    }
+                });
+
+            } else {
+                if (sw_pago == "0") {
+                    alert("Por favor, seleccione el mes y año");
+                    $('#reporte_2_a').focus();
+
+                } else if (sw_pago == "1") {
+                    alert("Por favor, seleccione el rango de días");
+                    $('#dates_reporte_2').focus();
+                }
+            }
+        });
 
         $.ajax({
             url: base_url + 'pago/get_vempleado',

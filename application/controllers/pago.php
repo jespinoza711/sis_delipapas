@@ -55,13 +55,13 @@ class pago extends CI_Controller {
         $data = array();
         $empleados = $this->mod_empleado->get_vempleado();
         foreach ($empleados as $row) {
-            
+
             $dias_pago = $this->mod_view->count('registro_planilla', false, false, array('codi_emp' => $row->codi_emp));
             $prod_pago = $this->mod_empleado->sum_pago($row->codi_emp, 'cant_dpl');
             $suto_pago = $this->mod_empleado->sum_pago($row->codi_emp, 'suto_dpl');
             $desc_pago = $this->mod_empleado->sum_pago($row->codi_emp, 'desc_dpl');
             $tota_pago = number_format($suto_pago - $desc_pago, 2);
-            
+
             $data[$row->codi_emp] = array(
                 $row->codi_tem,
                 $row->nomb_emp,
@@ -89,47 +89,125 @@ class pago extends CI_Controller {
         echo json_encode($data);
     }
 
-    public function paginate_empleado_pago() {
-        $nTotal = $this->mod_view->count('planilla');
-        $planillas = $this->mod_ajustes->get_planilla_paginate($_POST['iDisplayLength'], $_POST['iDisplayStart'], $_POST['sSearch']);
-        $form_a = array('role' => 'form', "style" => "display: inline-block;");
+    public function get_v_empleado_paginate() {
+        $tipo = $this->session->userdata('type_2');
+        $codi_emp = $this->session->userdata('codi_emp');
         $aaData = array();
 
-        foreach ($planillas as $row) {
-            $estado = "";
-            $opciones = "";
-            if ($row->esta_pla == "D") {
-                $estado = "Deshabilitado";
-                $opciones .= '<span>' . form_open(base_url('ajustes'), $form_a) . ' 
-                                <input type="hidden" name="codi_pla" value="' . $row->codi_pla . '">
-                                <input type="hidden" name="suel_pla" value="' . $row->suel_pla . '">
-                                <input name="activar_planilla" type="submit" class="tooltip_planilla btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Habilitar esta planilla">
-                                ' . form_close() . '
-                            </span>';
-            } else if ($row->esta_pla == "A") {
-                $estado = "Planilla vigente";
-                $opciones = '<button type="button" class="tooltip_planilla btn btn-success btn-circle editar_planilla" data-toggle="tooltip" data-placement="top" title="Editar">
-                            <i class="fa fa-edit"></i>
-                        </button>';
+        if ($tipo == "0") {
+            $registros = $this->mod_view->view('registro_planilla', 0, false, array('codi_emp' => $codi_emp, 'esta_dpl' => 'A'));
+            $nTotal = count($registros);
+            $form_regdiario = array('role' => 'form', "style" => "display: inline-block;");
+
+            foreach ($registros as $row) {
+
+                $estado = $row->esta_dpl == 'A' ? 'Activo' : 'Oculto';
+
+                $opciones = '';
+                if ($this->session->userdata('user_rol') == 1) {
+                    $opciones .= '<button type="button" class="tooltip_registrodiario btn btn-success btn-circle editar_registrodiario" data-toggle="tooltip" data-placement="top" title="Editar registro">
+                                <i class="fa fa-edit"></i><input type="hidden" value="' . $row->codi_dpl . '">
+                            </button>&nbsp;';
+                    if ($estado == 'Oculto') {
+                        $opciones .= '<span>' . form_open(base_url('pago'), $form_regdiario) . ' 
+                                        <input type="hidden" name="codi_dpl" value="' . $row->codi_dpl . '">
+                                        <input name="activar_pago" type="submit" class="tooltip_registrodiario btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Activar pago">
+                                        ' . form_close() . '
+                                    </span>';
+                    } else {
+                        $opciones .= '<span>' . form_open(base_url('pago'), $form_regdiario) . ' 
+                                        <input type="hidden" name="codi_dpl" value="' . $row->codi_dpl . '">
+                                        <input name="desactivar_pago" type="submit" class="tooltip_registrodiario btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Ocultar pago">
+                                        ' . form_close() . '
+                                    </span>';
+                    }
+                } else {
+                    $opciones = '<button type="button" class="btn btn-default btn-circle disabled"><i class="glyphicon glyphicon-ban-circle"></i></button>&nbsp;';
+                }
+                $opciones .= "<script>$('.tooltip_registrodiario').tooltip(); $('.popover-reg').popover();</script>";
+
+                $time = strtotime($row->fech_dpl);
+                $fecha = date("d/m/Y g:i A", $time);
+
+                $observa = "-";
+                if ($row->obsv_dpl != "") {
+                    $observa = '<button type="button" class="popover-reg btn btn-default" data-toggle="popover" data-content="' . $row->obsv_dpl . '" data-original-title="Observación" data-placement="top"><i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;Ver</button>'
+                            . '<input type="hidden" value="' . $row->obsv_dpl . '">';
+                }
+
+                $aaData[] = array(
+                    $fecha,
+                    $row->nomb_usu,
+                    $row->nomb_emp . ' ' . $row->apel_emp,
+                    $row->suel_pla,
+                    $row->cant_dpl,
+                    $row->suto_dpl,
+                    $row->desc_dpl,
+                    $row->tota_dpl,
+                    $observa,
+                    $opciones
+                );
             }
-            $opciones .= "<script>$('.tooltip_planilla').tooltip();</script>";
+        } else if ($tipo == "1") {
+            $dates = str_replace('/', '-', $this->session->userdata('input_reporte_2'));
+            $fecha_a = date('Y-m-d', strtotime(substr($dates, 0, 10)));
+            $fecha_b = date('Y-m-d', strtotime(substr($dates, 13)) + 86400);
 
-            $time = strtotime($row->fech_pla);
-            $fecha = date("d/m/Y g:i A", $time);
-
-            $observa = "-";
-            if ($row->obsv_pla != "") {
-                $observa = $row->obsv_pla;
+            if (substr($this->session->userdata('input_reporte_2'), 0, 10) == substr($this->session->userdata('input_reporte_2'), 13)) {
+                $registros = $this->mod_empleado->get_pago_interval("DATE(fech_dpl) = '$fecha_a'");
+            } else {
+                $registros = $this->mod_empleado->get_pago_interval("fech_dpl BETWEEN '$fecha_a'  AND '$fecha_b'");
             }
+            $nTotal = count($registros);
 
-            $aaData[] = array(
-                $row->codi_pla,
-                $fecha,
-                $row->suel_pla,
-                $observa,
-                $estado,
-                $opciones
-            );
+            foreach ($registros as $row) {
+                $estado = $row->esta_dpl == 'A' ? 'Activo' : 'Oculto';
+
+                $opciones = '';
+                if ($this->session->userdata('user_rol') == 1) {
+                    $opciones .= '<button type="button" class="tooltip_registrodiario btn btn-success btn-circle editar_registrodiario" data-toggle="tooltip" data-placement="top" title="Editar registro">
+                                <i class="fa fa-edit"></i><input type="hidden" value="' . $row->codi_dpl . '">
+                            </button>&nbsp;';
+                    if ($estado == 'Oculto') {
+                        $opciones .= '<span>' . form_open(base_url('pago'), $form_regdiario) . ' 
+                                        <input type="hidden" name="codi_dpl" value="' . $row->codi_dpl . '">
+                                        <input name="activar_pago" type="submit" class="tooltip_registrodiario btn btn-primary btn-circle fa" value="&#xf00c;" data-toggle="tooltip" data-placement="top" title="Activar pago">
+                                        ' . form_close() . '
+                                    </span>';
+                    } else {
+                        $opciones .= '<span>' . form_open(base_url('pago'), $form_regdiario) . ' 
+                                        <input type="hidden" name="codi_dpl" value="' . $row->codi_dpl . '">
+                                        <input name="desactivar_pago" type="submit" class="tooltip_registrodiario btn btn-danger btn-circle fa" value="&#xf00d;" data-toggle="tooltip" data-placement="top" title="Ocultar pago">
+                                        ' . form_close() . '
+                                    </span>';
+                    }
+                } else {
+                    $opciones = '<button type="button" class="btn btn-default btn-circle disabled"><i class="glyphicon glyphicon-ban-circle"></i></button>&nbsp;';
+                }
+                $opciones .= "<script>$('.tooltip_registrodiario').tooltip(); $('.popover-reg').popover();</script>";
+
+                $time = strtotime($row->fech_dpl);
+                $fecha = date("d/m/Y g:i A", $time);
+
+                $observa = "-";
+                if ($row->obsv_dpl != "") {
+                    $observa = '<button type="button" class="popover-reg btn btn-default" data-toggle="popover" data-content="' . $row->obsv_dpl . '" data-original-title="Observación" data-placement="top"><i class="fa fa-eye"></i>&nbsp;&nbsp;&nbsp;Ver</button>'
+                            . '<input type="hidden" value="' . $row->obsv_dpl . '">';
+                }
+
+                $aaData[] = array(
+                    $fecha,
+                    $row->nomb_usu,
+                    $row->nomb_emp . ' ' . $row->apel_emp,
+                    $row->suel_pla,
+                    $row->cant_dpl,
+                    $row->suto_dpl,
+                    $row->desc_dpl,
+                    $row->tota_dpl,
+                    $observa,
+                    $opciones
+                );
+            }
         }
 
         $aa = array(

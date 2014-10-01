@@ -30,6 +30,25 @@
                     <div class="form-group">
                         <label>Buscar Empleado: </label>
                         <input type="text" id="empleado_pago" class="form-control input-lg" placeholder="Escriba el nombre del empleado y seleccione...">
+                        <br>
+                        <div class="form-group">
+                            <label>Filtrar por: </label>
+                            <select id="sw_filter_2" class="form-control" style="display: inline; margin-left: 10px; width: auto;">
+                                <option value="0">Todos los registros</option>
+                                <option value="1">Rango de d&iacute;as</option>
+                            </select>
+                        </div>
+                        <div class="form-group" id="type_filter2_b" style="display: none">
+                            <label>Seleccione rango de días: </label>
+                            <div class="input-group" style="width: 50%;">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input type="text" class="form-control pull-right input-lg" id="dates_reporte_2">
+                            </div>
+                        </div>
+                        <br>
+                        <button id="reporte_2_prev" class="btn btn-block btn-lg btn-default" style="width: 50%;">Filtrar</button>
                     </div>
                     
                     <section id="detalle_emp_pago" class="content invoice" style="display: none; width: 100%;">

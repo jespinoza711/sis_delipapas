@@ -97,4 +97,10 @@ class mod_empleado extends CI_Model {
         return $result->suma;
     }
 
+    function get_pago_interval($interval) {
+        $this->db->where($interval);
+        $query = $this->db->get('registro_planilla');
+        return $query->result();
+    }
+
 }
