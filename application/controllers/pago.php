@@ -11,7 +11,7 @@ class pago extends CI_Controller {
         $this->load->library('session');
     }
 
-    public function index($id) {
+    public function index() {
         if (!$this->mod_config->AVP(2)) {
             header('location: ' . base_url('login'));
         } else {

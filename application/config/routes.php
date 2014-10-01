@@ -36,7 +36,7 @@ $route['dproducto'] = "producto/desactivar_producto";
 $route['usuario'] = "usuario";
 
 $route['empleado'] = "empleado";
-$route['hisempleado'] = "pago/0";
+$route['hisempleado'] = "pago";
 
 $route['proveedor'] = "proveedor";
 $route['cliente'] = "cliente";
