@@ -46,28 +46,36 @@
                                 <tbody>
                                     <tr>
                                         <td style="vertical-align: middle;"><strong>Código:</strong></td>
-                                        <td id="codi_emp_pago" colspan="3" style="vertical-align: middle;"></td>
+                                        <td id="codi_emp_pago" style="vertical-align: middle;"></td>
+                                        <td style="vertical-align: middle;"><strong>D&iacute;as trabajados:</strong></td>
+                                        <td id="dias_emp_pago" style="vertical-align: middle;"></td>
                                     </tr>
                                     <tr>
                                         <td style="vertical-align: middle;"><strong>Nombre:</strong></td>
                                         <td id="nomb_emp_pago" style="vertical-align: middle;"></td>
+                                        <td style="vertical-align: middle;"><strong>Prod. Proc. acumulado (Kls):</strong></td>
+                                        <td id="prod_emp_pago" style="vertical-align: middle;"></td>                                        
+                                    </tr>
+                                    <tr>
                                         <td style="vertical-align: middle;"><strong>Tipo de Empleado:</strong></td>
                                         <td id="tipo_emp_pago" style="vertical-align: middle;"></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="vertical-align: middle;"><strong>D&iacute;as trabajados:</strong></td>
-                                        <td id="dias_emp_pago" style="vertical-align: middle;"></td>
                                         <td style="vertical-align: middle;"><strong>Pago acumulado (S/.):</strong></td>
-                                        <td id="suto_emp_pago" style="vertical-align: middle;"></td>
+                                        <td id="suto_emp_pago" style="vertical-align: middle;"></td>                                        
                                     </tr>
                                     <tr>
+                                        <td style="vertical-align: middle;"><strong>Planilla actual:</strong></td>
+                                        <td id="pla_emp_pago" style="vertical-align: middle;"></td>
                                         <td style="vertical-align: middle;"><strong>Descuento acumulado (S/.):</strong></td>
                                         <td id="desc_emp_pago" style="vertical-align: middle;"></td>
-                                        <td style="vertical-align: middle;"><strong>Pago Total (S/.):</strong></td>
+                                    </tr>
+                                    <tr>
+                                        <td style="vertical-align: middle;"><strong>Plan. actual (Pago. Kilo):</strong></td>
+                                        <td id="pla_suel_emp_pago" style="vertical-align: middle;"></td>
+                                        <td style="vertical-align: middle;"><strong>Total acumulado (S/.):</strong></td>
                                         <td id="tota_emp_pago" style="vertical-align: middle;"></td>
                                     </tr>
                                     <tr>
-                                        <td colspan="4" id="obsv_prod_ven" style="vertical-align: middle;"></td>
+                                        <td colspan="4" style="vertical-align: middle;"></td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -3818,11 +3818,18 @@ fieldset[disabled] .btn-vk.active {
 #table_hiscompra_filter {
     display: inline-table;
 }
-/* COMPRA HISTORIAL DETALLE*/
+/* COMPRA HISTORIAL DETALLE */
 #table_hiscompradet_wrapper > .row > .col-xs-8 > #table_hiscompradet_filter {
     float: right;
 }
 #table_hiscompradet_filter {
+    display: inline-table;
+}
+/* EMPLEADO PAGO */
+#table_pago_wrapper > .row > .col-xs-8 > #table_pago_filter {
+    float: right;
+}
+#table_pago_filter {
     display: inline-table;
 }
 
@@ -4111,6 +4118,12 @@ tr.group:hover {
 /* COMPRA HISTORIAL DETALLE */
 #table_hiscompradet thead tr th,
 #table_hiscompradet tbody tr td{
+    text-align: center;
+    vertical-align: middle;
+}
+/* EMPLEADO PAGO */
+#table_pago thead tr th,
+#table_pago tbody tr td{
     text-align: center;
     vertical-align: middle;
 }

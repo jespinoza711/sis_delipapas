@@ -19,7 +19,6 @@ class pago extends CI_Controller {
             $ajustes['datetime'] = date('Y-m-d H:i:s');
             $ajustes['negocio'] = $this->mod_view->one('negocio');
 
-            // PLANILLA
             if ($this->input->post('registrar_planilla')) {
                 $data['fech_pla'] = $ajustes['datetime'];
                 $data['suel_pla'] = $this->input->post('suel_pla');
@@ -54,38 +53,28 @@ class pago extends CI_Controller {
 
     public function get_vempleado() {
         $data = array();
-        $productos = $this->mod_producto->get_vproducto();
-        foreach ($productos as $row) {
-
-            if ($row->fein_prod != NULL) {
-                $fein_r = strtotime($row->fein_prod);
-                $fein = date("d/m/y h:i:s A", $fein_r);
-            } else {
-                $fein = "-";
-            }
-            if ($row->fesa_prod != NULL) {
-                $fesa_r = strtotime($row->fesa_prod);
-                $fesa = date("d/m/y h:i:s A", $fesa_r);
-            } else {
-                $fesa = "-";
-            }
-            if ($row->obsv_prod != NULL) {
-                $obsv = $row->obsv_prod;
-            } else {
-                $obsv = "-";
-            }
-
-            $data[$row->codi_prod] = array(
-                $row->codi_prod,
-                $row->nomb_prod,
-                $row->nomb_tipo,
-                $obsv,
-                $row->codi_tpro,
-                $row->esta_prod,
-                $row->prec_prod,
-                $row->stoc_prod,
-                $fein,
-                $fesa
+        $empleados = $this->mod_empleado->get_vempleado();
+        foreach ($empleados as $row) {
+            
+            $dias_pago = $this->mod_view->count('registro_planilla', false, false, array('codi_emp' => $row->codi_emp));
+            $prod_pago = $this->mod_empleado->sum_pago($row->codi_emp, 'cant_dpl');
+            $suto_pago = $this->mod_empleado->sum_pago($row->codi_emp, 'suto_dpl');
+            $desc_pago = $this->mod_empleado->sum_pago($row->codi_emp, 'desc_dpl');
+            $tota_pago = number_format($suto_pago - $desc_pago, 2);
+            
+            $data[$row->codi_emp] = array(
+                $row->codi_tem,
+                $row->nomb_emp,
+                $row->apel_emp,
+                $row->nomb_tem,
+                $row->fech_pla,
+                $row->suel_pla,
+                $dias_pago,
+                $prod_pago,
+                $suto_pago,
+                $desc_pago,
+                $tota_pago,
+                $row->esta_emp
             );
         }
         echo json_encode($data);
@@ -93,9 +82,9 @@ class pago extends CI_Controller {
 
     public function get_empleado_autocomplete() {
         $data = array();
-        $productos = $this->mod_producto->get_vproducto(array('producto.stoc_prod >' => "0", 'esta_prod' => 'A'));
-        foreach ($productos as $row) {
-            $data[] = $row->nomb_prod;
+        $empleados = $this->mod_view->view('empleado', false, false, array('esta_emp' => 'A'));
+        foreach ($empleados as $row) {
+            $data[] = $row->nomb_emp;
         }
         echo json_encode($data);
     }

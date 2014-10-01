@@ -14,7 +14,6 @@ $(document).ready(function() {
             }
         });
 
-
         $.ajax({
             url: base_url + 'pago/get_empleado_autocomplete',
             type: 'post',
@@ -32,13 +31,15 @@ $(document).ready(function() {
                                 if (row[1] == nombre_emp) {
                                     nombre_emp_his = nombre_emp;
                                     $('#codi_emp_pago').html(row[0]);
-                                    $('#nomb_emp_pago').html(nombre_emp);
-                                    $('#tipo_emp_pago').html(row[2]);
-                                    $('#dias_emp_pago').html(row[7]);
-                                    $('#suto_emp_pago').html("S/. " + row[6]);
-                                    $('#desc_emp_pago').html("S/. " + row[6]);
-                                    $('#tota_emp_pago').html("S/. " + row[6]);
-                                    $('#obsv_prod_ven').html(row[3]);
+                                    $('#nomb_emp_pago').html(nombre_emp + ' ' + row[2]);
+                                    $('#tipo_emp_pago').html(row[3]);
+                                    $('#pla_emp_pago').html(row[4]);
+                                    $('#pla_suel_emp_pago').html("S/. " + row[5]);
+                                    $('#dias_emp_pago').html(row[6]);
+                                    $('#prod_emp_pago').html(row[7]);
+                                    $('#suto_emp_pago').html("S/. " + row[8]);
+                                    $('#desc_emp_pago').html("S/. " + row[9]);
+                                    $('#tota_emp_pago').html("S/. " + row[10]);
                                     $("#detalle_emp_pago").slideDown();
                                 }
                             });

@@ -88,4 +88,13 @@ class mod_empleado extends CI_Model {
         return $query->result();
     }
 
+    function sum_pago($codi_emp, $col) {
+        $this->db->select('SUM(' . $col . ') AS suma');
+        $this->db->from('registro_planilla');
+        $this->db->where(array('codi_emp' => $codi_emp));
+        $query = $this->db->get();
+        $result = $query->row();
+        return $result->suma;
+    }
+
 }

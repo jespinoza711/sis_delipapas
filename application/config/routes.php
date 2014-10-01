@@ -28,7 +28,7 @@ $route['registrodiario'] = "registro/registro_diario";
 $route['regdiarioinsert'] = "registro/registro_diario_dia";
 $route['regdiarioedit'] = "registro/registro_diario_dia_edit";
 
-$route['pagoempleado'] = "registro/pago_empleado";
+$route['pagoempleado'] = "pago";
 $route['inventario'] = "producto/inventario";
 $route['aproducto'] = "producto/activar_producto";
 $route['dproducto'] = "producto/desactivar_producto";
@@ -36,7 +36,6 @@ $route['dproducto'] = "producto/desactivar_producto";
 $route['usuario'] = "usuario";
 
 $route['empleado'] = "empleado";
-$route['hisempleado'] = "pago";
 
 $route['proveedor'] = "proveedor";
 $route['cliente'] = "cliente";

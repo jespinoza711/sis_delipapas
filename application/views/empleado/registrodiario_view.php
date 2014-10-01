@@ -81,7 +81,7 @@
                 </div>
 
                 <div class="panel-body">
-                    <a href="<?= base_url('hisempleado') ?>"><button type="button" class="btn btn-info"><i class="fa fa-eye"></i>&nbsp;&nbsp;Ver todos los registros</button></a>
+                    <a href="<?= base_url('pagoempleado') ?>"><button type="button" class="btn btn-info"><i class="fa fa-eye"></i>&nbsp;&nbsp;Ver todos los registros</button></a>
                     <br><br>
                     <div class="table-responsive">
                         <table id="table_registrodiario" class="table table-bordered">

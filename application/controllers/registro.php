@@ -148,7 +148,7 @@ class registro extends CI_Controller {
 
         foreach ($control as $row) {
 
-            $opciones = '<a href="' . base_url('hisempleado/' . $row->codi_emp) . '"><button type="button" class="tooltip_registrodiario btn btn-primary btn-circle ver_historial_empleado" data-toggle="tooltip" data-placement="top" title="Ver historial de pago">
+            $opciones = '<a href="' . base_url('pagoempleado/' . $row->codi_emp) . '"><button type="button" class="tooltip_registrodiario btn btn-primary btn-circle ver_historial_empleado" data-toggle="tooltip" data-placement="top" title="Ver historial de pago">
                             <i class="glyphicon glyphicon-time"></i>
                         </button></a>';
 
