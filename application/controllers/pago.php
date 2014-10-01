@@ -12,7 +12,7 @@ class pago extends CI_Controller {
     }
 
     public function index() {
-        if (!$this->mod_config->AVP(2)) {
+        if (!$this->mod_config->AVP(1)) {
             header('location: ' . base_url('login'));
         } else {
             date_default_timezone_set('America/Lima');

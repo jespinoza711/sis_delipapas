@@ -12,7 +12,7 @@ if (!function_exists('show_menu')) {
                     '<li><a href="' . base_url('home') . '"><i class="glyphicon glyphicon-home"></i> &nbsp; Inicio </a></li>' .
                     '<li><a href="' . base_url('venta') . '"><i class="glyphicon glyphicon-usd"></i> &nbsp; Ventas </a></li>' .
                     '<li><a href="' . base_url('compra') . '"><i class="glyphicon glyphicon-shopping-cart"></i> &nbsp; Compras </a></li>' .
-                    '<li><a href="' . base_url('pagoempleado') . '"><i class="glyphicon glyphicon-user"></i> &nbsp; Empleado </a></li>' .
+                    '<li><a href="' . base_url('pagoempleado') . '"><i class="glyphicon glyphicon-user"></i> &nbsp; Pagos </a></li>' .
                     '<li><a href="' . base_url('inventario') . '"><i class="glyphicon glyphicon-list-alt"></i> &nbsp; Inventario </a></li>' .
                     '<li class="treeview"><a href="#"><span><i class="glyphicon glyphicon-pencil"></i> &nbsp; Registros </span><i class="fa pull-right fa-angle-down"></i></a>' .
                         '<ul class="treeview-menu" style="display: none;">' .
@@ -33,7 +33,7 @@ if (!function_exists('show_menu')) {
                     '<li><a href="' . base_url('home') . '"><i class="glyphicon glyphicon-home"></i> &nbsp; Inicio </a></li>' .
                     '<li><a href="' . base_url('venta') . '"><i class="glyphicon glyphicon-usd"></i> &nbsp; Ventas </a></li>' .
                     '<li><a href="' . base_url('compra') . '"><i class="glyphicon glyphicon-shopping-cart"></i> &nbsp; Compras </a></li>' .
-                    '<li><a href="' . base_url('pagoempleado') . '"><i class="glyphicon glyphicon-user"></i> &nbsp; Empleado </a></li>' .
+                    '<li><a href="' . base_url('pagoempleado') . '"><i class="glyphicon glyphicon-user"></i> &nbsp; Pagos </a></li>' .
                     '<li><a href="' . base_url('inventario') . '"><i class="glyphicon glyphicon-list-alt"></i> &nbsp; Inventario </a></li>' .
                     '<li><a href="' . base_url('reporte') . '"><i class="glyphicon glyphicon-folder-open"></i> &nbsp; Reportes </a></li>';
             
