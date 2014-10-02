@@ -69,7 +69,7 @@
                     <div class="form-group"><label>Total en compras (S/.): </label> <?= form_input($sum_com, $_sum_com) ?> </div>
                     <div class="form-group"><label>Total calculado (S/.): </label> <?= form_input($suto_com, (($row['sain_cad'] + $_sum_ven) - $_sum_com)) ?> </div>
                     <div class="form-group"><label>Saldo final (S/.): *</label> <?= form_input($safi_cad, (($row['sain_cad'] + $_sum_ven) - $_sum_com)) ?> </div>
-                    <div class="form-group"><label>Observaci&oacute;n: *</label><?= form_textarea($obsv_cad, $row['obsv_cad']) ?></div>
+                    <div class="form-group"><label>Observaci&oacute;n: (Max. 250 caracteres)</label><?= form_textarea($obsv_cad, $row['obsv_cad']) ?></div>
                 </div>
                 <div class="modal-footer">
                     <div style="float: right;">

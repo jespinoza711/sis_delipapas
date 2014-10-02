@@ -67,7 +67,7 @@
                     <div class="form-group"><label>Total en gastos: </label><?= form_input($sum_gas, $_sum_gas) ?></div>
                     <div class="form-group"><label>Saldo final calculado(S/.): </label><?= form_input($safi_cal, ($row['safi_ccd'] - $_sum_gas)) ?></div>
                     <div class="form-group"><label>Saldo final (S/.): *</label> <?= form_input($safi_ccd, ($row['safi_ccd'] - $_sum_gas)) ?> </div>
-                    <div class="form-group"><label>Observaci&oacute;n: </label><?= form_textarea($obsv_ccd, $row['obsv_ccd']) ?></div>
+                    <div class="form-group"><label>Observaci&oacute;n: (Max. 250 caracteres)</label><?= form_textarea($obsv_ccd, $row['obsv_ccd']) ?></div>
                 </div>
                 <div class="modal-footer">
                     <div style="float: right;">

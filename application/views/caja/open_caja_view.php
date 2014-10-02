@@ -69,7 +69,7 @@
                 <div class="modal-body">
                     <div class="form-group"><label>Usuario: </label><?= form_input($nomb_usu, $this->session->userdata('user_name')) ?></div>
                     <div class="form-group"><label>Saldo inicial (S/.): *</label> <?= form_input($sain_cad, $row['safi_cad']) ?> </div>
-                    <div class="form-group"><label>Observaci&oacute;n: *</label><?= form_textarea($obsv_cad) ?></div>
+                    <div class="form-group"><label>Observaci&oacute;n: (Max. 250 caracteres)</label><?= form_textarea($obsv_cad) ?></div>
                 </div>
                 <div class="modal-footer">
                     <div style="float: right;">

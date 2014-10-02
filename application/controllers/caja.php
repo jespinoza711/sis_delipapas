@@ -679,7 +679,7 @@ class caja extends CI_Controller {
                 $caja['form_opencaja'] = array('role' => 'form', "id" => "form_opencaja");
                 $caja['nomb_usu'] = array('id' => 'nomb_usu', 'name' => 'nomb_usu', 'class' => "form-control", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true');
                 $caja['sain_cad'] = array('id' => 'sain_cad', 'name' => 'sain_cad', 'class' => "form-control", 'placeholder' => "Saldo inicial", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off');
-                $caja['obsv_cad'] = array('id' => 'obsv_cad', 'name' => 'obsv_cad', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
+                $caja['obsv_cad'] = array('id' => 'obsv_cad', 'name' => 'obsv_cad', 'class' => "form-control", "maxlength" => "250", "autocomplete" => "off", "rows" => "3");
                 $caja['registrar'] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Abrir caja");
 
                 $data['container'] = $this->load->view('caja/open_caja_view', $caja, true);
@@ -734,7 +734,7 @@ class caja extends CI_Controller {
                 $caja['sum_com'] = array('id' => 'sum_com', 'name' => 'sum_com', 'class' => "form-control", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true', 'type' => 'number', 'step' => 'any', 'min' => '0');
                 $caja['suto_com'] = array('id' => 'suto_com', 'name' => 'suto_com', 'class' => "form-control", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true', 'type' => 'number', 'step' => 'any', 'min' => '0');
                 $caja['safi_cad'] = array('id' => 'safi_cad', 'name' => 'safi_cad', 'class' => "form-control", 'placeholder' => "Saldo final", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off');
-                $caja['obsv_cad'] = array('id' => 'obsv_cad', 'name' => 'obsv_cad', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
+                $caja['obsv_cad'] = array('id' => 'obsv_cad', 'name' => 'obsv_cad', 'class' => "form-control", "maxlength" => "250", "autocomplete" => "off", "rows" => "3");
                 $caja['registrar'] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Cerar caja");
 
                 $caja['_sum_ven'] = $this->mod_caja->ventas_caja_dia($date);
@@ -846,7 +846,7 @@ class caja extends CI_Controller {
                 $cajachica['form_opencajachica'] = array('role' => 'form', "id" => "form_opencajachica");
                 $cajachica['nomb_usu'] = array('id' => 'nomb_usu', 'name' => 'nomb_usu', 'class' => "form-control", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true');
                 $cajachica['sain_ccd'] = array('id' => 'sain_ccd', 'name' => 'sain_ccd', 'class' => "form-control", 'placeholder' => "Saldo inicial", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off', 'type' => 'number', 'step' => 'any', 'min' => '0');
-                $cajachica['obsv_ccd'] = array('id' => 'obsv_ccd', 'name' => 'obsv_ccd', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
+                $cajachica['obsv_ccd'] = array('id' => 'obsv_ccd', 'name' => 'obsv_ccd', 'class' => "form-control", "maxlength" => "250", "autocomplete" => "off", "rows" => "3");
                 $cajachica['registrar'] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Abrir caja chica");
 
                 $data['container'] = $this->load->view('caja/open_cajachica_view', $cajachica, true);
@@ -898,7 +898,7 @@ class caja extends CI_Controller {
                 $cajachica['sum_gas'] = array('id' => 'sum_gas', 'name' => 'sum_gas', 'class' => "form-control", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true', 'type' => 'number', 'step' => 'any', 'min' => '0');
                 $cajachica['safi_cal'] = array('id' => 'safi_cal', 'name' => 'safi_cal', 'class' => "form-control", "maxlength" => "50", 'required' => 'true', 'autocomplete' => 'off', 'readonly' => 'true', 'type' => 'number', 'step' => 'any', 'min' => '0');
                 $cajachica['safi_ccd'] = array('id' => 'safi_ccd', 'name' => 'safi_ccd', 'class' => "form-control", 'placeholder' => "Saldo final", "maxlength" => "20", 'required' => 'true', 'autocomplete' => 'off', 'type' => 'number', 'step' => 'any', 'min' => '0');
-                $cajachica['obsv_ccd'] = array('id' => 'obsv_ccd', 'name' => 'obsv_ccd', 'class' => "form-control", "maxlength" => "200", "autocomplete" => "off", "rows" => "3");
+                $cajachica['obsv_ccd'] = array('id' => 'obsv_ccd', 'name' => 'obsv_ccd', 'class' => "form-control", "maxlength" => "250", "autocomplete" => "off", "rows" => "3");
                 $cajachica['registrar'] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Cerrar caja chica");
 
                 $cajachica['_sum_gas'] = $this->mod_caja->gastos_cajachica_dia($date);
