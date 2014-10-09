@@ -32,9 +32,9 @@ class registro extends CI_Controller {
             /* INSERT */
             $control['form_regdiario'] = array('role' => 'form', "id" => "form_regdiario");
             $control['suel_pla'] = array('id' => 'suel_pla', 'name' => 'suel_pla', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true', 'type' => 'number', 'step' => 'any');
-            $control['cant_dpl'] = array('id' => 'cant_dpl', 'name' => 'cant_dpl', 'class' => "form-control", 'placeholder' => "Cantidad procesada", "maxlength" => "10", "min" => "1", 'required' => 'true', 'autocomplete' => 'off');
+            $control['cant_dpl'] = array('id' => 'cant_dpl', 'name' => 'cant_dpl', 'class' => "form-control", 'placeholder' => "Cantidad procesada", "maxlength" => "10", 'type' => 'number', 'step' => 'any', 'min' => '0', 'required' => 'true', 'autocomplete' => 'off');
             $control['suto_dpl'] = array('id' => 'suto_dpl', 'name' => 'suto_dpl', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true', 'type' => 'number', 'step' => 'any');
-            $control['desc_dpl'] = array('id' => 'desc_dpl', 'name' => 'desc_dpl', 'class' => "form-control", 'placeholder' => "Descuento observado", "maxlength" => "10", "min" => "0", 'required' => 'true', 'autocomplete' => 'off');
+            $control['desc_dpl'] = array('id' => 'desc_dpl', 'name' => 'desc_dpl', 'class' => "form-control", 'placeholder' => "Descuento observado", "maxlength" => "10", 'type' => 'number', 'step' => 'any', 'min' => '0', 'required' => 'true', 'autocomplete' => 'off');
             $control['tota_dpl'] = array('id' => 'tota_dpl', 'name' => 'tota_dpl', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true', 'type' => 'number', 'step' => 'any');
             $control['obsv_dpl'] = array('id' => 'obsv_dpl', 'name' => 'obsv_dpl', 'class' => "form-control", "maxlength" => "500", "autocomplete" => "off", "rows" => "3");
             $control['registrodiario'] = array('id' => 'registrodiario', 'name' => 'registrodiario', 'class' => "btn btn-primary", 'value' => "Registrar día de trabajo");
@@ -44,9 +44,9 @@ class registro extends CI_Controller {
             $control['fech_dpl_e'] = array('id' => 'fech_dpl_e', 'name' => 'fech_dpl_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
             $control['nomb_emp_e'] = array('id' => 'nomb_emp_e', 'name' => 'nomb_emp_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
             $control['suel_pla_e'] = array('id' => 'suel_pla_e', 'name' => 'suel_pla_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true', 'type' => 'number', 'step' => 'any');
-            $control['cant_dpl_e'] = array('id' => 'cant_dpl_e', 'name' => 'cant_dpl_e', 'class' => "form-control", 'placeholder' => "Cantidad procesada", "maxlength" => "10", "min" => "1", 'required' => 'true', 'autocomplete' => 'off');
+            $control['cant_dpl_e'] = array('id' => 'cant_dpl_e', 'name' => 'cant_dpl_e', 'class' => "form-control", 'placeholder' => "Cantidad procesada", "maxlength" => "10", 'type' => 'number', 'step' => 'any', 'min' => '0', 'required' => 'true', 'autocomplete' => 'off');
             $control['suto_dpl_e'] = array('id' => 'suto_dpl_e', 'name' => 'suto_dpl_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true', 'type' => 'number', 'step' => 'any');
-            $control['desc_dpl_e'] = array('id' => 'desc_dpl_e', 'name' => 'desc_dpl_e', 'class' => "form-control", 'placeholder' => "Descuento observado", "maxlength" => "10", "min" => "0", 'required' => 'true', 'autocomplete' => 'off');
+            $control['desc_dpl_e'] = array('id' => 'desc_dpl_e', 'name' => 'desc_dpl_e', 'class' => "form-control", 'placeholder' => "Descuento observado", "maxlength" => "10", 'type' => 'number', 'step' => 'any', 'min' => '0', 'required' => 'true', 'autocomplete' => 'off');
             $control['tota_dpl_e'] = array('id' => 'tota_dpl_e', 'name' => 'tota_dpl_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true', 'type' => 'number', 'step' => 'any');
             $control['obsv_dpl_e'] = array('id' => 'obsv_dpl_e', 'name' => 'obsv_dpl_e', 'class' => "form-control", "maxlength" => "500", "autocomplete" => "off", "rows" => "3");
             $control['registrodiario_edit'] = array('id' => 'registrodiario_edit', 'name' => 'registrodiario_edit', 'class' => "btn btn-primary", 'value' => "Actualizar día de trabajo");

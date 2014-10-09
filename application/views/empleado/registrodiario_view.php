@@ -46,7 +46,11 @@
                             <label> Empleado: *</label>
                             <select id="codi_rol" class="form-control" name="codi_emp"><?php foreach ($empleado as $r) { ?> <option value="<?= $r->codi_emp ?>"><?= $r->nomb_emp . ' ' . $r->apel_emp ?></option> <?php } ?></select>
                         </div>
-                        <div class="form-group"><label> Pago por kilo (S/ 0.00): (Planilla actual) </label><?= form_input($suel_pla, $planilla->suel_pla) ?></div>
+                        <div class="form-group">
+                            <label> Pago por kilo (S/ 0.00): (Planilla actual) 
+                                <button id="btnPagoPla" type="button" class="btn btn-sm btn-primary" style="padding: 0px 10px; margin-left: 4px;"  data-toggle="tooltip" data-placement="top" title="Cambiar el pago en este registro"><i class="fa fa-edit"></i></button>
+                            </label><?= form_input($suel_pla, $planilla->suel_pla) ?>                            
+                        </div>
                         <div class="form-group"><label> Productos Procesados (Kilos): * </label><?= form_input($cant_dpl, '0') ?></div>
                         <div class="form-group"><label> Subtotal a Pagar (S/ 0.00): * </label><?= form_input($suto_dpl, '0.00') ?></div>
                         <div class="form-group"><label> Descuentos Observados (S/ 0.00): </label><?= form_input($desc_dpl, '0') ?></div>

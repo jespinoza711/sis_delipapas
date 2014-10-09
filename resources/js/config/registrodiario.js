@@ -22,6 +22,10 @@ $(document).ready(function() {
     $("#desc_dpl").keyup(function(event) {
         update_total();
     });
+    
+    $("#btnPagoPla").click(function (){
+        $("#suel_pla").prop('readonly', false);
+    });
 
     function update_total_edit() {
         var pago = $('#suel_pla_e').val();
