@@ -349,3 +349,126 @@
         </div>
     </div>
 </div>
+
+<!--COMPROBANTE-->
+
+<div class="row" style="margin-top: 2%" id="cpo_comprobante">
+    <div class="col-md-10 col-md-offset-1">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Comprobantes registrados</h3>
+            </div>
+            <div class="panel-body">
+                
+                <?php if ($this->session->userdata('info_comprobante') != ''){ ?>
+                
+                    <div class="alert alert-success alert-dismissable">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                        <?= $this->session->userdata('info_comprobante') ?>
+                    </div>
+                
+                <?php $this->session->set_userdata('info_comprobante', ''); } if ($this->session->userdata('error_comprobante') != ''){ ?>
+                
+                    <div class="alert alert-danger">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">x</button>
+                        <?= $this->session->userdata('error_comprobante') ?>
+                    </div>
+                
+                <?php $this->session->set_userdata('error_comprobante', ''); } ?>
+                
+                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalNuevoComprobante"><i class="fa fa-plus"></i>&nbsp;&nbsp;&nbsp;Nuevo Comprobante</button>
+                <br><br>
+                <div class="table-responsive">
+                    <table id="table_comprobante" class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="text-align: center;">C&oacute;digo</th>
+                                <th style="text-align: center;">Fecha de registro</th>
+                                <th style="text-align: center;">Comprobante</th>
+                                <th style="text-align: center;">Serie</th>
+                                <th style="text-align: center;">Numeraci&oacute;n</th>
+                                <th style="text-align: center;">Obsvervaci&oacute;n</th>
+                                <th style="text-align: center;">Estado</th>
+                                <th style="text-align: center;">Acciones</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalNuevoComprobante" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog" style="width: 30%;">
+        <div class="modal-content" style="border-color: #428bca; border-style: inset;">
+            
+            <?= form_open(base_url('ajustes'), $form_comprobante) ?>
+            
+            <div class="modal-header" style="
+                 padding: 10px 15px;
+                 border-bottom: 1px solid transparent;
+                 border-top-left-radius: 3px;
+                 border-top-right-radius: 3px;
+                 color: #fff;
+                 background-color: #428bca;
+                 border-color: #428bca;
+                 ">
+                <h4 class="modal-title" id="myModalLabel">Nuevo Comprobante</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group"><label>Nombre: *</label><?= form_input($nomb_com) ?></div>
+                <div class="form-group"><label>Serie: *</label><?= form_input($serie_com) ?></div>
+                <div class="form-group"><label>Numeraci&oacute;n: *</label><?= form_input($nume_com) ?></div>
+                <div class="form-group"><label>Observaci&oacute;n: </label><?= form_textarea($obsv_com) ?></div>      
+            </div>
+            <div class="modal-footer">
+                <div style="float: right;">
+                    <button id="btnCancelarNuevoConcepto" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <?= form_submit($registrar_comprobante) ?>
+                </div>
+            </div>
+            
+            <?= form_close() ?>
+            
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalEditarComprobante" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog" style="width: 30%;">
+        <div class="modal-content" style="border-color: #428bca; border-style: inset;">
+            
+            <?= form_open(base_url('ajustes'), $form_comprobante_edit) ?>
+            
+            <div class="modal-header" style="
+                 padding: 10px 15px;
+                 border-bottom: 1px solid transparent;
+                 border-top-left-radius: 3px;
+                 border-top-right-radius: 3px;
+                 color: #fff;
+                 background-color: #428bca;
+                 border-color: #428bca;
+                 ">
+                <h4 class="modal-title" id="myModalLabel">Editar Comprobante</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group"><label>Fecha de registro: </label><?= form_input($fech_reg_e) ?></div>
+                <div class="form-group"><label>C&oacute;digo: </label><?= form_input($codi_com_e) ?></div>
+                <div class="form-group"><label>Nombre: *</label><?= form_input($nomb_com_e) ?></div>
+                <div class="form-group"><label>Serie: *</label><?= form_input($serie_com_e) ?></div>
+                <div class="form-group"><label>Numeraci&oacute;n: *</label><?= form_input($nume_com_e) ?></div>
+                <div class="form-group"><label>Observaci&oacute;n: </label><?= form_textarea($obsv_com_e) ?></div>        
+            </div>
+            <div class="modal-footer">
+                <div style="float: right;">
+                    <button id="btnCancelarEditarConcepto" type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <?= form_submit($editar_comprobante) ?>
+                </div>
+            </div>
+            
+            <?= form_close() ?>
+            
+        </div>
+    </div>
+</div>

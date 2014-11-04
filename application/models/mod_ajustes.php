@@ -87,4 +87,13 @@ class mod_ajustes extends CI_Model {
         return $this->db->update('concepto', $data);
     }
 
+    public function insert_comprobante($data) {
+        return $this->db->insert('comprobante', $data);
+    }
+
+    public function update_comprobante($codi_com, $data) {
+        $this->db->where(array('codi_com' => $codi_com));
+        return $this->db->update('comprobante', $data);
+    }
+
 }

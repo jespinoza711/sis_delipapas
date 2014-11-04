@@ -99,6 +99,39 @@ class ajustes extends CI_Controller {
                 $this->mod_ajustes->update_concepto($codi_con, array('esta_con' => 'D'));
                 $this->session->set_userdata('info_concepto', 'El concepto de gasto ' . $nomb_con . ' ha sido deshabilitado existosamente.');
                 header('Location: ' . base_url('ajustes'));
+            } else
+            // COMPROBANTE
+            if ($this->input->post('registrar_comprobante')) {
+                $data['fech_reg'] = $ajustes['datetime'];
+                $data['nomb_com'] = $this->input->post('nomb_com');
+                $data['serie_com'] = $this->input->post('serie_com');
+                $data['nume_com'] = $this->input->post('nume_com');
+                $data['obsv_com'] = $this->input->post('obsv_com');
+                $data['esta_com'] = 'A';
+                $this->mod_ajustes->insert_comprobante($data);
+                $this->session->set_userdata('info_comprobante', 'El comprobante ' . $data['nomb_com'] . ' ha sido registrado existosamente.');
+                header('Location: ' . base_url('ajustes'));
+            } else if ($this->input->post('editar_comprobante')) {
+                $codi_com = $this->input->post('codi_com_e');
+                $data['nomb_con'] = $this->input->post('nomb_con_e');
+                $data['serie_com'] = $this->input->post('serie_com_e');
+                $data['nume_com'] = $this->input->post('nume_com_e');
+                $data['obsv_com'] = $this->input->post('obsv_com_e');
+                $this->mod_ajustes->update_comprobante($codi_com, $data);
+                $this->session->set_userdata('info_comprobante', 'El comprobante ' . $data['nomb_com'] . ' ha sido actualizado existosamente.');
+                header('Location: ' . base_url('ajustes'));
+            } else if ($this->input->post('activar_comprobante')) {
+                $codi_com = $this->input->post('codi_com');
+                $nomb_com = $this->input->post('nomb_com');
+                $this->mod_ajustes->update_comprobante($codi_com, array('esta_com' => 'A'));
+                $this->session->set_userdata('info_comprobante', 'El comprobante ' . $nomb_com . ' ha sido habilitado existosamente.');
+                header('Location: ' . base_url('ajustes'));
+            } else if ($this->input->post('desactivar_comprobante')) {
+                $codi_com = $this->input->post('codi_com');
+                $nomb_com = $this->input->post('nomb_com');
+                $this->mod_ajustes->update_comprobante($codi_com, array('esta_com' => 'D'));
+                $this->session->set_userdata('info_comprobante', 'El comprobante ' . $nomb_com . ' ha sido deshabilitado existosamente.');
+                header('Location: ' . base_url('ajustes'));
             } else {
                 // NEGOCIO
                 $ajustes["form_negocio"] = array('role' => 'form', "id" => "form_negocio");
@@ -152,6 +185,23 @@ class ajustes extends CI_Controller {
                 $ajustes["nomb_con_e"] = array('id' => 'nomb_con_e', 'name' => 'nomb_con_e', 'class' => "form-control", 'required' => 'true');
                 $ajustes["editar_concepto"] = array('name' => 'editar_concepto', 'class' => "btn btn-primary", 'value' => "Editar concepto de gasto");
 
+                // COMPROBANTE INSERT
+                $ajustes["form_comprobante"] = array('role' => 'form', "id" => "form_comprobante");
+                $ajustes["nomb_com"] = array('id' => 'nomb_com', 'name' => 'nomb_com', 'class' => "form-control", 'required' => 'true');
+                $ajustes["serie_com"] = array('id' => 'serie_com', 'name' => 'serie_com', 'class' => "form-control input-lg", 'required' => 'true', 'autocomplete' => 'off', "min" => "0", 'value' => "0", "maxlength" => "4", "type" => "number", "step" => "any");
+                $ajustes["nume_com"] = array('id' => 'nume_com', 'name' => 'nume_com', 'class' => "form-control input-lg", 'required' => 'true', 'autocomplete' => 'off', "min" => "0", 'value' => "0", "maxlength" => "6", "type" => "number", "step" => "any");
+                $ajustes["obsv_com"] = array('id' => 'obsv_com', 'name' => 'obsv_com', 'class' => "form-control input-lg", 'placeholder' => "Escriba la observación...", "maxlength" => "150", "rows" => "3", "autocomplete" => "off");
+                $ajustes["registrar_comprobante"] = array('id' => 'registrar_comprobante', 'name' => 'registrar_comprobante', 'class' => "btn btn-primary", 'value' => "Registrar comprobante");
+                // COMPROBANTE EDIT
+                $ajustes["form_comprobante_edit"] = array('role' => 'form', "id" => "form_comprobante_edit");
+                $ajustes["fech_reg_e"] = array('id' => 'fech_reg_e', 'name' => 'fech_reg_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
+                $ajustes["codi_com_e"] = array('id' => 'codi_com_e', 'name' => 'codi_com_e', 'class' => "form-control", 'required' => 'true', 'readonly' => 'true');
+                $ajustes["nomb_com_e"] = array('id' => 'nomb_com_e', 'name' => 'nomb_com_e', 'class' => "form-control", 'required' => 'true');
+                $ajustes["serie_com_e"] = array('id' => 'serie_com_e', 'name' => 'serie_com_e', 'class' => "form-control input-lg", 'required' => 'true', 'autocomplete' => 'off', "min" => "0", 'value' => "0", "maxlength" => "4", "type" => "number", "step" => "any");
+                $ajustes["nume_com_e"] = array('id' => 'nume_com_e', 'name' => 'nume_com_e', 'class' => "form-control input-lg", 'required' => 'true', 'autocomplete' => 'off', "min" => "0", 'value' => "0", "maxlength" => "6", "type" => "number", "step" => "any");
+                $ajustes["obsv_com_e"] = array('id' => 'obsv_com_e', 'name' => 'obsv_com_e', 'class' => "form-control input-lg", 'placeholder' => "Escriba la observación...", "maxlength" => "150", "rows" => "3", "autocomplete" => "off");
+                $ajustes["editar_comprobante"] = array('id' => 'editar_comprobante', 'name' => 'editar_comprobante', 'class' => "btn btn-primary", 'value' => "Editar comprobante");
+                
                 // VIEW ALL
                 $data['page'] = 'Panel de configuraci&oacute;n';
                 $data['container'] = $this->load->view('ajustes/ajustes_view', $ajustes, true);
