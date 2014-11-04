@@ -21,6 +21,9 @@ if (!function_exists('show_menu')) {
                             '<li><a href="' . base_url('cliente') . '"><i class="fa fa-angle-double-right"></i>Cliente</a></li>' .
                             '<li><a href="' . base_url('empleado') . '"><i class="fa fa-angle-double-right"></i>Empleado</a></li>' .
                             '<li><a href="' . base_url('producto') . '"><i class="fa fa-angle-double-right"></i>Producto</a></li>' .
+                            '<li><a href="' . base_url('transportista') . '"><i class="fa fa-angle-double-right"></i>Transportista</a></li>' .
+                            '<li><a href="' . base_url('vehiculo') . '"><i class="fa fa-angle-double-right"></i>Vehiculo</a></li>' .
+                            '<li><a href="' . base_url('conductor') . '"><i class="fa fa-angle-double-right"></i>Conductor</a></li>' .
                             '<li><a href="' . base_url('caja') . '"><i class="fa fa-angle-double-right"></i>Caja</a></li>' .
                         '</ul>' .
                     '</li>' .

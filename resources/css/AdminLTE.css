@@ -3839,6 +3839,27 @@ fieldset[disabled] .btn-vk.active {
 #table_comprobante_filter {
     display: inline-table;
 }
+/* TRANSPORTISTA */
+#table_transportista_wrapper > .row > .col-xs-8 > #table_transportista_filter {
+    float: right;
+}
+#table_transportista_filter {
+    display: inline-table;
+}
+/* VEHICULO */
+#table_vehiculo_wrapper > .row > .col-xs-8 > #table_vehiculo_filter {
+    float: right;
+}
+#table_vehiculo_filter {
+    display: inline-table;
+}
+/* CONDUCTOR */
+#table_conductor_wrapper > .row > .col-xs-8 > #table_conductor_filter {
+    float: right;
+}
+#table_conductor_filter {
+    display: inline-table;
+}
 
 .selected {
     color: #8a6d3b;
@@ -4165,6 +4186,24 @@ tr.group:hover {
 /* COMPROBANTE */
 #table_comprobante thead tr th,
 #table_comprobante tbody tr td{
+    text-align: center;
+    vertical-align: middle;
+}
+/* TRANSPORTISTA */
+#table_transportista thead tr th,
+#table_transportista tbody tr td{
+    text-align: center;
+    vertical-align: middle;
+}
+/* VEHICULO */
+#table_vehiculo thead tr th,
+#table_vehiculo tbody tr td{
+    text-align: center;
+    vertical-align: middle;
+}
+/* CONDUCTOR */
+#table_conductor thead tr th,
+#table_conductor tbody tr td{
     text-align: center;
     vertical-align: middle;
 }

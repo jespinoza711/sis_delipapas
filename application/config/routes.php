@@ -34,11 +34,13 @@ $route['aproducto'] = "producto/activar_producto";
 $route['dproducto'] = "producto/desactivar_producto";
 
 $route['usuario'] = "usuario";
-
 $route['empleado'] = "empleado";
-
 $route['proveedor'] = "proveedor";
 $route['cliente'] = "cliente";
+$route['transportista'] = "transportista";
+$route['vehiculo'] = "vehiculo";
+$route['conductor'] = "conductor";
+
 $route['producto'] = "producto/producto";
 $route['ajustes'] = "ajustes";
 $route['reporte'] = "reporte";

@@ -110,6 +110,9 @@
         <script src="<?= base_url('resources/js/config/planilla.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/concepto.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/config/comprobante.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/config/transportista.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/config/vehiculo.js') ?>" type="text/javascript"></script>
+        <script src="<?= base_url('resources/js/config/conductor.js') ?>" type="text/javascript"></script>
         <script src="<?= base_url('resources/js/SmartNotification.js') ?>" type="text/javascript"></script>
        
     </body>
