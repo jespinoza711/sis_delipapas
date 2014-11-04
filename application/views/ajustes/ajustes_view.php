@@ -75,34 +75,6 @@
 
                                 <?= form_close() ?>
                                 
-                                <?= form_open(base_url('ajustes'), $form_num_orden) ?>
-                        
-                                    <div class="form-group">
-                                        <label> Establecer numeraci&oacute;n inicial para Orden de Despacho: * </label>
-                                        <div class="input-group">
-                                            <div class="input-group-addon"> Ord. Despacho </div>
-                                            <?= form_input($num_ini_orden, $negocio->num_ini_orden) ?>
-                                            <div class="input-group-addon"> <?= form_submit($registrar_num_orden) ?> </div>
-                                        </div>
-                                        
-                                    </div>
-
-                                <?= form_close() ?>
-                                
-                                <?= form_open(base_url('ajustes'), $form_num_factura) ?>
-                        
-                                    <div class="form-group">
-                                        <label> Establecer numeraci&oacute;n inicial para Factura: * </label>
-                                        <div class="input-group">
-                                            <div class="input-group-addon"> Factura </div>
-                                            <?= form_input($num_ini_factura, $negocio->num_ini_factura) ?>
-                                            <div class="input-group-addon"> <?= form_submit($registrar_num_factura) ?> </div>
-                                        </div>
-                                        
-                                    </div>
-
-                                <?= form_close() ?>
-                                
                             </div>
                         </div>
                     </div>

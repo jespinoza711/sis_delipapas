@@ -87,6 +87,30 @@ class mod_ajustes extends CI_Model {
         return $this->db->update('concepto', $data);
     }
 
+    public function get_comprobante_paginate($limit, $start, $string = "") {
+        $this->db->like('codi_com', $string);
+        $this->db->or_like('fech_reg', $string);
+        $this->db->or_like('nomb_com', $string);
+        $query = $this->db->get('comprobante');
+        $data = $query->result();
+
+        $i = 0;
+        $c = 0;
+        $result = array();
+        foreach ($data as $row) {
+            if ($i >= $start) {
+                if ($c < $limit) {
+                    $result[$c] = $row;
+                    $c++;
+                } else {
+                    break;
+                }
+            }
+            $i++;
+        }
+        return $result;
+    }
+
     public function insert_comprobante($data) {
         return $this->db->insert('comprobante', $data);
     }

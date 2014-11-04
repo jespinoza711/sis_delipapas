@@ -32,7 +32,7 @@ $(document).ready(function() {
             type: 'post',
             success: function(data) {
                 planillas = $.parseJSON(data);
-//                console.log(planillas);
+                console.log(planillas);
             }
         });
 

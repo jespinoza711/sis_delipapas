@@ -3832,6 +3832,13 @@ fieldset[disabled] .btn-vk.active {
 #table_pago_filter {
     display: inline-table;
 }
+/* COMPROBANTE */
+#table_comprobante_wrapper > .row > .col-xs-8 > #table_comprobante_filter {
+    float: right;
+}
+#table_comprobante_filter {
+    display: inline-table;
+}
 
 .selected {
     color: #8a6d3b;
@@ -4152,6 +4159,12 @@ tr.group:hover {
 /* EMPLEADO PAGO */
 #table_pago thead tr th,
 #table_pago tbody tr td{
+    text-align: center;
+    vertical-align: middle;
+}
+/* COMPROBANTE */
+#table_comprobante thead tr th,
+#table_comprobante tbody tr td{
     text-align: center;
     vertical-align: middle;
 }
