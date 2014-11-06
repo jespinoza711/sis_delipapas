@@ -34,6 +34,7 @@
                                     <th>C&oacute;digo</th>
                                     <th>Fecha de venta</th>
                                     <th>Comprobante</th>
+                                    <th>Serie</th>
                                     <th>N&uacute;mero</th>
                                     <th>Usuario</th>
                                     <th>Cliente</th>

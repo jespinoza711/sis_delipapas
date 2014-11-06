@@ -210,6 +210,7 @@ class caja extends CI_Controller {
                 $row->codi_ven,
                 $fecha,
                 $row->nomb_com,
+                $row->serie_fac,
                 $row->num_fac,
                 $row->nomb_usu,
                 $row->nomb_cli,
@@ -279,30 +280,34 @@ class caja extends CI_Controller {
 
         $codi_ven = $this->mod_view->insert('venta', $venta);
 
-        // GENERAR NUMERO DE FACTURA Y ORDEN DE DESPACHO
-        // 
-        // NUMERO DE FACTURA
+        // OBTENER SERIE Y NUMERO DE DE LOS COMPROBANTES A UTILIZAR
+        // EL REGISTRO EN LA TABLA FACTURA Y GUIA_REMISION DEBE TENER LA SERIE Y EL NUMERO DEL COMPROBANTE
+
         $negocio = $this->mod_view->view('negocio');
+        $comprobantes = $this->mod_view->view('comprobante');
         $facturas = $this->mod_view->view('factura');
 
-        $num_ini_fac = $negocio[0]->num_ini_factura;
-        $num_ini_des = $negocio[0]->num_ini_orden;
+        $serie_fac = $comprobantes[0]->serie_com;
+        $nume_fac = $comprobantes[0]->nume_com;
 
-        $tamaño = strlen($num_ini_fac);
-        $numero = (int) $num_ini_fac;
+        $serie_des = $comprobantes[1]->serie_com;
+        $nume_des = $comprobantes[1]->nume_com;
+
+        $serie_guia = $comprobantes[2]->serie_com;
+        $nume_guia = $comprobantes[2]->nume_com;
+
+        $tamaño = strlen($nume_fac);
+        $numero = (int) $nume_fac;
 
         $sw = false;
 
         while (!$sw) {
-
             $exists = false;
-
             foreach ($facturas as $row) {
                 if ($numero == $row->num_fac) {
                     $exists = true;
                 }
             }
-
             if ($exists) {
                 $numero++;
             } else {
@@ -315,21 +320,18 @@ class caja extends CI_Controller {
         }
 
         // ORDEN DE DESPACHO
-        $tamaño_b = strlen($num_ini_des);
-        $numero_b = (int) $num_ini_des;
+        $tamaño_b = strlen($nume_des);
+        $numero_b = (int) $nume_des;
 
         $sw_2 = false;
 
         while (!$sw_2) {
-
             $exists_2 = false;
-
             foreach ($facturas as $row) {
                 if ($numero_b == $row->desp_fac) {
                     $exists_2 = true;
                 }
             }
-
             if ($exists_2) {
                 $numero_b++;
             } else {
@@ -343,6 +345,7 @@ class caja extends CI_Controller {
 
         // REGISTRO DE FACTURA
         $factura = array(
+            'serie_fac' => $serie_fac,
             'num_fac' => $numero,
             'ruc_fac' => $negocio[0]->ruc_neg,
             'fech_fac' => date("Y-m-d H:i:s"),
@@ -381,7 +384,26 @@ class caja extends CI_Controller {
         }
         $this->session->set_userdata('reg_ventas', $codi_fac);
         $this->session->set_userdata('info_ven', 'La venta ha sido registrada con éxito. <strong><a href="' . base_url('reporte/reg_venta') . '" target="_blank">Ver documento en PDF</a></strong>');
+
+        /*  
+            FINALMENTE DESPUES DE REGISTRAR LA COMPRA SE DEBEN ACTUALIZAR LA SERIE Y EL NUMERO DE LOS COMPROBANTES
+            QUE SE HAN UTILIZADO EN LA TABLA COMPROBANTE. LA TABLA COMPROBANTE DEBE TENER EL PROXIMO NUMERO DE COMPROBANTE 
+            A UTILIZAR EN LOS TRES TIPOS, RECUERDA QUE COMO TIENEN NUMERO DE SERIE CUANDO UNA NUMERACION LLEGA AL TOPE 
+            LA SERIE DEBE AUMENTAR EN UNO EN ESTAS CONDICIONES:
+         
+                FACTURA NUMERACION --> 00001 A 99999 --> AFECTA SERIE --> 0001 A 9999 (5 DIGITOS EN NUMERACION)
+                GUIA DE REMISION NUMERACION --> 000001 A 999999 --> AFECTA SERIE --> 0001 A 9999 (6 DIGITOS EN NUMERACION)
+                ORDEN DE DESPACHO NUMERACION --> 000001 A 999999 --> AFECTA  SERIE --> 0001 A 9999 (6 DIGITOS EN NUMERACION)
+         
+            UTILIZAR EL SIGUIENTE PROCEDIMIENTO 
+         */
+        $this->actualizar_comprobantes($serie_fac, $nume_fac, $serie_des, $nume_des, $serie_guia, $nume_guia);
+
         header('location: ' . base_url('venta'));
+    }
+
+    public function actualizar_comprobantes($serie_fac, $nume_fac, $serie_des, $nume_des, $serie_guia, $nume_guia) {
+        
     }
 
     /* COMPRA */
@@ -739,13 +761,13 @@ class caja extends CI_Controller {
 
                 $caja['_sum_ven'] = $this->mod_caja->ventas_caja_dia($date);
                 $caja['_sum_com'] = $this->mod_caja->compras_caja_dia($date);
-                if($caja['_sum_ven'] == ""){
+                if ($caja['_sum_ven'] == "") {
                     $caja['_sum_ven'] = '0.00';
                 }
-                if($caja['_sum_com'] == ""){
+                if ($caja['_sum_com'] == "") {
                     $caja['_sum_com'] = '0.00';
                 }
-                
+
                 $caja['usuarios'] = $this->mod_view->view('v_usuario', false, false, array('esta_usu' => 'A'));
                 $data['container'] = $this->load->view('caja/close_caja_view', $caja, true);
                 $this->load->view('home/body', $data);
@@ -881,7 +903,7 @@ class caja extends CI_Controller {
         if (!$this->mod_config->AVP(1)) {
             header('location: ' . base_url('login'));
         } else {
-            date_default_timezone_set('America/Lima');            
+            date_default_timezone_set('America/Lima');
             $status = $this->mod_caja->status_cajachica();
             $date = date("Y-m-d");
             if ($status == 1) {
@@ -902,7 +924,7 @@ class caja extends CI_Controller {
                 $cajachica['registrar'] = array('name' => 'registrar', 'class' => "btn btn-primary", 'value' => "Cerrar caja chica");
 
                 $cajachica['_sum_gas'] = $this->mod_caja->gastos_cajachica_dia($date);
-                if($cajachica['_sum_gas'] == ""){
+                if ($cajachica['_sum_gas'] == "") {
                     $cajachica['_sum_gas'] = '0.00';
                 }
                 $data['container'] = $this->load->view('caja/close_cajachica_view', $cajachica, true);
@@ -917,7 +939,7 @@ class caja extends CI_Controller {
         } else {
             $codi_ccd = $this->input->post('codi_ccd');
             $sain_ccd = $this->input->post('sain_ccd');
-            $safi_cal= $this->input->post('safi_cal');
+            $safi_cal = $this->input->post('safi_cal');
             $data['usfi_ccd'] = $this->session->userdata('user_codi');
             $data['safi_ccd'] = $this->input->post('safi_ccd');
             $data['dife_ccd'] = abs($sain_ccd - $data['safi_ccd']);
@@ -1394,7 +1416,7 @@ class caja extends CI_Controller {
 
 
             $nTotal = count($ventas);
-            
+
             $i = 1;
             foreach ($ventas as $row) {
                 $time = strtotime($row->fech_ven);
@@ -1428,7 +1450,7 @@ class caja extends CI_Controller {
         if ($tipo == "0") {
             $nTotal = $this->mod_view->count('caja_dia', 0, false, array('esta_cad' => 'C'));
             $caja_dia = $this->mod_view->view('v_caja_dia', 0, false, array('esta_cad' => 'C'));
-            
+
             $i = 1;
             foreach ($caja_dia as $row) {
                 $time_a = strtotime($row->fein_cad);

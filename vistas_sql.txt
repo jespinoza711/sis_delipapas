@@ -248,6 +248,7 @@ SELECT `v`.`codi_ven` AS `codi_ven`,
 `c`.`nomb_cli` AS `nomb_cli`,
 `v`.`tota_ven` AS `tota_ven`,
 `df`.`codi_fac` AS `codi_fac`,
+`f`.`serie_fac` AS `serie_fac`,
 `f`.`num_fac` AS `num_fac`,
 `v`.`esta_ven` AS `esta_ven` 
 FROM ((((((`venta` `v` join `comprobante` `cp`) join `usuario` `u`) join `cliente` `c`) join `detalle_venta` `dv`) join `detalle_factura` `df`) join `factura` `f`) 

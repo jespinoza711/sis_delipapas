@@ -17,7 +17,7 @@
                         <tbody>
                             <tr>
                                 <td style="vertical-align: middle;"><strong>N&uacute;mero de venta:</strong></td>
-                                <td colspan="3" style="vertical-align: middle;"><?= $venta->num_fac ?></td>
+                                <td colspan="3" style="vertical-align: middle;"><?= $venta->serie_fac . ' - ' . $venta->num_fac ?></td>
                             </tr>
                             <tr>
                                 <td style="vertical-align: middle;"><strong>Fecha:</strong></td>
