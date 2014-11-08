@@ -106,6 +106,10 @@ $(document).ready(function() {
         });
 
         $('.tooltip_ven').tooltip();
+        
+        $("#fech_guia").datepicker({
+            format: 'yyyy-mm-dd'
+        });
 
         $("#producto_ven").keyup(function(event) {
             if ($(this).val() != nombre_prod_his) {

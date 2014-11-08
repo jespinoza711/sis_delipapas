@@ -148,8 +148,39 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="form-group"><label>Comprobante:</label>
-                            <?= form_dropdown('comprobante', $comprobante, array(), 'id="comprobante_ven" class="form-control input-lg"') ?>
+                        <!--<div class="form-group"><label>Comprobante:</label>
+                            <?php //form_dropdown('comprobante', $comprobante, array(), 'id="comprobante_ven" class="form-control input-lg"') ?>
+                        </div>-->
+                    </section>
+                    <section id="detalle_fac" class="content invoice" style="width: 100%;">
+                        <div class="row">
+                            <div class="col-xs-12">
+                                <h2 class="page-header">
+                                    <i class="fa fa-truck"></i> Comprobante de factura - Guía de remisión
+                                </h2>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Fecha de inicio del traslado: </label>
+                            <input id="fech_guia" name="fech_guia" class="form-control input-lg" value="<?php echo date("Y-m-s") ?>">
+                        </div>
+                        <div class="form-group"><label>Punto de partida: </label>
+                            <input id="punto_par" name="punto_par" class="form-control input-lg" value="-">
+                        </div>
+                        <div class="form-group"><label>Punto de llegada: </label>
+                            <input id="punto_lle" name="punto_lle" class="form-control input-lg"  value="-">
+                        </div>
+                         <div class="form-group"><label>Observación: </label>
+                            <input id="obsv_guia" name="obsv_guia" class="form-control input-lg"  value="-">
+                        </div>
+                        <div class="form-group"><label>Transportista:</label>
+                            <?= form_dropdown('transportista', $transportista, array(), 'id="id_tran" class="form-control input-lg"') ?>
+                        </div>
+                        <div class="form-group"><label>Conductor:</label>
+                            <?= form_dropdown('conductor', $conductor, array(), 'id="id_cond" class="form-control input-lg"') ?>
+                        </div>
+                        <div class="form-group"><label>Vehículo:</label>
+                            <?= form_dropdown('vehiculo', $vehiculo, array(), 'id="id_vehi" class="form-control input-lg"') ?>
                         </div>
                     </section>
                     <input id="tbl_venta_reg" name="tbl_venta" type="hidden">
