@@ -32,6 +32,38 @@ $(document).ready(function() {
 
     if ($("#cpo_ventas").is(':visible')) {
 
+        function verificarFormularioVentas() {
+
+            if (!$('#detalle_productos_ven tbody tr td').is(":contains('Busque y agregue un producto')") && !submitted) {
+
+                if ($("#comprobante_ven option:selected").val() == "1") {
+                    if ($("#punto_par").val() != "" && $("#punto_lle").val() != "") {
+                        $('#register_ven').prop('disabled', false);
+                    } else {
+                        $('#register_ven').prop('disabled', true);
+                    }
+                } else if ($("#comprobante_ven option:selected").val() == "2") {
+                    $('#register_ven').prop('disabled', false);
+                }
+
+            } else {
+                $('#register_ven').prop('disabled', true);
+            }
+        }
+        
+        $("#comprobante_ven").change(function() {
+            
+            if ($(this).find('option:selected').val() == "1") {
+                $("#detalle_fac").slideDown();
+            } else if ($(this).find('option:selected').val() == "2") {
+                $("#detalle_fac").slideUp();
+            }
+            verificarFormularioVentas();
+        });
+        
+        $("#punto_par").keyup(function() { verificarFormularioVentas(); });
+        $("#punto_lle").keyup(function() { verificarFormularioVentas(); });
+
         window.onbeforeunload = function(e) {
             if (!$('#detalle_productos_ven tbody tr td').is(":contains('Busque y agregue un producto')") && !submitted) {
                 return 'Hay productos agregados en la tabla de ventas. Al cerrar se perderán los cambios...';
@@ -106,7 +138,7 @@ $(document).ready(function() {
         });
 
         $('.tooltip_ven').tooltip();
-        
+
         $("#fech_guia").datepicker({
             format: 'yyyy-mm-dd'
         });
@@ -189,7 +221,8 @@ $(document).ready(function() {
                             var cant_row = (parseInt(cant_ant) + parseInt(productos[codigo][7])) - parseInt(cantidad);
                             productos[codigo][7] = cant_row;
 
-                            $('#register_ven').prop('disabled', false);
+                            verificarFormularioVentas();
+//                            $('#register_ven').prop('disabled', false);
 
                             var input = $('#sw_igv_ven').find("input");
                             input.removeAttr('checked');
@@ -255,7 +288,8 @@ $(document).ready(function() {
                             }
 
                             productos[codigo][7] = parseInt(productos[codigo][7]) - parseInt(cantidad);
-                            $('#register_ven').prop('disabled', false);
+                            verificarFormularioVentas();
+//                            $('#register_ven').prop('disabled', false);
 
                             var input = $('#sw_igv_ven').find("input");
                             input.removeAttr('checked');
@@ -324,7 +358,8 @@ $(document).ready(function() {
                 }
 
                 productos[codigo][7] = parseInt(productos[codigo][7]) - parseInt(cantidad);
-                $('#register_ven').prop('disabled', false);
+                verificarFormularioVentas();
+//                $('#register_ven').prop('disabled', false);
 
                 var input = $('#sw_igv_ven').find("input");
                 input.removeAttr('checked');
@@ -401,7 +436,8 @@ $(document).ready(function() {
                         '</div>' +
                         '</td>' +
                         '</tr>');
-                $('#register_ven').prop('disabled', true);
+                verificarFormularioVentas();
+//                $('#register_ven').prop('disabled', true);
             }
 
             $.smallBox({

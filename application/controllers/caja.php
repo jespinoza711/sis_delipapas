@@ -303,7 +303,7 @@ class caja extends CI_Controller {
 
         $venta = array(
             'codi_caj' => $caja,
-            'codi_com' => "1",
+            'codi_com' => $comprobante,
             'codi_usu' => $this->session->userdata('user_codi'),
             'codi_cli' => $cliente,
             'fech_ven' => date("Y-m-d H:i:s"),
@@ -377,30 +377,6 @@ class caja extends CI_Controller {
             $numero_b = '0' . $numero_b;
         }
         
-        // GUÍA DE REMISIÓN
-        $tamaño_c = strlen($nume_des);
-        $numero_c = (int) $nume_des;
-
-        $sw_3 = false;
-
-        while (!$sw_3) {
-            $exists_3 = false;
-            foreach ($guias as $row) {
-                if ($numero_c == $row->nume_guia) {
-                    $exists_3 = true;
-                }
-            }
-            if ($exists_3) {
-                $numero_c++;
-            } else {
-                $sw_3 = true;
-            }
-        }
-
-        while ($tamaño_c != strlen($numero_c)) {
-            $numero_c = '0' . $numero_c;
-        }
-
         // REGISTRO DE FACTURA
         $factura = array(
             'serie_fac' => $serie_fac,
@@ -413,23 +389,50 @@ class caja extends CI_Controller {
 
         $codi_fac = $this->mod_view->insert('factura', $factura);
         
-        // REGISTRO DE GUÍA DE REMISIÓN
-        $guia_remision = array(
-            'serie_guia' => $serie_guia,
-            'nume_guia' => $numero_c,
-            'id_fac' => $codi_fac,
-            'fech_guia' => $fech_guia,
-            'punto_par' => $punto_par,
-            'punto_lle' => $punto_lle,
-            'id_cli' => $cliente,
-            'id_tran' => $transportista,
-            'id_cond' => $conductor,
-            'id_vehi' => $vehiculo,
-            'obsv_guia' => $obsv_guia,
-            'esta_guia' => 'A'
-        );
+         // GUÍA DE REMISIÓN
+        if ($comprobante == "1") {
+            $tamaño_c = strlen($nume_des);
+            $numero_c = (int) $nume_des;
 
-        $id_guia = $this->mod_view->insert('guia_remision', $guia_remision);
+            $sw_3 = false;
+
+            while (!$sw_3) {
+                $exists_3 = false;
+                foreach ($guias as $row) {
+                    if ($numero_c == $row->nume_guia) {
+                        $exists_3 = true;
+                    }
+                }
+                if ($exists_3) {
+                    $numero_c++;
+                } else {
+                    $sw_3 = true;
+                }
+            }
+
+            while ($tamaño_c != strlen($numero_c)) {
+                $numero_c = '0' . $numero_c;
+            }
+        
+            // REGISTRO DE GUÍA DE REMISIÓN
+            $guia_remision = array(
+                'serie_guia' => $serie_guia,
+                'nume_guia' => $numero_c,
+                'id_fac' => $codi_fac,
+                'fech_guia' => $fech_guia,
+                'punto_par' => $punto_par,
+                'punto_lle' => $punto_lle,
+                'id_cli' => $cliente,
+                'id_tran' => $transportista,
+                'id_cond' => $conductor,
+                'id_vehi' => $vehiculo,
+                'obsv_guia' => $obsv_guia,
+                'esta_guia' => 'A'
+            );
+
+            $id_guia = $this->mod_view->insert('guia_remision', $guia_remision);
+        }
+        
 
         foreach ($tbl_venta as $row) {
 
@@ -463,7 +466,18 @@ class caja extends CI_Controller {
         $date = new DateTime($registros[0]->fech_fac);
         $date_string = $date->format('Y-m-d h:i:s A');
         $this->session->set_userdata('reg_ventas', $codi_fac);
-        $this->session->set_userdata('info_ven', 'La venta ha sido registrada con éxito. <br>'
+        if ($comprobante == "1") {
+            $this->session->set_userdata('info_ven', 'La venta ha sido registrada con éxito. <br>'
+                . '<strong>Resumen de la factura</strong><br>'
+                . '<strong>Cliente: </strong> ' . $registros[0]->nomb_cli . ' ' . $registros[0]->apel_cli . '<br>'
+                . '<strong>Fecha: </strong> ' . $date_string . '<br>'
+                . '<strong>Total facturado: </strong> S/. ' . $registros[0]->tota_ven . '<br><br>'
+                . '<strong>Ver documentos en pdf: </strong><br>'
+                . '<ul>'
+                . '<li><strong><a href="' . base_url('reporte/reg_venta_data') . '" target="_blank">Factura y guía de remisión (Sólo datos)</a></strong></li>'
+                . '</ul>');
+        } else {
+            $this->session->set_userdata('info_ven', 'La venta ha sido registrada con éxito. <br>'
                 . '<strong>Resumen de la factura</strong><br>'
                 . '<strong>Cliente: </strong> ' . $registros[0]->nomb_cli . ' ' . $registros[0]->apel_cli . '<br>'
                 . '<strong>Fecha: </strong> ' . $date_string . '<br>'
@@ -472,8 +486,9 @@ class caja extends CI_Controller {
                 . '<ul>'
                 . '<li><strong><a href="' . base_url('reporte/reg_venta') . '" target="_blank">Boleta de venta</a></strong></li>'
                 . '<li><strong><a href="' . base_url('reporte/reg_venta_only') . '" target="_blank">Boleta de venta (Sólo datos)</a></strong></li>'
-                . '<li><strong><a href="' . base_url('reporte/reg_venta_data') . '" target="_blank">Factura y guía de remisión (Sólo datos)</a></strong></li>'
                 . '</ul>');
+        }
+        
 
         /*  
             FINALMENTE DESPUES DE REGISTRAR LA COMPRA SE DEBEN ACTUALIZAR LA SERIE Y EL NUMERO DE LOS COMPROBANTES
