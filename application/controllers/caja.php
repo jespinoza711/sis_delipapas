@@ -474,6 +474,7 @@ class caja extends CI_Controller {
                 . '<strong>Total facturado: </strong> S/. ' . $registros[0]->tota_ven . '<br><br>'
                 . '<strong>Ver documentos en pdf: </strong><br>'
                 . '<ul>'
+                . '<li><strong><a href="' . base_url('reporte/reg_venta_show') . '" target="_blank">Factura y guía de remisión</a></strong></li>'
                 . '<li><strong><a href="' . base_url('reporte/reg_venta_data') . '" target="_blank">Factura y guía de remisión (Sólo datos)</a></strong></li>'
                 . '</ul>');
         } else {

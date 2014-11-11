@@ -268,7 +268,7 @@ class reporte extends CI_Controller {
         foreach ($productos as $row) {
             $total += sprintf('%.02F', (double) $row->prec_prod * (double) $row->stoc_prod);
         }
-        
+
         $this->fpdf->SetFont('Times', 'B', 12);
         $this->fpdf->Cell(0, 0, utf8_decode('LISTADO DE INVENTARIO'), 0, 0, 'C');
 
@@ -277,7 +277,7 @@ class reporte extends CI_Controller {
         $this->fpdf->Cell(0, 0, utf8_decode('Fecha de reporte: ' . date("d/m/Y g:i:s A")), 0, 0, 'L');
         $this->fpdf->Ln(5);
         $this->fpdf->Cell(0, 0, utf8_decode('Total de valor estimado del reporte: S/. ' . sprintf('%.02F', $total)), 0, 0, 'L');
-        
+
         $this->fpdf->Ln(10);
         $this->fpdf->SetFont('Times', 'B', 12);
         $this->fpdf->Cell(15, 10, utf8_decode("ID"), 1, 0, 'C');
@@ -306,7 +306,7 @@ class reporte extends CI_Controller {
             } else {
                 $fecha_sa = date("d/m/Y g:i A", $time_sa);
             }
-            
+
             $this->fpdf->Cell(15, 8, utf8_decode($i), 1, 0, 'C');
             $this->fpdf->Cell(35, 8, utf8_decode('  ' . $row->nomb_prod), 1, 0, 'L');
             $this->fpdf->Cell(40, 8, utf8_decode($fecha_in), 1, 0, 'C');
@@ -314,7 +314,7 @@ class reporte extends CI_Controller {
             $this->fpdf->Cell(25, 8, utf8_decode('S/. ' . $row->prec_prod), 1, 0, 'C');
             $this->fpdf->Cell(15, 8, utf8_decode($row->stoc_prod), 1, 0, 'C');
             $this->fpdf->Cell(25, 8, utf8_decode('S/. ' . sprintf('%.02F', (double) $row->prec_prod * (double) $row->stoc_prod)), 1, 0, 'C');
-            
+
             $this->fpdf->Ln(8);
             $i++;
         }
@@ -455,7 +455,7 @@ class reporte extends CI_Controller {
         $this->fpdf->SetFont('Times', '', 12);
 
         $usuarios = $this->mod_view->view('v_usuario', 0, false, array('esta_usu' => 'A'));
-        
+
         $i = 1;
         foreach ($usuarios as $row) {
 
@@ -514,7 +514,7 @@ class reporte extends CI_Controller {
 
             $time = strtotime($row->fech_pla);
             $fecha = date("d/m/Y g:i A", $time);
-            
+
             $this->fpdf->Cell(15, 8, utf8_decode($i), 1, 0, 'C');
             $this->fpdf->Cell(25, 8, utf8_decode($row->dni_emp), 1, 0, 'C');
             $this->fpdf->Cell(65, 8, utf8_decode('   ' . $row->apel_emp . ', ' . $row->nomb_emp), 1, 0, 'L');
@@ -823,7 +823,7 @@ class reporte extends CI_Controller {
             } else {
                 $registro = $this->mod_registro->get_registro_interval("fech_dpl BETWEEN '$fecha_a'  AND '$fecha_b'");
             }
-            
+
             $i = 1;
             foreach ($registro as $row) {
                 $time = strtotime($row->fech_dpl);
@@ -1040,7 +1040,7 @@ class reporte extends CI_Controller {
 
         $this->fpdf->Output();
     }
-    
+
     public function reg_venta_only() {
 
         $codi_fac = $this->session->userdata('reg_ventas');
@@ -1163,7 +1163,7 @@ class reporte extends CI_Controller {
 
         $this->fpdf->Output();
     }
-    
+
     public function reg_venta_data() {
 
         $codi_fac = $this->session->userdata('reg_ventas');
@@ -1180,17 +1180,17 @@ class reporte extends CI_Controller {
         $this->fpdf->AddPage('L', array('209.020833333', '161.395833333'));
 
         $this->fpdf->SetLeftMargin(135);
-        
+
         $this->fpdf->SetFont('Courier', 'B', 18);
         $this->fpdf->Cell('50', '8', utf8_decode("N° " . $registros[0]->desp_fac), 0, 0, 'C');
-        
+
         $fecha_fac = $registros[0]->fech_fac;
-        
+
         $this->fpdf->SetLeftMargin(33);
         $this->fpdf->Ln(8);
         $this->fpdf->SetFont('Courier', 'B', 10);
         $this->fpdf->Cell('13', '5', utf8_decode(substr($fecha_fac, 8, 2)), 0, 0, 'C');
-        
+
         $mes_date = substr($fecha_fac, 5, 2);
         $mes = "Enero";
         if ($mes_date == "02") {
@@ -1220,32 +1220,32 @@ class reporte extends CI_Controller {
         $this->fpdf->Cell('37', '5', utf8_decode($mes), 0, 0, 'C');
         $this->fpdf->Cell('10', '5', "", 0);
         $this->fpdf->Cell('5', '5', utf8_decode(substr($fecha_fac, 3, 1)), 0, 0, 'C');
-        
+
         $this->fpdf->SetLeftMargin(20);
         $this->fpdf->Ln(8);
-      
+
         $this->fpdf->Cell('112', '5', utf8_decode($registros[0]->nomb_cli . ' ' . $registros[0]->apel_cli), 0, 0, 'L');
         $this->fpdf->Cell('15', '5', "", 0);
         $this->fpdf->Cell('48', '5', utf8_decode($registros[0]->ruc_cli), 0, 0, 'L');
-        
+
         $this->fpdf->Ln(6);
-        
+
         $this->fpdf->Cell('112', '5', utf8_decode($registros[0]->dire_cli), 0, 0, 'L');
         $this->fpdf->Cell('15', '5', "", 0);
         $this->fpdf->Cell('48', '5', utf8_decode(""), 0, 0, 'L');
-        
+
         $this->fpdf->SetLeftMargin(4);
-        $this->fpdf->Ln(12);     
-        
+        $this->fpdf->Ln(12);
+
         $i = 0;
         $total = 0;
         foreach ($registros as $row) {
             $i++;
-            $total += round($row->cantidad*$row->prec_prod, 2);
+            $total += round($row->cantidad * $row->prec_prod, 2);
             $this->fpdf->Cell('14', '6,1', utf8_decode($row->cantidad), 0, 0, 'C');
             $this->fpdf->Cell('123', '6.1', utf8_decode($row->nomb_prod), 0, 0, 'L');
             $this->fpdf->Cell('24', '6.1', utf8_decode($row->prec_prod), 0, 0, 'C');
-            $this->fpdf->Cell('32', '6.1', utf8_decode(round($row->cantidad*$row->prec_prod, 2)), 0, 0, 'C');
+            $this->fpdf->Cell('32', '6.1', utf8_decode(round($row->cantidad * $row->prec_prod, 2)), 0, 0, 'C');
             $this->fpdf->Ln(6.1);
         }
         while ($i != 8) {
@@ -1256,23 +1256,23 @@ class reporte extends CI_Controller {
             $this->fpdf->Cell('32', '6.1', utf8_decode(""), 0, 0, 'C');
             $this->fpdf->Ln(6.1);
         }
-        
+
         $this->fpdf->Cell('14', '6.1', utf8_decode(""), 0, 0, 'C');
         $this->fpdf->Cell('123', '6.1', utf8_decode(""), 0, 0, 'L');
         $this->fpdf->Cell('24', '6.1', utf8_decode(""), 0, 0, 'C');
         $this->fpdf->Cell('32', '6.1', utf8_decode(""), 0, 0, 'C');
-        
+
         $this->fpdf->SetLeftMargin(23);
         $this->fpdf->Ln(6.1);
-        
+
         $this->fpdf->SetFont('Courier', 'B', 8);
-        $this->fpdf->Cell('24', '4.5', utf8_decode($guia_remision[0]->serie_guia . '-' .$guia_remision[0]->nume_guia), 0, 0, 'C');
-        
+        $this->fpdf->Cell('24', '4.5', utf8_decode($guia_remision[0]->serie_guia . '-' . $guia_remision[0]->nume_guia), 0, 0, 'C');
+
         $this->fpdf->SetFont('Courier', 'B', 10);
-        
+
         $this->fpdf->Cell('118', '7', utf8_decode(""), 0, 0, 'C');
         $this->fpdf->Cell('32', '7', utf8_decode($total), 0, 0, 'C');
-        $this->fpdf->SetLeftMargin(47+118);
+        $this->fpdf->SetLeftMargin(47 + 118);
         $this->fpdf->Ln(7);
         $this->fpdf->Cell('32', '7', utf8_decode((int) $negocio[0]->igv_pla), 0, 0, 'C');
         $this->fpdf->Ln(7);
@@ -1284,41 +1284,41 @@ class reporte extends CI_Controller {
         $this->fpdf->AddPage('L', array('209.020833333', '161.395833333'));
 
         $this->fpdf->SetLeftMargin(145);
-        
+
         $this->fpdf->SetFont('Courier', 'B', 18);
         $this->fpdf->Cell('50', '8', utf8_decode("N° " . $guia_remision[0]->nume_guia), 0, 0, 'C');
-        
+
         $this->fpdf->SetLeftMargin(50);
         $this->fpdf->Ln(6.5);
         $this->fpdf->SetFont('Courier', 'B', 10);
         $this->fpdf->Cell('11', '5', utf8_decode(substr($fecha_fac, 8, 2)), 0, 0, 'C');
         $this->fpdf->Cell('15', '5', utf8_decode(substr($fecha_fac, 5, 2)), 0, 0, 'C');
         $this->fpdf->Cell('11', '5', utf8_decode(substr($fecha_fac, 2, 2)), 0, 0, 'C');
-        
+
         $this->fpdf->SetLeftMargin(30);
         $this->fpdf->Ln(5);
-        
+
         $this->fpdf->Cell('57', '4', utf8_decode($registros[0]->nomb_cli . ' ' . $registros[0]->apel_cli), 0, 0, 'L');
         $this->fpdf->Cell('45', '4', "", 0);
         $this->fpdf->Cell('76', '4', utf8_decode($guia_remision[0]->punto_par), 0);
-        
+
         $this->fpdf->SetLeftMargin(20);
         $this->fpdf->Ln(5);
-        
+
         $this->fpdf->Cell('40', '4', utf8_decode($registros[0]->ruc_cli), 0, 0, 'L');
         $this->fpdf->Cell('21', '4', "", 0);
         $this->fpdf->Cell('26', '4', utf8_decode(""), 0, 0, 'L');
         $this->fpdf->Cell('25', '4', "", 0);
         $this->fpdf->Cell('76', '4', utf8_decode($guia_remision[0]->punto_lle), 0);
-        
+
         $this->fpdf->SetLeftMargin(13);
         $this->fpdf->Ln(32);
-        
+
         $i = 0;
         $total = 0;
         foreach ($registros as $row) {
             $i++;
-            $total += round($row->cantidad*$row->prec_prod, 2);
+            $total += round($row->cantidad * $row->prec_prod, 2);
             $this->fpdf->Cell('88', '4', utf8_decode($row->nomb_prod), 0, 0, 'L');
             $this->fpdf->Cell('36', '4', utf8_decode($row->cantidad), 0, 0, 'C');
             $this->fpdf->Ln(4);
@@ -1329,19 +1329,438 @@ class reporte extends CI_Controller {
             $this->fpdf->Cell('36', '4', utf8_decode(""), 0, 0, 'C');
             $this->fpdf->Ln(4);
         }
-        
+
         $this->fpdf->SetLeftMargin(15);
         $this->fpdf->Ln(10);
-        
+
         $transportista = $this->mod_view->view('transportista', 0, false, array('id_tran' => $guia_remision[0]->id_tran));
         $conductor = $this->mod_view->view('transportista_conductor', 0, false, array('id_cond' => $guia_remision[0]->id_cond));
         $vehiculo = $this->mod_view->view('transportista_vehiculo', 0, false, array('id_vehi' => $guia_remision[0]->id_vehi));
-        
+
         $this->fpdf->Cell('40', '4', utf8_decode($transportista[0]->ruc_tran), 0, 0, 'L');
-        $this->fpdf->Cell('50', '4', utf8_decode($conductor[0]->apel_cond . ', ' .$conductor[0]->nomb_cond), 0, 0, 'L');
+        $this->fpdf->Cell('50', '4', utf8_decode($conductor[0]->apel_cond . ', ' . $conductor[0]->nomb_cond), 0, 0, 'L');
         $this->fpdf->Cell('15', '4', "", 0);
-        $this->fpdf->Cell('45', '4', utf8_decode($vehiculo[0]->marca_vehi . ' - ' .$vehiculo[0]->placa_vehi), 0);
+        $this->fpdf->Cell('45', '4', utf8_decode($vehiculo[0]->marca_vehi . ' - ' . $vehiculo[0]->placa_vehi), 0);
         $this->fpdf->Cell('40', '4', utf8_decode($conductor[0]->licen_cond), 0);
+
+        $this->fpdf->Output();
+    }
+
+    public function reg_venta_show() {
+
+        $codi_fac = $this->session->userdata('reg_ventas');
+
+        $registros = $this->mod_view->view('v_factura', 0, false, array('codi_fac' => $codi_fac));
+        $guia_remision = $this->mod_view->view('guia_remision', 0, false, array('id_fac' => $codi_fac));
+        $negocio = $this->mod_view->view('negocio');
+        $comprobantes = $this->mod_view->view('comprobante');
+
+        $this->load->library('fpdf');
+
+        $this->fpdf->SetAutoPageBreak(false);
+        $this->fpdf->SetMargins(0, 0, 0);
+        $this->fpdf->SetTopMargin(13);
+        $this->fpdf->AddPage('L', array('209.020833333', '161.395833333'));
+
+//        $this->fpdf->SetTextColor("6", "44", "132");
+        // TITULO
+        $this->fpdf->SetFont('Helvetica', 'B', 36);
+        $this->fpdf->SetLeftMargin(40);
+        $this->fpdf->Cell('52.91', '11.9', "DELIPAPAS", 0, 0, 'C');
+        $this->fpdf->Ln(2);
+
+        // RUC
+        $this->fpdf->SetFont('Helvetica', 'B', 21);
+        $this->fpdf->SetLeftMargin(133);
+        $this->fpdf->Cell('52.91', '11.9', utf8_decode("RUC N° 10156926880"), 0, 0, 'C');
+        $this->fpdf->SetLeftMargin(40);
+        $this->fpdf->Ln(6);
+
+        // Dr. Quispe Ugalbe, Fernando Ernesto
+        $this->fpdf->SetFont('Helvetica', 'I', 10);
+        $this->fpdf->Cell('52.91', '11.9', utf8_decode("De: Quispe Ugalbe, Fernando Ernesto"), 0, 0, 'C');
+        $this->fpdf->SetLeftMargin(130);
+        $this->fpdf->Ln(7);
+
+        // FACTURA
+        $this->fpdf->SetFont('Helvetica', 'B', 25);
+        $this->fpdf->SetFillColor(0, 0, 0);
+        $this->fpdf->Rect(119, 27, 79, 13, 'F');
+        $this->fpdf->SetTextColor(255, 255, 255);
+        $this->fpdf->Cell('52.91', '11.9', utf8_decode("FACTURA"), 0, 0, 'C');
+        $this->fpdf->SetLeftMargin(40);
+        $this->fpdf->Ln(3);
+
+        $this->fpdf->SetTextColor(0, 0, 0);
+
+        // DIRECCIONES
+        $this->fpdf->SetFont('Helvetica', '', 7);
+        $this->fpdf->Cell('52.91', '11.9', utf8_decode("AV. CRUZ BLANCA N°567 INT. A. PAN. NORTE KM. 152"), 0, 0, 'C');
+        $this->fpdf->Ln(3);
+        $this->fpdf->Cell('52.91', '11.9', utf8_decode("AV. PUQUIO CANO - HUALMAY - HUAURA - LIMA"), 0, 0, 'C');
+        $this->fpdf->SetLeftMargin(120);
+        $this->fpdf->Ln(8);
+
+        // SERIE Y DESPACHO
+        $this->fpdf->SetFont('Helvetica', 'B', 18);
+        $this->fpdf->Cell('25', '8', utf8_decode($comprobantes[1]->serie_com . ' - '), 0, 0, 'C');
+        $this->fpdf->SetFont('Courier', '', 18);
+        $this->fpdf->Cell('50', '8', utf8_decode("N° " . $registros[0]->desp_fac), 0, 0, 'L');
+        $this->fpdf->SetLeftMargin(20);
+        $this->fpdf->Ln(7);
+
+        // FECHAS
+        $fecha_fac = $registros[0]->fech_fac;
+        $mes_date = substr($fecha_fac, 5, 2);
+        $mes = "Enero";
+        if ($mes_date == "02") {
+            $mes = "Febrero";
+        } else if ($mes_date == "03") {
+            $mes = "Marzo";
+        } else if ($mes_date == "04") {
+            $mes = "Abril";
+        } else if ($mes_date == "05") {
+            $mes = "Mayo";
+        } else if ($mes_date == "06") {
+            $mes = "Junio";
+        } else if ($mes_date == "07") {
+            $mes = "Julio";
+        } else if ($mes_date == "08") {
+            $mes = "Agosto";
+        } else if ($mes_date == "09") {
+            $mes = "Septiembre";
+        } else if ($mes_date == "10") {
+            $mes = "Octubre";
+        } else if ($mes_date == "11") {
+            $mes = "Noviembre";
+        } else if ($mes_date == "12") {
+            $mes = "Diciembre";
+        }
+        $this->fpdf->SetFont('Helvetica', '', 8);
+        $this->fpdf->Cell('14', '4', utf8_decode("Hualmay,"), 0, 0, 'C');
+        $this->fpdf->Cell('12', '4', utf8_decode(substr($fecha_fac, 8, 2)), 0, 0, 'C');
+        $this->fpdf->Cell('4', '4', utf8_decode("de"), 0, 0, 'C');
+        $this->fpdf->Cell('37', '4', utf8_decode($mes), 0, 0, 'C');
+        $this->fpdf->Cell('11', '4', utf8_decode("del 201"), 0, 0, 'C');
+        $this->fpdf->Cell('3', '4', utf8_decode(substr($fecha_fac, 3, 1)), 0, 0, 'C');
+        $this->fpdf->Ln(1);
+        $this->fpdf->Cell('14', '4', utf8_decode(""), 0, 0, 'C');
+        $this->fpdf->Cell('12', '4', utf8_decode(".............."), 0, 0, 'C');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 0, 0, 'C');
+        $this->fpdf->Cell('37', '4', utf8_decode("..............................................."), 0, 0, 'C');
+        $this->fpdf->Cell('11', '4', utf8_decode(""), 0, 0, 'C');
+        $this->fpdf->Cell('3', '4', utf8_decode("......"), 0, 0, 'C');
+        $this->fpdf->SetLeftMargin(6);
+        $this->fpdf->Ln(7);
+
+        // DATOS DEL CLIENTE
+        $this->fpdf->SetFont('Helvetica', '', 9);
+        $this->fpdf->Cell('17', '4', utf8_decode("Señor (es):"), 0, 0, 'C');
+        $this->fpdf->Cell('112', '4', utf8_decode($registros[0]->nomb_cli . ' ' . $registros[0]->apel_cli), 0, 0, 'L');
+        $this->fpdf->Cell('17', '4', utf8_decode("R.U.C. N°:"), 0);
+        $this->fpdf->Cell('48', '4', utf8_decode($registros[0]->ruc_cli), 0, 0, 'L');
+        $this->fpdf->Ln(1);
+        $this->fpdf->Cell('17', '4', utf8_decode(""), 0, 0, 'C');
+        $this->fpdf->Cell('112', '4', utf8_decode("............................................................................................................................."), 0, 0, 'L');
+        $this->fpdf->Cell('17', '4', utf8_decode(""), 0);
+        $this->fpdf->Cell('48', '4', utf8_decode("................................................"), 0, 0, 'L');
+        $this->fpdf->Ln(6);
+        $this->fpdf->Cell('17', '4', utf8_decode("Dirección: "), 0, 0, 'C');
+        $this->fpdf->Cell('112', '4', utf8_decode($registros[0]->dire_cli), 0, 0, 'L');
+        $this->fpdf->Cell('15', '4', utf8_decode("Guía N°: "), 0);
+        $this->fpdf->Cell('48', '4', utf8_decode($guia_remision[0]->nume_guia), 0, 0, 'L');
+        $this->fpdf->Ln(1);
+        $this->fpdf->Cell('17', '4', utf8_decode(""), 0, 0, 'C');
+        $this->fpdf->Cell('112', '4', utf8_decode(".............................................................................................................................."), 0, 0, 'L');
+        $this->fpdf->Cell('15', '4', utf8_decode(""), 0);
+        $this->fpdf->Cell('48', '4', utf8_decode(".................................................."), 0, 0, 'L');
+        $this->fpdf->SetLeftMargin(4);
+        $this->fpdf->Ln(5);
+
+        // DETALLE DE PRODUCTOS
+        $this->fpdf->Cell('14', '6.1', utf8_decode("CANT."), 1, 0, 'C');
+        $this->fpdf->Cell('123', '6.1', utf8_decode("D  E  S  C  R  I  P  C  I  O  N"), 1, 0, 'C');
+        $this->fpdf->Cell('24', '6.1', utf8_decode("P. UNITARIO"), 1, 0, 'C');
+        $this->fpdf->Cell('32', '6.1', utf8_decode("VALOR VENTA"), 1, 0, 'C');
+        $this->fpdf->Ln(6.1);
+        $i = 0;
+        $total = 0;
+        foreach ($registros as $row) {
+            $i++;
+            $total += round($row->cantidad * $row->prec_prod, 2);
+            $this->fpdf->Cell('14', '6,1', utf8_decode($row->cantidad), 1, 0, 'C');
+            $this->fpdf->Cell('123', '6.1', utf8_decode('   ' . $row->nomb_prod), 1, 0, 'L');
+            $this->fpdf->Cell('24', '6.1', utf8_decode($row->prec_prod), 1, 0, 'C');
+            $this->fpdf->Cell('32', '6.1', utf8_decode(round($row->cantidad * $row->prec_prod, 2)), 1, 0, 'C');
+            $this->fpdf->Ln(6.1);
+        }
+        while ($i != 8) {
+            $i++;
+            $this->fpdf->Cell('14', '6.1', utf8_decode(""), 1, 0, 'C');
+            $this->fpdf->Cell('123', '6.1', utf8_decode(""), 1, 0, 'L');
+            $this->fpdf->Cell('24', '6.1', utf8_decode(""), 1, 0, 'C');
+            $this->fpdf->Cell('32', '6.1', utf8_decode(""), 1, 0, 'C');
+            $this->fpdf->Ln(6.1);
+        }
+        $this->fpdf->Cell('161', '6.1', utf8_decode("SON:                                                                                                                                                   Nuevos Soles"), 1, 0, 'L');
+        $this->fpdf->Cell('32', '6.1', utf8_decode(""), 1, 0, 'C');
+//        $this->fpdf->SetLeftMargin(23);
+        $this->fpdf->Ln(6.1);
+
+        // GUIA DE REMISIÓN
+        $this->fpdf->SetFont('Helvetica', 'B', 8);
+        $this->fpdf->Cell('30', '4.5', utf8_decode("Guía de remisión N°: "), 0, 0, 'L');
+        $this->fpdf->SetFont('Courier', 'B', 8);
+        $this->fpdf->Cell('24', '4.5', utf8_decode($guia_remision[0]->serie_guia . '-' . $guia_remision[0]->nume_guia), 0, 0, 'C');
+
+        $this->fpdf->SetLeftMargin(78);
+        $this->fpdf->Ln(1.5);
+
+        $this->fpdf->SetFont('Courier', 'B', 9);
+
+        $this->fpdf->Cell('32', '4.5', utf8_decode("C A N C E L A D O"), 0, 0, 'L');
+        $this->fpdf->Cell('30', '4.5', "", 0, 0, 'L');
+        $this->fpdf->SetFont('Helvetica', '', 9);
+        $this->fpdf->Cell('25.1', '6.1', utf8_decode("SUB-TOTAL"), 1, 0, 'C');
+        $this->fpdf->SetFont('Courier', 'B', 9);
+        $this->fpdf->Cell('32', '6.1', utf8_decode($total), 1, 0, 'C');
+
+        $this->fpdf->SetLeftMargin(60);
+        $this->fpdf->Ln(5);
+        $this->fpdf->SetFont('Helvetica', '', 8);
+        $this->fpdf->Cell('14', '4', utf8_decode("Hualmay,"), 0, 0, 'C');
+        $this->fpdf->Cell('10', '4', utf8_decode(substr($fecha_fac, 8, 2)), 0, 0, 'C');
+        $this->fpdf->Cell('4', '4', utf8_decode("de"), 0, 0, 'C');
+        $this->fpdf->Cell('26', '4', utf8_decode($mes), 0, 0, 'C');
+        $this->fpdf->Cell('11', '4', utf8_decode("del 201"), 0, 0, 'C');
+        $this->fpdf->Cell('3', '4', utf8_decode(substr($fecha_fac, 3, 1)), 0, 0, 'C');
+        $this->fpdf->Ln(1);
+        $this->fpdf->Cell('14', '4', utf8_decode(""), 0, 0, 'C');
+        $this->fpdf->Cell('10', '4', utf8_decode("........."), 0, 0, 'C');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 0, 0, 'C');
+        $this->fpdf->Cell('26', '4', utf8_decode(".................................."), 0, 0, 'C');
+        $this->fpdf->Cell('11', '4', utf8_decode(""), 0, 0, 'C');
+        $this->fpdf->Cell('3', '4', utf8_decode("......"), 0, 0, 'C');
+        $this->fpdf->Cell('12', '6.1', "", 0, 0, 'C');
+        $this->fpdf->SetFont('Helvetica', '', 9);
+        $this->fpdf->Cell('25.1', '6.1', utf8_decode("I.G.V.        %"), 1, 0, 'C');
+        $this->fpdf->SetFont('Courier', 'B', 9);
+        $this->fpdf->Cell('32', '6.1', utf8_decode((int) $negocio[0]->igv_pla), 1, 0, 'C');
+
+        $this->fpdf->Ln(5);
+        $this->fpdf->SetFont('Helvetica', 'B', 8);
+        $this->fpdf->Cell('70', '8', utf8_decode("___________________________________"), 0, 0, 'C');
+        $this->fpdf->Ln(6);
+        $this->fpdf->SetFont('Helvetica', 'I', 8);
+        $this->fpdf->Cell('70', '4', utf8_decode("p. Quispe Ugalbe, Fernando Ernesto"), 0, 0, 'C');
+
+        $this->fpdf->SetLeftMargin(140);
+        $this->fpdf->Ln(-5);
+        $this->fpdf->SetFont('Helvetica', '', 9);
+        $this->fpdf->Cell('25.1', '6.1', utf8_decode("TOTAL       S/."), 1, 0, 'C');
+        $this->fpdf->SetFont('Courier', 'B', 9);
+        $this->fpdf->Cell('32', '6.1', utf8_decode($registros[0]->tota_ven), 1, 0, 'C');
+
+        $this->fpdf->SetLeftMargin(35);
+        $this->fpdf->Ln(-12);
+        $this->fpdf->Cell('20', '4', utf8_decode("............"), 0, 0, 'C');
+
+        $this->fpdf->Rect(119, 14, 79, 38, 'D');
+        $this->fpdf->Rect(4, 54, 193, 15, 'D');
+        $this->fpdf->Rect(4, 54, 193, 15, 'D');
+        $this->fpdf->Rect(58, 132.5, 73, 22, 'D');
+
+        $this->fpdf->SetAutoPageBreak(false);
+        $this->fpdf->SetMargins(0, 0, 0);
+        $this->fpdf->SetTopMargin(13);
+        $this->fpdf->AddPage('L', array('209.020833333', '161.395833333'));
+
+        // TITULO
+        $this->fpdf->SetFont('Helvetica', 'B', 36);
+        $this->fpdf->SetLeftMargin(40);
+        $this->fpdf->Cell('52.91', '11.9', "DELIPAPAS", 0, 0, 'C');
+        $this->fpdf->Ln(2);
+
+        // RUC
+        $this->fpdf->SetFont('Helvetica', 'B', 21);
+        $this->fpdf->SetLeftMargin(133);
+        $this->fpdf->Cell('52.91', '11.9', utf8_decode("RUC N° 10156926880"), 0, 0, 'C');
+        $this->fpdf->SetLeftMargin(40);
+        $this->fpdf->Ln(6);
+
+        // Dr. Quispe Ugalbe, Fernando Ernesto
+        $this->fpdf->SetFont('Helvetica', 'I', 10);
+        $this->fpdf->Cell('52.91', '11.9', utf8_decode("De: Quispe Ugalbe, Fernando Ernesto"), 0, 0, 'C');
+        $this->fpdf->SetLeftMargin(130);
+        $this->fpdf->Ln(3);
+
+        // GIOA DE REMITENTE
+        $this->fpdf->SetFont('Helvetica', 'B', 16);
+        $this->fpdf->Cell('52.91', '11.9', utf8_decode("GUÍA DE REMISIÓN"), 0, 0, 'C');
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell('52.91', '11.9', utf8_decode("REMITENTE"), 0, 0, 'C');
+        $this->fpdf->SetLeftMargin(40);
+        $this->fpdf->Ln(0);
+
+        $this->fpdf->SetTextColor(0, 0, 0);
+
+        // DIRECCIONES
+        $this->fpdf->SetFont('Helvetica', '', 7);
+        $this->fpdf->Cell('52.91', '11.9', utf8_decode("AV. CRUZ BLANCA N°567 INT. A. PAN. NORTE KM. 152"), 0, 0, 'C');
+        $this->fpdf->Ln(3);
+        $this->fpdf->Cell('52.91', '11.9', utf8_decode("AV. PUQUIO CANO - HUALMAY - HUAURA - LIMA"), 0, 0, 'C');
+        $this->fpdf->SetLeftMargin(122);
+        $this->fpdf->Ln(8);
+
+        // SERIE Y DESPACHO
+        $this->fpdf->SetFont('Helvetica', 'B', 18);
+        $this->fpdf->Cell('25', '8', utf8_decode($comprobantes[2]->serie_com . ' - '), 0, 0, 'C');
+        $this->fpdf->SetFont('Courier', '', 18);
+        $this->fpdf->Cell('50', '8', utf8_decode("N° " . $guia_remision[0]->nume_guia), 0, 0, 'L');
+        $this->fpdf->SetLeftMargin(10);
+        $this->fpdf->Ln(7);
+
+        // FECHAS
+
+        $this->fpdf->SetFont('Helvetica', '', 8);
+        $this->fpdf->Cell('40', '4', utf8_decode("Fecha del inicio del traslado: "), 0, 0, 'C');
+        $this->fpdf->SetLeftMargin(50);
+        $this->fpdf->Ln(-2);
+        $this->fpdf->Cell('40', '6', utf8_decode(substr($fecha_fac, 8, 2) . '     /     ' . substr($fecha_fac, 5, 2) . '     /     ' . substr($fecha_fac, 2, 2)), 1, 0, 'C');
+        $this->fpdf->SetLeftMargin(10);
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell('20', '4', utf8_decode("Destinatario: "), 0, 0, 'L');
+        $this->fpdf->Cell('85', '4', utf8_decode($registros[0]->nomb_cli . ' ' . $registros[0]->apel_cli), 0, 0, 'L');
+        $this->fpdf->Cell('25', '4', "Punto de partida:", 0);
+        $this->fpdf->Cell('25', '4', utf8_decode($guia_remision[0]->punto_par), 0);
+        $this->fpdf->SetLeftMargin(30);
+        $this->fpdf->Ln(0.5);
+        $this->fpdf->Cell('110', '4', utf8_decode("_______________________________________"), 0, 0, 'L');
+        $this->fpdf->Cell('70', '4', utf8_decode("__________________________________________"), 0, 0, 'L');
+        $this->fpdf->SetLeftMargin(10);
+        $this->fpdf->Ln(4);
+        $this->fpdf->Cell('10', '4', utf8_decode("RUC:"), 0, 0, 'L');
+        $this->fpdf->Cell('42', '4', utf8_decode($registros[0]->ruc_cli), 0, 0, 'L');
+        $this->fpdf->Cell('25', '4', utf8_decode("N° Doc. Identidad:"), 0, 0, 'L');
+        $this->fpdf->Cell('23', '4', utf8_decode(""), 0, 0, 'L');
+        $this->fpdf->Cell('5', '4', utf8_decode(""), 0, 0, 'L');
+        $this->fpdf->Cell('25', '4', "Punto de llegada:", 0);
+        $this->fpdf->Cell('25', '4', utf8_decode($guia_remision[0]->punto_lle), 0);
+        $this->fpdf->SetLeftMargin(20);
+        $this->fpdf->Ln(0.5);
+        $this->fpdf->Cell('67', '4', utf8_decode("_________________________"), 0, 0, 'L');
+        $this->fpdf->Cell('53', '4', utf8_decode("_____________"), 0, 0, 'L');
+        $this->fpdf->Cell('70', '4', utf8_decode("__________________________________________"), 0, 0, 'L');
+        $this->fpdf->SetLeftMargin(10);
+        $this->fpdf->Ln(5);
+        $this->fpdf->Cell('10', '4', utf8_decode("Motivo del traslado:"), 0, 0, 'L');
+        $this->fpdf->Ln(6);
+        $this->fpdf->SetFont('Times', '', 8);
+        $this->fpdf->Cell('35', '4', utf8_decode("Venta"), 0, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 1, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 0, 0, 'L');
+        $this->fpdf->SetFont('Times', '', 7);
+        $this->fpdf->Cell('56', '4', utf8_decode("Venta sujeta a confirmación por el comprador"), 0, 0, 'L');
+        $this->fpdf->SetFont('Times', '', 8);
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 1, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 0, 0, 'L');
+        $this->fpdf->Cell('22', '4', utf8_decode("Recojo de bienes"), 0, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 1, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 0, 0, 'L');
+        $this->fpdf->Cell('50', '4', utf8_decode("Traslado zona primaria"), 0, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 1, 0, 'L');
+        $this->fpdf->Ln(4);
+        $this->fpdf->Cell('35', '4', utf8_decode("Compra"), 0, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 1, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 0, 0, 'L');
+        $this->fpdf->SetFont('Times', '', 7);
+        $this->fpdf->Cell('56', '4', utf8_decode("Traslado entre establecimientos de la misma empresa"), 0, 0, 'L');
+        $this->fpdf->SetFont('Times', '', 8);
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 1, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 0, 0, 'L');
+        $this->fpdf->Cell('22', '4', utf8_decode("Importación"), 0, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 1, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 0, 0, 'L');
+        $this->fpdf->Cell('50', '4', utf8_decode("Traslado por emisor itinerante"), 0, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 1, 0, 'L');
+        $this->fpdf->Ln(4);
+        $this->fpdf->Cell('35', '4', utf8_decode("Consignación"), 0, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 1, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 0, 0, 'L');
+        $this->fpdf->SetFont('Times', '', 7);
+        $this->fpdf->Cell('56', '4', utf8_decode("Devolución"), 0, 0, 'L');
+        $this->fpdf->SetFont('Times', '', 8);
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 1, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 0, 0, 'L');
+        $this->fpdf->Cell('22', '4', utf8_decode("Exportación"), 0, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 1, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 0, 0, 'L');
+        $this->fpdf->Cell('50', '4', utf8_decode("Traslado entre bienes para transformación"), 0, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 1, 0, 'L');
+        $this->fpdf->Ln(4);
+        $this->fpdf->Cell('35', '4', utf8_decode("Venta con entrega a terceros"), 0, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 1, 0, 'L');
+        $this->fpdf->Cell('4', '4', utf8_decode(""), 0, 0, 'L');
+        $this->fpdf->SetFont('Times', '', 7);
+        $this->fpdf->Cell('56', '4', utf8_decode("Otros (especificar) ................................................................................................................................................................................................................"
+                        . ""), 0, 0, 'L');
+        $this->fpdf->Ln(9);
+        $this->fpdf->SetFont('Helvetica', '', 8);
+        $this->fpdf->Cell('10', '4', utf8_decode("Datos del bien transportado:"), 0, 0, 'L');
+        $this->fpdf->Ln(4);
+        $this->fpdf->Cell('88', '8', utf8_decode("   Descripción"), 1, 0, 'L');
+        $this->fpdf->Cell('36', '8', utf8_decode("   Cantidad"), 1, 0, 'L');
+        $this->fpdf->Cell('36', '8', utf8_decode("   Unidad de medida"), 1, 0, 'L');
+        $this->fpdf->Cell('32', '8', utf8_decode("   Peso"), 1, 0, 'L');
+        $this->fpdf->Ln(8);
+        $i = 0;
+        $total = 0;
+        foreach ($registros as $row) {
+            $i++;
+            $total += round($row->cantidad*$row->prec_prod, 2);
+            $this->fpdf->Cell('88', '4', utf8_decode($row->nomb_prod), 1, 0, 'L');
+            $this->fpdf->Cell('36', '4', utf8_decode($row->cantidad), 1, 0, 'C');
+            $this->fpdf->Cell('36', '4', utf8_decode(""), 1, 0, 'C');
+            $this->fpdf->Cell('32', '4', utf8_decode(""), 1, 0, 'C');
+            $this->fpdf->Ln(4);
+        }
+        while ($i != 7) {
+            $i++;
+            $this->fpdf->Cell('88', '4', utf8_decode(""), 1, 0, 'L');
+            $this->fpdf->Cell('36', '4', utf8_decode(""), 1, 0, 'C');
+            $this->fpdf->Cell('36', '4', utf8_decode(""), 1, 0, 'C');
+            $this->fpdf->Cell('32', '4', utf8_decode(""), 1, 0, 'C');
+            $this->fpdf->Ln(4);
+        }
+         $transportista = $this->mod_view->view('transportista', 0, false, array('id_tran' => $guia_remision[0]->id_tran));
+        $conductor = $this->mod_view->view('transportista_conductor', 0, false, array('id_cond' => $guia_remision[0]->id_cond));
+        $vehiculo = $this->mod_view->view('transportista_vehiculo', 0, false, array('id_vehi' => $guia_remision[0]->id_vehi));
+        
+        $this->fpdf->Ln(2);
+        $this->fpdf->Cell('102', '4', utf8_decode("Datos del transportista:"), 0, 0, 'L');
+        $this->fpdf->Cell('20', '4', utf8_decode("Datos de la Unidad de Transporte y conductor:"), 0, 0, 'L');
+        $this->fpdf->Ln(6);
+        $this->fpdf->Cell('40', '4', utf8_decode("   RUC"), 0, 0, 'L');
+        $this->fpdf->Cell('60', '4', utf8_decode("   Denominación, apellidos y nombres"), 0, 0, 'L');
+        $this->fpdf->Cell('45', '4', utf8_decode("   Marca y placa"), 0, 0, 'L');
+        $this->fpdf->Cell('40', '4', utf8_decode("   Licencia de conducir"), 0, 0, 'L');
+        $this->fpdf->Ln(5);
+        $this->fpdf->Cell('40', '4', utf8_decode("   ". $transportista[0]->ruc_tran), 0, 0, 'L');
+        $this->fpdf->Cell('60', '4', utf8_decode("   ".$conductor[0]->apel_cond . ', ' .$conductor[0]->nomb_cond), 0, 0, 'L');
+        $this->fpdf->Cell('45', '4', utf8_decode("   ". $vehiculo[0]->marca_vehi . ' - ' .$vehiculo[0]->placa_vehi), 0, 0, 'L');
+        $this->fpdf->Cell('40', '4', utf8_decode("   ".$conductor[0]->licen_cond), 0, 0, 'L');
+        $this->fpdf->SetLeftMargin(110);
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell('45', '4', utf8_decode("   Código de Autorización (SCOP) de OSINERG"), 0, 0, 'L');
+
+        $this->fpdf->Rect(119, 14, 81, 38, 'D');
+        
+        $this->fpdf->Rect(10, 68, 193, 20, 'D');
+        $this->fpdf->Rect(10, 138, 38, 11, 'D');
+        $this->fpdf->Rect(48, 138, 53, 11, 'D');
+        $this->fpdf->Rect(110, 138, 45, 11, 'D');
+        $this->fpdf->Rect(155, 138, 45, 11, 'D');
+        $this->fpdf->Rect(110, 150, 65, 10, 'D');
         
         $this->fpdf->Output();
     }
