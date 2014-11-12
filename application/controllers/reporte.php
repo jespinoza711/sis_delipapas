@@ -32,6 +32,10 @@ class reporte extends CI_Controller {
         // CABECERA
 
         $total = 0;
+        $dates = str_replace('/', '-', $this->session->userdata('input_reporte_1'));
+        $fecha_a = date('Y-m-d', strtotime(substr($dates, 0, 10)));
+        $fecha_b = date('Y-m-d', strtotime(substr($dates, 13)) + 86400);
+
         if ($tipo == "0") {
             $compras = $this->mod_view->view('v_compra');
             foreach ($compras as $row) {
@@ -58,9 +62,6 @@ class reporte extends CI_Controller {
             $mes = array('01' => "ENERO", '02' => 'FEBRERO', '03' => "MARZO", '04' => 'ABRIL', '05' => "MAYO", '06' => 'JUNIO', '07' => "JULIO", '08' => 'AGOSTO', '09' => "SEPTIEMBRE", '10' => 'OCTUBRE', '11' => "NOVIEMBRE", '12' => 'DICIEMBRE');
             $this->fpdf->Cell(0, 0, utf8_decode('LISTADO DE MOVIMIENTOS DE COMPRA - ' . $mes[substr($this->session->userdata('input_reporte_1'), 5)] . ' ' . substr($this->session->userdata('input_reporte_1'), 0, 4)), 0, 0, 'C');
         } else if ($tipo == "1") {
-            $dates = str_replace('/', '-', $this->session->userdata('input_reporte_1'));
-            $fecha_a = date('Y-m-d', strtotime(substr($dates, 0, 10)));
-            $fecha_b = date('Y-m-d', strtotime(substr($dates, 13)) + 86400);
 
             if (substr($this->session->userdata('input_reporte_1'), 0, 10) == substr($this->session->userdata('input_reporte_1'), 13)) {
                 $this->fpdf->Cell(0, 0, utf8_decode('LISTADO DE MOVIMIENTOS DE COMPRA - ' . $fecha_a), 0, 0, 'C');
@@ -147,6 +148,11 @@ class reporte extends CI_Controller {
         // CABECERA
         // Total de ventas
         $total = 0;
+
+        $dates = str_replace('/', '-', $this->session->userdata('input_reporte_2'));
+        $fecha_a = date('Y-m-d', strtotime(substr($dates, 0, 10)));
+        $fecha_b = date('Y-m-d', strtotime(substr($dates, 13)) + 86400);
+
         if ($tipo == "0") {
             $ventas = $this->mod_view->view('v_venta');
             foreach ($ventas as $row) {
@@ -165,15 +171,11 @@ class reporte extends CI_Controller {
                 $total += $row->tota_ven;
             }
         }
-
         $this->fpdf->SetFont('Times', 'B', 12);
         if ($tipo == "0") {
             $mes = array('01' => "ENERO", '02' => 'FEBRERO', '03' => "MARZO", '04' => 'ABRIL', '05' => "MAYO", '06' => 'JUNIO', '07' => "JULIO", '08' => 'AGOSTO', '09' => "SEPTIEMBRE", '10' => 'OCTUBRE', '11' => "NOVIEMBRE", '12' => 'DICIEMBRE');
             $this->fpdf->Cell(0, 0, utf8_decode('LISTADO DE MOVIMIENTOS DE VENTA - ' . $mes[substr($this->session->userdata('input_reporte_2'), 5)] . ' ' . substr($this->session->userdata('input_reporte_2'), 0, 4)), 0, 0, 'C');
         } else if ($tipo == "1") {
-            $dates = str_replace('/', '-', $this->session->userdata('input_reporte_2'));
-            $fecha_a = date('Y-m-d', strtotime(substr($dates, 0, 10)));
-            $fecha_b = date('Y-m-d', strtotime(substr($dates, 13)) + 86400);
 
             if (substr($this->session->userdata('input_reporte_2'), 0, 10) == substr($this->session->userdata('input_reporte_2'), 13)) {
                 $this->fpdf->Cell(0, 0, utf8_decode('LISTADO DE MOVIMIENTOS DE VENTA - ' . $fecha_a), 0, 0, 'C');
@@ -621,7 +623,6 @@ class reporte extends CI_Controller {
                 $fecha_b = date("d/m/Y g:i A", $time_b);
 
                 $this->fpdf->Cell(15, 7, utf8_decode($i), 1, 0, 'C');
-                $this->fpdf->Cell(10, 7, utf8_decode($row->num_caj), 1, 0, 'C');
                 $this->fpdf->Cell(10, 7, utf8_decode($row->num_caj), 1, 0, 'C');
                 $this->fpdf->Cell(40, 7, utf8_decode($fecha_a), 1, 0, 'C');
                 $this->fpdf->Cell(35, 7, utf8_decode($row->usu_ini), 1, 0, 'C');
@@ -1165,7 +1166,7 @@ class reporte extends CI_Controller {
     }
 
     // FACTURA Y GUIA
-    
+
     public function reg_venta_data() {
 
         $codi_fac = $this->session->userdata('reg_ventas');
@@ -1719,7 +1720,7 @@ class reporte extends CI_Controller {
         $total = 0;
         foreach ($registros as $row) {
             $i++;
-            $total += round($row->cantidad*$row->prec_prod, 2);
+            $total += round($row->cantidad * $row->prec_prod, 2);
             $this->fpdf->Cell('88', '4', utf8_decode($row->nomb_prod), 1, 0, 'L');
             $this->fpdf->Cell('36', '4', utf8_decode($row->cantidad), 1, 0, 'C');
             $this->fpdf->Cell('36', '4', utf8_decode(""), 1, 0, 'C');
@@ -1737,7 +1738,7 @@ class reporte extends CI_Controller {
         $transportista = $this->mod_view->view('transportista', 0, false, array('id_tran' => $guia_remision[0]->id_tran));
         $conductor = $this->mod_view->view('transportista_conductor', 0, false, array('id_cond' => $guia_remision[0]->id_cond));
         $vehiculo = $this->mod_view->view('transportista_vehiculo', 0, false, array('id_vehi' => $guia_remision[0]->id_vehi));
-        
+
         $this->fpdf->Ln(2);
         $this->fpdf->Cell('102', '4', utf8_decode("Datos del transportista:"), 0, 0, 'L');
         $this->fpdf->Cell('20', '4', utf8_decode("Datos de la Unidad de Transporte y conductor:"), 0, 0, 'L');
@@ -1747,23 +1748,23 @@ class reporte extends CI_Controller {
         $this->fpdf->Cell('45', '4', utf8_decode("   Marca y placa"), 0, 0, 'L');
         $this->fpdf->Cell('40', '4', utf8_decode("   Licencia de conducir"), 0, 0, 'L');
         $this->fpdf->Ln(5);
-        $this->fpdf->Cell('40', '4', utf8_decode("   ". $transportista[0]->ruc_tran), 0, 0, 'L');
-        $this->fpdf->Cell('60', '4', utf8_decode("   ". $transportista[0]->nomb_tran), 0, 0, 'L');
-        $this->fpdf->Cell('45', '4', utf8_decode("   ". $vehiculo[0]->marca_vehi . ' - ' .$vehiculo[0]->placa_vehi), 0, 0, 'L');
-        $this->fpdf->Cell('40', '4', utf8_decode("   ". $conductor[0]->licen_cond), 0, 0, 'L');
+        $this->fpdf->Cell('40', '4', utf8_decode("   " . $transportista[0]->ruc_tran), 0, 0, 'L');
+        $this->fpdf->Cell('60', '4', utf8_decode("   " . $transportista[0]->nomb_tran), 0, 0, 'L');
+        $this->fpdf->Cell('45', '4', utf8_decode("   " . $vehiculo[0]->marca_vehi . ' - ' . $vehiculo[0]->placa_vehi), 0, 0, 'L');
+        $this->fpdf->Cell('40', '4', utf8_decode("   " . $conductor[0]->licen_cond), 0, 0, 'L');
         $this->fpdf->SetLeftMargin(110);
         $this->fpdf->Ln(7);
         $this->fpdf->Cell('45', '4', utf8_decode("   Código de Autorización (SCOP) de OSINERG"), 0, 0, 'L');
 
         $this->fpdf->Rect(119, 14, 81, 38, 'D');
-        
+
         $this->fpdf->Rect(10, 68, 193, 20, 'D');
         $this->fpdf->Rect(10, 138, 38, 11, 'D');
         $this->fpdf->Rect(48, 138, 53, 11, 'D');
         $this->fpdf->Rect(110, 138, 45, 11, 'D');
         $this->fpdf->Rect(155, 138, 45, 11, 'D');
         $this->fpdf->Rect(110, 150, 65, 10, 'D');
-        
+
         $this->fpdf->Output();
     }
 
