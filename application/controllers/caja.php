@@ -83,11 +83,13 @@ class caja extends CI_Controller {
             } else {
                 $error = array();
                 $cajas = array();
+                $productos = array();
                 $clientes = array();
                 $comprobantes = array();
+                $guias = array();
                 $transportista = array();
                 $conductor = array();
-                $vehiculo= array();
+                $vehiculo = array();
 
                 foreach ($this->mod_caja->get_vcaja($date) as $row) {
                     $cajas[$row->codi_caj] = $row->num_caj;
@@ -95,14 +97,20 @@ class caja extends CI_Controller {
                 foreach ($this->mod_view->view('cliente', 0, false, array('esta_cli' => 'A')) as $row) {
                     $clientes[$row->codi_cli] = $row->empr_cli . ' - ' . $row->apel_cli . ', ' . $row->nomb_cli;
                 }
+                foreach ($this->mod_view->view('producto', 0, false, array('esta_prod' => 'A')) as $row) {
+                    $productos[$row->codi_prod] = $row->nomb_prod;
+                }
                 foreach ($this->mod_view->view('comprobante', 0, false, array('esta_com' => 'A')) as $row) {
-                    $comprobantes[$row->codi_com] = $row->nomb_com;
+                    $comprobantes[$row->codi_com] = $row->nomb_com . ' - ' . $row->obsv_com;
+                }
+                foreach ($this->mod_view->view('comprobante', 0, false, "nomb_com like '%uia%'") as $row) {
+                    $guias[$row->codi_com] = $row->nomb_com . ' - ' . $row->obsv_com;
                 }
                 foreach ($this->mod_view->view('transportista', 0, false, array('esta_tran' => 'A')) as $row) {
                     $transportista[$row->id_tran] = $row->nomb_tran;
                 }
                 foreach ($this->mod_view->view('transportista_conductor', 0, false, array('esta_cond' => 'A')) as $row) {
-                    $conductor[$row->id_cond] = $row->apel_cond . ' ' .$row->nomb_cond;
+                    $conductor[$row->id_cond] = $row->apel_cond . ' ' . $row->nomb_cond;
                 }
                 foreach ($this->mod_view->view('transportista_vehiculo', 0, false, array('esta_vehi' => 'A')) as $row) {
                     $vehiculo[$row->id_vehi] = $row->marca_vehi . ' - ' . $row->placa_vehi;
@@ -110,6 +118,9 @@ class caja extends CI_Controller {
 
                 if (count($clientes) <= 0) {
                     $error[] = 'Debe registrar por lo menos un cliente. <br><strong> Haga click <a href="' . base_url('cliente') . '"> aquí </a> para registrar un cliente</strong>.';
+                }
+                if (count($productos) <= 0) {
+                    $error[] = 'Debe registrar por lo menos un producto o actualizar el inventario. <br><strong> Haga click <a href="' . base_url('producto') . '"> aquí </a> para registrar un producto</strong>.<br><strong> Haga click <a href="' . base_url('inventario') . '"> aquí </a> para actualizar el inventario</strong>.';
                 }
                 if (count($transportista) <= 0) {
                     $error[] = 'Debe registrar por lo menos un transportista. <br><strong> Haga click <a href="' . base_url('transportista') . '"> aquí </a> para registrar un transportista</strong>.';
@@ -125,6 +136,7 @@ class caja extends CI_Controller {
                 $venta["caja"] = $cajas;
                 $venta["cliente"] = $clientes;
                 $venta["comprobante"] = $comprobantes;
+                $venta["guia"] = $guias;
                 $venta["transportista"] = $transportista;
                 $venta["conductor"] = $conductor;
                 $venta["vehiculo"] = $vehiculo;
@@ -173,7 +185,7 @@ class caja extends CI_Controller {
                 } else {
                     if ($this->mod_config->numeric($id) && $id > 0) {
                         $venta_det['venta'] = $this->mod_view->one('v_venta_historial', false, false, array('codi_ven' => $id));
-                        $data['page'] = 'Historial de ventas / ' . $venta_det['venta']->num_fac;
+                        $data['page'] = 'Historial de ventas / ' . $venta_det['venta']->nume_com;
                         $data['container'] = $this->load->view('caja/venta_all_det_view', $venta_det, true);
                         $this->load->view('home/body', $data);
                     } else {
@@ -234,8 +246,8 @@ class caja extends CI_Controller {
                 $row->codi_ven,
                 $fecha,
                 $row->nomb_com,
-                $row->serie_fac,
-                $row->num_fac,
+                $row->serie_com,
+                $row->nume_com,
                 $row->nomb_usu,
                 $row->nomb_cli,
                 $row->tota_ven,
@@ -288,8 +300,9 @@ class caja extends CI_Controller {
         $comprobante = $this->input->post('comprobante');
         $tbl_venta = json_decode($this->input->post('tbl_venta'));
         $total = $this->input->post('total');
-        
+
         // Guia de remisión
+        $guia = $this->input->post('guia');
         $fech_guia = $this->input->post('fech_guia');
         $punto_par = $this->input->post('punto_par');
         $punto_lle = $this->input->post('punto_lle');
@@ -297,127 +310,77 @@ class caja extends CI_Controller {
         $conductor = $this->input->post('conductor');
         $vehiculo = $this->input->post('vehiculo');
         $obsv_guia = $this->input->post('obsv_guia');
-        
-        // REGISTRO DE VENTA
+
         date_default_timezone_set('America/Lima');
-
-        $venta = array(
-            'codi_caj' => $caja,
-            'codi_com' => $comprobante,
-            'codi_usu' => $this->session->userdata('user_codi'),
-            'codi_cli' => $cliente,
-            'fech_ven' => date("Y-m-d H:i:s"),
-            'tota_ven' => $total,
-            'esta_ven' => 'A'
-        );
-
-        $codi_ven = $this->mod_view->insert('venta', $venta);
-
-        // OBTENER SERIE Y NUMERO DE DE LOS COMPROBANTES A UTILIZAR
-        // EL REGISTRO EN LA TABLA FACTURA Y GUIA_REMISION DEBE TENER LA SERIE Y EL NUMERO DEL COMPROBANTE
-
         $negocio = $this->mod_view->view('negocio');
-        $comprobantes = $this->mod_view->view('comprobante');
-        $facturas = $this->mod_view->view('factura');
-        $guias = $this->mod_view->view('guia_remision');
+        $operacion = $this->mod_view->dato('comprobante', false, false, array('codi_com' => $comprobante), 'nomb_com');        
 
-        $serie_fac = $comprobantes[0]->serie_com;
-        $nume_fac = $comprobantes[0]->nume_com;
+        if ($operacion == 'Factura') {
 
-        $serie_des = $comprobantes[1]->serie_com;
-        $nume_des = $comprobantes[1]->nume_com;
+            // FACTURA ACTUAL
+            $serie_fac = $this->mod_view->dato('comprobante', false, false, array('codi_com' => $comprobante), 'serie_com');
+            $nume_fac = $this->mod_view->dato('comprobante', false, false, array('codi_com' => $comprobante), 'nume_com');
+            // GUIA ACTUAL
+            $serie_guia = $this->mod_view->dato('comprobante', false, false, array('codi_com' => $guia), 'serie_com');
+            $nume_guia = $this->mod_view->dato('comprobante', false, false, array('codi_com' => $guia), 'nume_com');
+            
+            // REGISTRO DE VENTA
+            $venta = array(
+                'codi_caj' => $caja,
+                'codi_com' => $comprobante,
+                'serie_com' => $serie_fac,
+                'nume_com' => $nume_fac,
+                'codi_usu' => $this->session->userdata('user_codi'),
+                'codi_cli' => $cliente,
+                'fech_ven' => date("Y-m-d H:i:s"),
+                'tota_ven' => $total,
+                'esta_ven' => 'A'
+            );
+            $codi_ven = $this->mod_view->insert('venta', $venta);
 
-        $serie_guia = $comprobantes[2]->serie_com;
-        $nume_guia = $comprobantes[2]->nume_com;
+            // REGISTRO DE FACTURA
+            $factura = array(
+                'serie_fac' => $serie_fac,
+                'num_fac' => $nume_fac,
+                'ruc_fac' => $negocio[0]->ruc_neg,
+                'fech_fac' => date("Y-m-d H:i:s"),
+                'desp_fac' => $nume_fac,
+                'esta_fac' => 'A'
+            );
+            $codi_fac = $this->mod_view->insert('factura', $factura);
 
-        $tamaño = strlen($nume_fac);
-        $numero = (int) $nume_fac;
+            foreach ($tbl_venta as $row) {
 
-        $sw = false;
+                // ACTUALIZAR STOCK Y FECHA DE SALIDA DE PRODUCTO
+                $stock_anterior = $this->mod_view->dato('producto', 0, false, array('codi_prod' => $row[0]), 'stoc_prod');
+                $stock_actual = (int) $stock_anterior - (int) $row[2];
+                $this->mod_view->update('producto', array('codi_prod' => $row[0]), array('stoc_prod' => $stock_actual, 'fesa_prod' => date("Y-m-d H:i:s")));
 
-        while (!$sw) {
-            $exists = false;
-            foreach ($facturas as $row) {
-                if ($numero == $row->num_fac) {
-                    $exists = true;
-                }
-            }
-            if ($exists) {
-                $numero++;
-            } else {
-                $sw = true;
-            }
-        }
+                // REGISTRO DE DETALLE DE VENTA
+                $codi_dve = $this->mod_view->count('detalle_venta') + 1;
+                $detalle_venta = array(
+                    'codi_dve' => $codi_dve,
+                    'codi_ven' => $codi_ven,
+                    'codi_prod' => $row[0],
+                    'cantidad' => $row[2],
+                    'igv_dve' => $row[5],
+                    'suto_dve' => $row[4],
+                    'impo_dve' => $row[6]
+                );
+                $this->mod_view->insert_only('detalle_venta', $detalle_venta);
 
-        while ($tamaño != strlen($numero)) {
-            $numero = '0' . $numero;
-        }
-
-        // ORDEN DE DESPACHO
-        $tamaño_b = strlen($nume_des);
-        $numero_b = (int) $nume_des;
-
-        $sw_2 = false;
-
-        while (!$sw_2) {
-            $exists_2 = false;
-            foreach ($facturas as $row) {
-                if ($numero_b == $row->desp_fac) {
-                    $exists_2 = true;
-                }
-            }
-            if ($exists_2) {
-                $numero_b++;
-            } else {
-                $sw_2 = true;
-            }
-        }
-
-        while ($tamaño_b != strlen($numero_b)) {
-            $numero_b = '0' . $numero_b;
-        }
-        
-        // REGISTRO DE FACTURA
-        $factura = array(
-            'serie_fac' => $serie_fac,
-            'num_fac' => $numero,
-            'ruc_fac' => $negocio[0]->ruc_neg,
-            'fech_fac' => date("Y-m-d H:i:s"),
-            'desp_fac' => $numero_b,
-            'esta_fac' => 'A'
-        );
-
-        $codi_fac = $this->mod_view->insert('factura', $factura);
-        
-         // GUÍA DE REMISIÓN
-        if ($comprobante == "1") {
-            $tamaño_c = strlen($nume_des);
-            $numero_c = (int) $nume_des;
-
-            $sw_3 = false;
-
-            while (!$sw_3) {
-                $exists_3 = false;
-                foreach ($guias as $row) {
-                    if ($numero_c == $row->nume_guia) {
-                        $exists_3 = true;
-                    }
-                }
-                if ($exists_3) {
-                    $numero_c++;
-                } else {
-                    $sw_3 = true;
-                }
+                // REGISTRO DE DETALLE DE FACTURA
+                $detalle_factura = array(
+                    'codi_fac' => $codi_fac,
+                    'codi_dve' => $codi_dve
+                );
+                $this->mod_view->insert_only('detalle_factura', $detalle_factura);
             }
 
-            while ($tamaño_c != strlen($numero_c)) {
-                $numero_c = '0' . $numero_c;
-            }
-        
             // REGISTRO DE GUÍA DE REMISIÓN
             $guia_remision = array(
                 'serie_guia' => $serie_guia,
-                'nume_guia' => $numero_c,
+                'nume_guia' => $nume_guia,
                 'id_fac' => $codi_fac,
                 'fech_guia' => $fech_guia,
                 'punto_par' => $punto_par,
@@ -429,178 +392,139 @@ class caja extends CI_Controller {
                 'obsv_guia' => $obsv_guia,
                 'esta_guia' => 'A'
             );
-
             $id_guia = $this->mod_view->insert('guia_remision', $guia_remision);
-        }
-        
 
-        foreach ($tbl_venta as $row) {
+            $registros = $this->mod_view->view('v_factura', 0, false, array('codi_fac' => $codi_fac));
+            $date = new DateTime($registros[0]->fech_fac);
+            $date_string = $date->format('Y-m-d h:i:s A');
+            $this->session->set_userdata('reg_ventas', $codi_fac);
 
-            // ACTUALIZAR STOCK Y FECHA DE SALIDA DE PRODUCTO
-            $stock_anterior = $this->mod_view->dato('producto', 0, false, array('codi_prod' => $row[0]), 'stoc_prod');
-            $stock_actual = (int) $stock_anterior - (int) $row[2];
-            $this->mod_view->update('producto', array('codi_prod' => $row[0]), array('stoc_prod' => $stock_actual, 'fesa_prod' => date("Y-m-d H:i:s")));
-
-            // REGISTRO DE DETALLE DE VENTA
-            $codi_dve = $this->mod_view->count('detalle_venta') + 1;
-            $detalle_venta = array(
-                'codi_dve' => $codi_dve,
-                'codi_ven' => $codi_ven,
-                'codi_prod' => $row[0],
-                'cantidad' => $row[2],
-                'igv_dve' => $row[5],
-                'suto_dve' => $row[4],
-                'impo_dve' => $row[6]
-            );
-            $this->mod_view->insert_only('detalle_venta', $detalle_venta);
-
-            // REGISTRO DE DETALLE DE FACTURA
-            $detalle_factura = array(
-                'codi_fac' => $codi_fac,
-                'codi_dve' => $codi_dve
-            );
-            $this->mod_view->insert_only('detalle_factura', $detalle_factura);
-        }
-        
-        $registros = $this->mod_view->view('v_factura', 0, false, array('codi_fac' => $codi_fac));
-        $date = new DateTime($registros[0]->fech_fac);
-        $date_string = $date->format('Y-m-d h:i:s A');
-        $this->session->set_userdata('reg_ventas', $codi_fac);
-        if ($comprobante == "1") {
             $this->session->set_userdata('info_ven', 'La venta ha sido registrada con éxito. <br>'
-                . '<strong>Resumen de la factura</strong><br>'
-                . '<strong>Cliente: </strong> ' . $registros[0]->nomb_cli . ' ' . $registros[0]->apel_cli . '<br>'
-                . '<strong>Fecha: </strong> ' . $date_string . '<br>'
-                . '<strong>Total facturado: </strong> S/. ' . $registros[0]->tota_ven . '<br><br>'
-                . '<strong>Ver documentos en pdf: </strong><br>'
-                . '<ul>'
-                . '<li><strong><a href="' . base_url('reporte/reg_venta_show') . '" target="_blank">Factura y guía de remisión</a></strong></li>'
-                . '<li><strong><a href="' . base_url('reporte/reg_venta_data') . '" target="_blank">Factura y guía de remisión (Sólo datos)</a></strong></li>'
-                . '</ul>');
+                    . '<strong>Resumen de la venta</strong><br>'
+                    . '<strong>Cliente: </strong> ' . $registros[0]->nomb_cli . ' ' . $registros[0]->apel_cli . '<br>'
+                    . '<strong>Fecha: </strong> ' . $date_string . '<br>'
+                    . '<strong>Total facturado: </strong> S/. ' . $registros[0]->tota_ven . '<br><br>'
+                    . '<strong>Ver documentos en pdf: </strong><br>'
+                    . '<ul>'
+                    . '<li><strong><a href="' . base_url('reporte/reg_venta_show') . '" target="_blank">Factura y guía de remisión</a></strong></li>'
+                    . '<li><strong><a href="' . base_url('reporte/reg_venta_data') . '" target="_blank">Factura y guía de remisión (Sólo datos)</a></strong></li>'
+                    . '</ul>');
+
+            $this->actualizar_comprobantes($comprobante, $guia);
+            $this->actualizar_comprobantes($guia);
         } else {
-            $this->session->set_userdata('info_ven', 'La venta ha sido registrada con éxito. <br>'
-                . '<strong>Resumen de la factura</strong><br>'
-                . '<strong>Cliente: </strong> ' . $registros[0]->nomb_cli . ' ' . $registros[0]->apel_cli . '<br>'
-                . '<strong>Fecha: </strong> ' . $date_string . '<br>'
-                . '<strong>Total facturado: </strong> S/. ' . $registros[0]->tota_ven . '<br><br>'
-                . '<strong>Ver documentos en pdf: </strong><br>'
-                . '<ul>'
-                . '<li><strong><a href="' . base_url('reporte/reg_venta') . '" target="_blank">Boleta de venta</a></strong></li>'
-                . '<li><strong><a href="' . base_url('reporte/reg_venta_only') . '" target="_blank">Boleta de venta (Sólo datos)</a></strong></li>'
-                . '</ul>');
-        }
-        
+            // ORDEN DE DESPACHO ACTUAL
+            $serie_des = $this->mod_view->dato('comprobante', false, false, array('codi_com' => $comprobante), 'serie_com');
+            $nume_des = $this->mod_view->dato('comprobante', false, false, array('codi_com' => $comprobante), 'nume_com');
+            
+            // REGISTRO DE VENTA
+            $venta = array(
+                'codi_caj' => $caja,
+                'codi_com' => $comprobante,
+                'serie_com' => $serie_des,
+                'nume_com' => $nume_des,
+                'codi_usu' => $this->session->userdata('user_codi'),
+                'codi_cli' => $cliente,
+                'fech_ven' => date("Y-m-d H:i:s"),
+                'tota_ven' => $total,
+                'esta_ven' => 'A'
+            );
+            $codi_ven = $this->mod_view->insert('venta', $venta);
 
-        /*  
-            FINALMENTE DESPUES DE REGISTRAR LA COMPRA SE DEBEN ACTUALIZAR LA SERIE Y EL NUMERO DE LOS COMPROBANTES
-            QUE SE HAN UTILIZADO EN LA TABLA COMPROBANTE. LA TABLA COMPROBANTE DEBE TENER EL PROXIMO NUMERO DE COMPROBANTE 
-            A UTILIZAR EN LOS TRES TIPOS, RECUERDA QUE COMO TIENEN NUMERO DE SERIE CUANDO UNA NUMERACION LLEGA AL TOPE 
-            LA SERIE DEBE AUMENTAR EN UNO EN ESTAS CONDICIONES:
-         
-                FACTURA NUMERACION --> 00001 A 99999 --> AFECTA SERIE --> 0001 A 9999 (5 DIGITOS EN NUMERACION)
-                GUIA DE REMISION NUMERACION --> 000001 A 999999 --> AFECTA SERIE --> 0001 A 9999 (6 DIGITOS EN NUMERACION)
-                ORDEN DE DESPACHO NUMERACION --> 000001 A 999999 --> AFECTA  SERIE --> 0001 A 9999 (6 DIGITOS EN NUMERACION)
-         
-            UTILIZAR EL SIGUIENTE PROCEDIMIENTO 
-         */
-        $this->actualizar_comprobantes($serie_fac, $numero, $serie_des, $numero_b, $serie_guia, $numero_c);
+            foreach ($tbl_venta as $row) {
+
+                // ACTUALIZAR STOCK Y FECHA DE SALIDA DE PRODUCTO
+                $stock_anterior = $this->mod_view->dato('producto', 0, false, array('codi_prod' => $row[0]), 'stoc_prod');
+                $stock_actual = (int) $stock_anterior - (int) $row[2];
+                $this->mod_view->update('producto', array('codi_prod' => $row[0]), array('stoc_prod' => $stock_actual, 'fesa_prod' => date("Y-m-d H:i:s")));
+
+                // REGISTRO DE DETALLE DE VENTA
+                $codi_dve = $this->mod_view->count('detalle_venta') + 1;
+                $detalle_venta = array(
+                    'codi_dve' => $codi_dve,
+                    'codi_ven' => $codi_ven,
+                    'codi_prod' => $row[0],
+                    'cantidad' => $row[2],
+                    'igv_dve' => $row[5],
+                    'suto_dve' => $row[4],
+                    'impo_dve' => $row[6]
+                );
+                $this->mod_view->insert_only('detalle_venta', $detalle_venta);
+            }
+
+            $registros = $this->mod_view->view('v_venta', 0, false, array('codi_ven' => $codi_ven));
+            $date = new DateTime($registros[0]->fech_ven);
+            $date_string = $date->format('Y-m-d h:i:s A');
+            $this->session->set_userdata('reg_ventas', $codi_ven);
+
+            $this->session->set_userdata('info_ven', 'La venta ha sido registrada con éxito. <br>'
+                    . '<strong>Resumen de la venta</strong><br>'
+                    . '<strong>Cliente: </strong> ' . $registros[0]->nomb_cli . ' ' . $registros[0]->apel_cli . '<br>'
+                    . '<strong>Fecha: </strong> ' . $date_string . '<br>'
+                    . '<strong>Total facturado: </strong> S/. ' . $registros[0]->tota_ven . '<br><br>'
+                    . '<strong>Ver documentos en pdf: </strong><br>'
+                    . '<ul>'
+                    . '<li><strong><a href="' . base_url('reporte/reg_venta') . '" target="_blank">Boleta de venta</a></strong></li>'
+                    . '<li><strong><a href="' . base_url('reporte/reg_venta_only') . '" target="_blank">Boleta de venta (Sólo datos)</a></strong></li>'
+                    . '</ul>');
+
+            $this->actualizar_comprobantes($comprobante);
+        }
 
         header('location: ' . base_url('venta'));
     }
 
-    public function actualizar_comprobantes($serie_fac, $nume_fac, $serie_des, $nume_des, $serie_guia, $nume_guia) {
-        
-        $facturas = $this->mod_view->view('factura');
-        $guias = $this->mod_view->view('guia_remision');
-        
-        // ACTUALIZAR SERIE DE FACTURA
-        if ($nume_fac == "999999") {
-            
-            $tamaño = strlen($serie_fac);
-            $serie = (int) $serie_fac;
+    public function actualizar_comprobantes($comprobante = 0) {
 
-            $sw = false;
+        $serie_com = $this->mod_view->dato('comprobante', false, false, array('codi_com' => $comprobante), 'serie_com');
+        $nume_com = $this->mod_view->dato('comprobante', false, false, array('codi_com' => $comprobante), 'nume_com');
 
-            while (!$sw) {
-                $exists = false;
-                foreach ($facturas as $row) {
-                    if ($serie == $row->serie_fac) {
-                        $exists = true;
-                    }
-                }
-                if ($exists) {
-                    $serie++;
-                } else {
-                    $sw = true;
+        if (strlen($nume_com) == 6) {
+            $size_serie = strlen($serie_com);
+            $size_nume = strlen($nume_com);
+            $serie = (int) $serie_com;
+            $nume = (int) $nume_com;
+            $nume++;
+            if ($nume > 999999) {
+                $serie++;
+                $nume = 1;
+                if ($serie > 9999) {
+                    $serie = 9999;
+                    $nume = 999999;
                 }
             }
-
-            while ($tamaño != strlen($serie)) {
-                $serie = '0' . $serie;
+            $serie_ = '' . $serie;
+            $nume_ = '' . $nume;
+            while ($size_serie > strlen($serie_)) {
+                $serie_ = '0' . $serie_;
             }
-            
-            $this->mod_view->update('comprobante', array('codi_com' => '1'),
-                    array('serie_com' => $serie, 'nume_com' => '000001'));
-        }
-        // ACTUALIZAR SERIE DE ORDEN DE DESPACHO
-        if ($nume_des == "999999") {
-            // EN BASE DE DATOS NO SE ALMACENA EL NÚMERO DE SERIE DE DESPACHO, SÓLO EL
-            // NÚMERO DE DESPACHO EN LA TABLA FACTURA.
-            
-            /*$tamaño = strlen($serie_des);
-            $serie = (int) $serie_des;
-
-            $sw = false;
-
-            while (!$sw) {
-                $exists = false;
-                foreach ($guias as $row) {
-                    if ($serie == $row->serie_guia) {
-                        $exists = true;
-                    }
-                }
-                if ($exists) {
-                    $serie++;
-                } else {
-                    $sw = true;
+            while ($size_nume > strlen($nume_)) {
+                $nume_ = '0' . $nume_;
+            }
+            $this->mod_view->update('comprobante', array('codi_com' => $comprobante), array('serie_com' => $serie_, 'nume_com' => $nume_));
+        } else {
+            $size_serie = strlen($serie_com);
+            $size_nume = strlen($nume_com);
+            $serie = (int) $serie_com;
+            $nume = (int) $nume_com;
+            $nume++;
+            if ($nume > 99999) {
+                $serie++;
+                $nume = 1;
+                if ($serie > 9999) {
+                    $serie = 9999;
+                    $nume = 99999;
                 }
             }
-
-            while ($tamaño != strlen($serie)) {
-                $serie = '0' . $serie;
+            $serie_ = '' . $serie;
+            $nume_ = '' . $nume;
+            while ($size_serie > strlen($serie_)) {
+                $serie_ = '0' . $serie_;
             }
-            
-            $this->mod_view->update('comprobante', array('codi_com' => '3'),
-                    array('serie_com' => $serie, 'nume_com' => '000001'));*/
-        }
-        // ACTUALIZAR SERIE DE GUÍA
-        if ($nume_guia == "999999") {
-            
-            $tamaño = strlen($serie_guia);
-            $serie = (int) $serie_guia;
-
-            $sw = false;
-
-            while (!$sw) {
-                $exists = false;
-                foreach ($guias as $row) {
-                    if ($serie == $row->serie_guia) {
-                        $exists = true;
-                    }
-                }
-                if ($exists) {
-                    $serie++;
-                } else {
-                    $sw = true;
-                }
+            while ($size_nume > strlen($nume_)) {
+                $nume_ = '0' . $nume_;
             }
-
-            while ($tamaño != strlen($serie)) {
-                $serie = '0' . $serie;
-            }
-            
-            $this->mod_view->update('comprobante', array('codi_com' => '3'),
-                    array('serie_com' => $serie, 'nume_com' => '000001'));
+            $this->mod_view->update('comprobante', array('codi_com' => $comprobante), array('serie_com' => $serie_, 'nume_com' => $nume_));
         }
     }
 

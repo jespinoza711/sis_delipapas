@@ -36,13 +36,13 @@ $(document).ready(function() {
 
             if (!$('#detalle_productos_ven tbody tr td').is(":contains('Busque y agregue un producto')") && !submitted) {
 
-                if ($("#comprobante_ven option:selected").val() == "1") {
+                if ($("#comprobante_ven").find('option:selected').html().indexOf("Factura") >= 0) {
                     if ($("#punto_par").val() != "" && $("#punto_lle").val() != "") {
                         $('#register_ven').prop('disabled', false);
                     } else {
                         $('#register_ven').prop('disabled', true);
                     }
-                } else if ($("#comprobante_ven option:selected").val() == "2") {
+                } else {
                     $('#register_ven').prop('disabled', false);
                 }
 
@@ -52,10 +52,10 @@ $(document).ready(function() {
         }
         
         $("#comprobante_ven").change(function() {
-            
-            if ($(this).find('option:selected').val() == "1") {
+            var cont = $(this).find('option:selected').html();
+            if (cont.indexOf("Factura") >= 0) {
                 $("#detalle_fac").slideDown();
-            } else if ($(this).find('option:selected').val() == "2") {
+            } else {
                 $("#detalle_fac").slideUp();
             }
             verificarFormularioVentas();

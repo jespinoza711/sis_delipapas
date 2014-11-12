@@ -149,10 +149,7 @@
                             </table>
                         </div>
                         <div class="form-group"><label>Comprobante:</label>
-                            <select name="comprobante" id="comprobante_ven" class="form-control input-lg">
-                                <option value="1">Factura</option>
-                                <option value="2">Orden de Despacho</option>
-                            </select>
+                            <?= form_dropdown('comprobante', $comprobante, array(), 'id="comprobante_ven" class="form-control input-lg"') ?>
                         </div>
                     </section>
                     <section id="detalle_fac" class="content invoice" style="width: 100%;">
@@ -162,6 +159,9 @@
                                     <i class="fa fa-truck"></i> Guía de remisión
                                 </h2>
                             </div>
+                        </div>
+                        <div class="form-group"><label>Guia de Remisi&oacute;n:</label>
+                            <?= form_dropdown('guia', $guia, array(), 'id="guia_ven" class="form-control input-lg"') ?>
                         </div>
                         <div class="form-group">
                             <label>Fecha de inicio del traslado: </label>

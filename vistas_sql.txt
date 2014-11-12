@@ -152,6 +152,7 @@ AND e.codi_emp = r.codi_emp;
 
 CREATE VIEW v_factura AS
 SELECT f.codi_fac, 
+f.serie_fac, 
 f.desp_fac, 
 c.apel_cli, 
 c.nomb_cli, 
@@ -221,6 +222,38 @@ AND (v.codi_usu = u.codi_usu)
 AND (v.esta_ven = 'A')) 
 ORDER BY v.fech_ven DESC;
 
+CREATE VIEW v_venta_det AS
+SELECT 
+v.codi_ven,
+v.fech_ven,
+v.codi_caj,
+v.codi_com,
+cp.nomb_com,
+v.serie_com,
+v.nume_com,
+v.codi_usu,
+u.nomb_usu,
+v.codi_cli,
+c.nomb_cli,
+c.apel_cli,
+c.dire_cli, 
+c.ruc_cli, 
+dv.cantidad,
+dv.codi_prod, 
+p.nomb_prod,
+p.prec_prod,
+dv.igv_dve,
+dv.suto_dve,
+dv.impo_dve, 
+v.tota_ven
+FROM detalle_venta dv, producto p, venta v, cliente c, usuario u, comprobante cp
+WHERE v.codi_ven = dv.codi_ven 
+AND dv.codi_prod = p.codi_prod 
+AND v.codi_com = cp.codi_com
+AND v.codi_usu = u.codi_usu
+AND v.codi_cli = c.codi_cli;
+
+
 CREATE VIEW `v_venta_detalle` AS 
 SELECT `dv`.`codi_dve` AS `codi_dve`,
 `dv`.`codi_ven` AS `codi_ven`,
@@ -242,6 +275,8 @@ SELECT `v`.`codi_ven` AS `codi_ven`,
 `v`.`codi_caj` AS `codi_caj`,
 `v`.`codi_com` AS `codi_com`,
 `cp`.`nomb_com` AS `nomb_com`,
+`v`.`serie_com` AS `serie_com`,
+`v`.`nume_com` AS `nume_com`,
 `v`.`codi_usu` AS `codi_usu`,
 `u`.`nomb_usu` AS `nomb_usu`,
 `v`.`codi_cli` AS `codi_cli`,
@@ -260,3 +295,27 @@ AND (`dv`.`codi_dve` = `df`.`codi_dve`)
 AND (`df`.`codi_fac` = `f`.`codi_fac`)) 
 GROUP BY `f`.`num_fac` 
 ORDER BY `v`.`fech_ven` DESC;
+
+
+
+CREATE VIEW `v_venta_historial` AS 
+SELECT `v`.`codi_ven` AS `codi_ven`,
+`v`.`fech_ven` AS `fech_ven`,
+`v`.`codi_caj` AS `codi_caj`,
+`v`.`codi_com` AS `codi_com`,
+`cp`.`nomb_com` AS `nomb_com`,
+`v`.`serie_com` AS `serie_com`,
+`v`.`nume_com` AS `nume_com`,
+`v`.`codi_usu` AS `codi_usu`,
+`u`.`nomb_usu` AS `nomb_usu`,
+`v`.`codi_cli` AS `codi_cli`,
+`c`.`nomb_cli` AS `nomb_cli`,
+`v`.`tota_ven` AS `tota_ven`,
+`v`.`esta_ven` AS `esta_ven` 
+FROM ((((`venta` `v` join `comprobante` `cp`) join `usuario` `u`) join `cliente` `c`) join `detalle_venta` `dv`) 
+WHERE (`v`.`codi_com` = `cp`.`codi_com`)
+AND (`v`.`codi_usu` = `u`.`codi_usu`) 
+AND (`v`.`codi_cli` = `c`.`codi_cli`) 
+AND (`v`.`codi_ven` = `dv`.`codi_ven`)
+GROUP BY `v`.`codi_ven`
+ORDER BY `v`.`codi_ven` DESC;

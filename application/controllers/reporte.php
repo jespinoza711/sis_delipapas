@@ -884,9 +884,9 @@ class reporte extends CI_Controller {
 
     public function reg_venta() {
 
-        $codi_fac = $this->session->userdata('reg_ventas');
+        $codi_ven = $this->session->userdata('reg_ventas');
 
-        $registros = $this->mod_view->view('v_factura', 0, false, array('codi_fac' => $codi_fac));
+        $registros = $this->mod_view->view('v_venta_det', 0, false, array('codi_ven' => $codi_ven));
         $negocio = $this->mod_view->view('negocio');
 
         $this->load->library('fpdf');
@@ -932,7 +932,7 @@ class reporte extends CI_Controller {
         $this->fpdf->SetLeftMargin(58.7375);
         $this->fpdf->SetFont('Courier', 'B', 10);
         $this->fpdf->SetTextColor("156", "87", "79");
-        $this->fpdf->Cell('35.98', '8', utf8_decode("N° " . $registros[0]->desp_fac), 1, 0, 'C');
+        $this->fpdf->Cell('35.98', '8', utf8_decode("N° " . $registros[0]->nume_com), 1, 0, 'C');
 
         $this->fpdf->SetLeftMargin(4);
         $this->fpdf->Ln(4);
@@ -961,7 +961,7 @@ class reporte extends CI_Controller {
         $this->fpdf->Cell('45', '7', utf8_decode(" R.U.C.: " . $registros[0]->ruc_cli), 1, 0, 'L');
         $this->fpdf->Cell('3', '7', utf8_decode(""));
 
-        $time = strtotime($registros[0]->fech_fac);
+        $time = strtotime($registros[0]->fech_ven);
         $fecha = date("d/m/Y", $time);
         $this->fpdf->Cell('41', '7', utf8_decode(" Fecha: " . $fecha), 1, 0, 'L');
 
@@ -1045,7 +1045,7 @@ class reporte extends CI_Controller {
 
         $codi_fac = $this->session->userdata('reg_ventas');
 
-        $registros = $this->mod_view->view('v_factura', 0, false, array('codi_fac' => $codi_fac));
+        $registros = $this->mod_view->view('v_venta_det', 0, false, array('codi_ven' => $codi_fac));
         $negocio = $this->mod_view->view('negocio');
 
         $this->load->library('fpdf');
@@ -1072,7 +1072,7 @@ class reporte extends CI_Controller {
 
         $this->fpdf->SetLeftMargin(58.7375);
         $this->fpdf->SetFont('Courier', 'B', 10);
-        $this->fpdf->Cell('35.98', '8', utf8_decode("N° " . $registros[0]->desp_fac), 0, 0, 'C');
+//        $this->fpdf->Cell('35.98', '8', utf8_decode("N° " . $registros[0]->nume_com), 0, 0, 'C');
 
         $this->fpdf->SetLeftMargin(4);
         $this->fpdf->Ln(4);
@@ -1096,7 +1096,7 @@ class reporte extends CI_Controller {
         $this->fpdf->Cell('45', '7', utf8_decode("              " . $registros[0]->ruc_cli), 0, 0, 'L');
         $this->fpdf->Cell('3', '7', utf8_decode(""));
 
-        $time = strtotime($registros[0]->fech_fac);
+        $time = strtotime($registros[0]->fech_ven);
         $fecha = date("d/m/Y", $time);
         $this->fpdf->Cell('41', '7', utf8_decode("             " . $fecha), 0, 0, 'L');
 
@@ -1164,6 +1164,8 @@ class reporte extends CI_Controller {
         $this->fpdf->Output();
     }
 
+    // FACTURA Y GUIA
+    
     public function reg_venta_data() {
 
         $codi_fac = $this->session->userdata('reg_ventas');
@@ -1182,7 +1184,7 @@ class reporte extends CI_Controller {
         $this->fpdf->SetLeftMargin(135);
 
         $this->fpdf->SetFont('Courier', 'B', 18);
-        $this->fpdf->Cell('50', '8', utf8_decode("N° " . $registros[0]->desp_fac), 0, 0, 'C');
+//        $this->fpdf->Cell('50', '8', utf8_decode("N° " . $registros[0]->desp_fac), 0, 0, 'C');
 
         $fecha_fac = $registros[0]->fech_fac;
 
@@ -1286,7 +1288,7 @@ class reporte extends CI_Controller {
         $this->fpdf->SetLeftMargin(145);
 
         $this->fpdf->SetFont('Courier', 'B', 18);
-        $this->fpdf->Cell('50', '8', utf8_decode("N° " . $guia_remision[0]->nume_guia), 0, 0, 'C');
+//        $this->fpdf->Cell('50', '8', utf8_decode("N° " . $guia_remision[0]->nume_guia), 0, 0, 'C');
 
         $this->fpdf->SetLeftMargin(50);
         $this->fpdf->Ln(6.5);
@@ -1338,7 +1340,7 @@ class reporte extends CI_Controller {
         $vehiculo = $this->mod_view->view('transportista_vehiculo', 0, false, array('id_vehi' => $guia_remision[0]->id_vehi));
 
         $this->fpdf->Cell('40', '4', utf8_decode($transportista[0]->ruc_tran), 0, 0, 'L');
-        $this->fpdf->Cell('50', '4', utf8_decode($conductor[0]->apel_cond . ', ' . $conductor[0]->nomb_cond), 0, 0, 'L');
+        $this->fpdf->Cell('50', '4', utf8_decode($transportista[0]->nomb_tran), 0, 0, 'L');
         $this->fpdf->Cell('15', '4', "", 0);
         $this->fpdf->Cell('45', '4', utf8_decode($vehiculo[0]->marca_vehi . ' - ' . $vehiculo[0]->placa_vehi), 0);
         $this->fpdf->Cell('40', '4', utf8_decode($conductor[0]->licen_cond), 0);
@@ -1403,7 +1405,7 @@ class reporte extends CI_Controller {
 
         // SERIE Y DESPACHO
         $this->fpdf->SetFont('Helvetica', 'B', 18);
-        $this->fpdf->Cell('25', '8', utf8_decode($comprobantes[1]->serie_com . ' - '), 0, 0, 'C');
+        $this->fpdf->Cell('25', '8', utf8_decode($registros[0]->serie_fac . ' - '), 0, 0, 'C');
         $this->fpdf->SetFont('Courier', '', 18);
         $this->fpdf->Cell('50', '8', utf8_decode("N° " . $registros[0]->desp_fac), 0, 0, 'L');
         $this->fpdf->SetLeftMargin(20);
@@ -1614,7 +1616,7 @@ class reporte extends CI_Controller {
 
         // SERIE Y DESPACHO
         $this->fpdf->SetFont('Helvetica', 'B', 18);
-        $this->fpdf->Cell('25', '8', utf8_decode($comprobantes[2]->serie_com . ' - '), 0, 0, 'C');
+        $this->fpdf->Cell('25', '8', utf8_decode($guia_remision[0]->serie_guia . ' - '), 0, 0, 'C');
         $this->fpdf->SetFont('Courier', '', 18);
         $this->fpdf->Cell('50', '8', utf8_decode("N° " . $guia_remision[0]->nume_guia), 0, 0, 'L');
         $this->fpdf->SetLeftMargin(10);
@@ -1732,7 +1734,7 @@ class reporte extends CI_Controller {
             $this->fpdf->Cell('32', '4', utf8_decode(""), 1, 0, 'C');
             $this->fpdf->Ln(4);
         }
-         $transportista = $this->mod_view->view('transportista', 0, false, array('id_tran' => $guia_remision[0]->id_tran));
+        $transportista = $this->mod_view->view('transportista', 0, false, array('id_tran' => $guia_remision[0]->id_tran));
         $conductor = $this->mod_view->view('transportista_conductor', 0, false, array('id_cond' => $guia_remision[0]->id_cond));
         $vehiculo = $this->mod_view->view('transportista_vehiculo', 0, false, array('id_vehi' => $guia_remision[0]->id_vehi));
         
@@ -1746,9 +1748,9 @@ class reporte extends CI_Controller {
         $this->fpdf->Cell('40', '4', utf8_decode("   Licencia de conducir"), 0, 0, 'L');
         $this->fpdf->Ln(5);
         $this->fpdf->Cell('40', '4', utf8_decode("   ". $transportista[0]->ruc_tran), 0, 0, 'L');
-        $this->fpdf->Cell('60', '4', utf8_decode("   ".$conductor[0]->apel_cond . ', ' .$conductor[0]->nomb_cond), 0, 0, 'L');
+        $this->fpdf->Cell('60', '4', utf8_decode("   ". $transportista[0]->nomb_tran), 0, 0, 'L');
         $this->fpdf->Cell('45', '4', utf8_decode("   ". $vehiculo[0]->marca_vehi . ' - ' .$vehiculo[0]->placa_vehi), 0, 0, 'L');
-        $this->fpdf->Cell('40', '4', utf8_decode("   ".$conductor[0]->licen_cond), 0, 0, 'L');
+        $this->fpdf->Cell('40', '4', utf8_decode("   ". $conductor[0]->licen_cond), 0, 0, 'L');
         $this->fpdf->SetLeftMargin(110);
         $this->fpdf->Ln(7);
         $this->fpdf->Cell('45', '4', utf8_decode("   Código de Autorización (SCOP) de OSINERG"), 0, 0, 'L');

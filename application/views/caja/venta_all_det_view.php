@@ -16,8 +16,8 @@
                     <table class="table table-condensed">
                         <tbody>
                             <tr>
-                                <td style="vertical-align: middle;"><strong>N&uacute;mero de venta:</strong></td>
-                                <td colspan="3" style="vertical-align: middle;"><?= $venta->serie_fac . ' - ' . $venta->num_fac ?></td>
+                                <td style="vertical-align: middle;"><strong>Serie y N&uacute;mero:</strong></td>
+                                <td colspan="3" style="vertical-align: middle;"><?= $venta->serie_com . ' - ' . $venta->nume_com ?></td>
                             </tr>
                             <tr>
                                 <td style="vertical-align: middle;"><strong>Fecha:</strong></td>
@@ -28,7 +28,7 @@
                             <tr>
                                 <td style="vertical-align: middle;"><strong>C&oacute;digo l&oacute;gico:</strong></td>
                                 <td style="vertical-align: middle;"><?= $venta->codi_ven ?></td>
-                                <td style="vertical-align: middle;"><strong>Total de la compra (S/.):</strong></td>
+                                <td style="vertical-align: middle;"><strong>Total de la venta (S/.):</strong></td>
                                 <td style="vertical-align: middle;"><?= $venta->tota_ven ?></td>
                             </tr>
                             <tr>
