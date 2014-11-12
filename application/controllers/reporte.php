@@ -1375,7 +1375,7 @@ class reporte extends CI_Controller {
         // RUC
         $this->fpdf->SetFont('Helvetica', 'B', 21);
         $this->fpdf->SetLeftMargin(133);
-        $this->fpdf->Cell('52.91', '11.9', utf8_decode("RUC N° 10156926880"), 0, 0, 'C');
+        $this->fpdf->Cell('52.91', '11.9', utf8_decode("RUC N° " . $negocio[0]->ruc_neg), 0, 0, 'C');
         $this->fpdf->SetLeftMargin(40);
         $this->fpdf->Ln(6);
 
@@ -1587,7 +1587,7 @@ class reporte extends CI_Controller {
         // RUC
         $this->fpdf->SetFont('Helvetica', 'B', 21);
         $this->fpdf->SetLeftMargin(133);
-        $this->fpdf->Cell('52.91', '11.9', utf8_decode("RUC N° 10156926880"), 0, 0, 'C');
+        $this->fpdf->Cell('52.91', '11.9', utf8_decode("RUC N° " . $negocio[0]->ruc_neg), 0, 0, 'C');
         $this->fpdf->SetLeftMargin(40);
         $this->fpdf->Ln(6);
 

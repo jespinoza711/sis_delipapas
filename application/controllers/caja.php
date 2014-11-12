@@ -456,7 +456,7 @@ class caja extends CI_Controller {
             $date = new DateTime($registros[0]->fech_ven);
             $date_string = $date->format('Y-m-d h:i:s A');
             $this->session->set_userdata('reg_ventas', $codi_ven);
-
+            
             $this->session->set_userdata('info_ven', 'La venta ha sido registrada con éxito. <br>'
                     . '<strong>Resumen de la venta</strong><br>'
                     . '<strong>Cliente: </strong> ' . $registros[0]->nomb_cli . ' ' . $registros[0]->apel_cli . '<br>'
