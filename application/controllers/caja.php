@@ -1544,9 +1544,9 @@ class caja extends CI_Controller {
                 $time = strtotime($row->fech_ven);
                 $fecha = date("d/m/Y g:i A", $time);
                 $aaData[] = array(
+                    $row->num_caj,
                     $fecha,
                     $row->apel_cli . ', ' . $row->nomb_cli,
-                    $row->num_caj,
                     $row->nomb_usu,
                     $row->nomb_com,
                     'S/. ' . $row->tota_ven
